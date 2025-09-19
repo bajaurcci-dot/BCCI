@@ -53,7 +53,7 @@ export default function TopNavBar() {
           <div className="md:hidden">
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon">
+                <Button size="icon" className="relative overflow-hidden bg-gradient-to-r from-green-400 to-green-600 text-white transition-all duration-500 ease-in-out hover:scale-105 hover:shadow-lg group">
                   <Menu className="h-8 w-8" />
                   <span className="sr-only">Open Menu</span>
                 </Button>
