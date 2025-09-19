@@ -1,3 +1,11 @@
+
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "logo",
+      "description": "Placeholder logo for CardNav",
+      "imageUrl": "https://picsum.photos/seed/1/100/100",
+      "imageHint": "abstract logo"
+    }
+  ]
 }
