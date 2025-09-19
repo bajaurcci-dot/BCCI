@@ -26,7 +26,7 @@ export default function TopNavBar() {
 
   return (
     <header className="w-full">
-      <div className="container mx-auto max-w-5xl">
+      <div className="container mx-auto max-w-6xl">
         <div className="flex h-20 items-center justify-between rounded-xl bg-card p-4 px-6 shadow-md">
           {/* Mobile Menu */}
           <div className="md:hidden">
