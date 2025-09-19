@@ -30,7 +30,7 @@ export default function TopNavBar() {
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon">
-                  <Menu className="h-6 w-6" />
+                  <Menu className="h-8 w-8" />
                   <span className="sr-only">Open Menu</span>
                 </Button>
               </SheetTrigger>
@@ -63,7 +63,7 @@ export default function TopNavBar() {
           {/* Desktop Menu Icon (as per image) */}
           <div className="hidden md:flex">
              <Button variant="outline" size="icon">
-                  <Menu className="h-6 w-6" />
+                  <Menu className="h-8 w-8" />
                   <span className="sr-only">Menu</span>
               </Button>
           </div>
