@@ -9,6 +9,7 @@ import {
   Sheet,
   SheetContent,
   SheetHeader,
+  SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -59,6 +60,7 @@ export default function TopNavBar() {
               </SheetTrigger>
               <SheetContent side="left">
                 <SheetHeader>
+                  <SheetTitle className="sr-only">Menu</SheetTitle>
                    {logoImage && (
                       <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
                           <Image
