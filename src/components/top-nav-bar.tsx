@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X, Atom } from 'lucide-react';
 import { Button } from './ui/button';
 import {
@@ -10,6 +11,7 @@ import {
   SheetHeader,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const menuItems = [
   { label: 'Home', href: '#' },
@@ -20,6 +22,7 @@ const menuItems = [
 
 export default function TopNavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const logoImage = PlaceHolderImages.find(img => img.id === 'logo');
 
   return (
     <header className="w-full">
@@ -60,12 +63,20 @@ export default function TopNavBar() {
             </Sheet>
           </div>
 
-          {/* Desktop Menu Icon (as per image) */}
+          {/* Desktop Logo */}
           <div className="hidden md:flex">
-             <Button variant="outline" size="icon">
-                  <Menu className="h-8 w-8" />
-                  <span className="sr-only">Menu</span>
-              </Button>
+             {logoImage && (
+                <Link href="#">
+                    <Image
+                      src={logoImage.imageUrl}
+                      alt={logoImage.description}
+                      width={40}
+                      height={40}
+                      data-ai-hint={logoImage.imageHint}
+                      className="rounded-full"
+                    />
+                </Link>
+              )}
           </div>
           
           {/* Logo and Brand Name */}
