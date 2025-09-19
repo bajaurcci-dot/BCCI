@@ -114,7 +114,7 @@ export default function TopNavBar() {
           </nav>
 
           {/* Get Started Button */}
-          <div>
+          <div className="hidden md:block">
             <Button className="relative overflow-hidden bg-gradient-to-r from-green-400 to-green-600 text-white transition-all duration-500 ease-in-out hover:scale-105 hover:shadow-lg group">
               Get Started
               <span className="absolute inset-0 bg-white/20 transition-all duration-700 ease-in-out -translate-x-full group-hover:translate-x-0 group-hover:skew-x-[-15deg]"></span>
