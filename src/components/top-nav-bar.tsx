@@ -26,6 +26,7 @@ const menuItems = [
 export default function TopNavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const logoImage = PlaceHolderImages.find(img => img.id === 'logo');
+  const [activeItem, setActiveItem] = useState('About');
 
   return (
     <header className="w-full">
@@ -76,8 +77,15 @@ export default function TopNavBar() {
                     <Link
                       key={item.label}
                       href={item.href}
-                      className="text-lg font-medium text-muted-foreground hover:text-foreground"
-                      onClick={() => setIsMenuOpen(false)}
+                      className={`text-lg font-medium transition-colors ${
+                        activeItem === item.label
+                          ? 'text-green-600'
+                          : 'text-muted-foreground hover:text-green-500'
+                      }`}
+                      onClick={() => {
+                        setActiveItem(item.label);
+                        setIsMenuOpen(false);
+                      }}
                     >
                       {item.label}
                     </Link>
@@ -93,7 +101,12 @@ export default function TopNavBar() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-base font-medium text-muted-foreground hover:text-foreground"
+                onClick={() => setActiveItem(item.label)}
+                className={`text-base font-medium transition-all duration-300 ease-in-out transform hover:scale-110 ${
+                  activeItem === item.label
+                    ? 'text-green-600 scale-110'
+                    : 'text-muted-foreground hover:text-green-500'
+                }`}
               >
                 {item.label}
               </Link>
