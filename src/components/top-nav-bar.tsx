@@ -93,7 +93,7 @@ export default function TopNavBar() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+                className="text-base font-medium text-muted-foreground hover:text-foreground"
               >
                 {item.label}
               </Link>
