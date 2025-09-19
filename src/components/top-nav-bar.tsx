@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Atom } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
 import {
   Sheet,
@@ -32,7 +32,7 @@ export default function TopNavBar() {
   return (
     <header className="w-full">
       <div className="container mx-auto max-w-7xl">
-        <div className="flex h-20 items-center justify-between rounded-xl bg-card p-4 px-6 shadow-md">
+        <div className="flex h-16 items-center justify-between rounded-xl bg-card p-4 px-6 shadow-md">
           {/* Logo */}
           <div className="flex items-center">
              {logoImage && (
