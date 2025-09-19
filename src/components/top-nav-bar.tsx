@@ -17,9 +17,9 @@ const menuItems = [
     { label: 'About', href: '#' },
     { label: 'Services', href: '#' },
     { label: 'Membership', href: '#' },
-    { label: 'Gallery', href: '#' },
     { label: 'Compliances', href: '#' },
     { label: 'Download', href: '#' },
+    { label: 'Gallery', href: '#' },
     { label: 'Contact Us', href: '#' },
 ];
 
