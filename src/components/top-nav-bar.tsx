@@ -102,7 +102,7 @@ export default function TopNavBar() {
 
           {/* Get Started Button */}
           <div>
-            <Button className="bg-gradient-to-r from-green-400 to-green-600 text-white">Get Started</Button>
+            <Button className="bg-gradient-to-r from-green-400 to-green-600 text-white transition-transform duration-200 hover:scale-105 hover:shadow-lg">Get Started</Button>
           </div>
         </div>
       </div>
