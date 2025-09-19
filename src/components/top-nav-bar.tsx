@@ -29,7 +29,7 @@ export default function TopNavBar() {
 
   return (
     <header className="w-full">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto max-w-7xl">
         <div className="flex h-20 items-center justify-between rounded-xl bg-card p-4 px-6 shadow-md">
           {/* Logo */}
           <div className="flex items-center">
@@ -102,7 +102,7 @@ export default function TopNavBar() {
 
           {/* Get Started Button */}
           <div>
-            <Button>Get Started</Button>
+            <Button className="bg-gradient-to-r from-green-400 to-green-600 text-white">Get Started</Button>
           </div>
         </div>
       </div>
