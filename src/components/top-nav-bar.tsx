@@ -88,7 +88,7 @@ export default function TopNavBar() {
           </div>
           
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex flex-1 items-center justify-center gap-6">
             {menuItems.map((item) => (
               <Link
                 key={item.label}
