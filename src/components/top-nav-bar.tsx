@@ -40,8 +40,8 @@ export default function TopNavBar() {
                     <Image
                       src={logoImage.imageUrl}
                       alt={logoImage.description}
-                      width={40}
-                      height={40}
+                      width={50}
+                      height={50}
                       data-ai-hint={logoImage.imageHint}
                       className="rounded-full"
                     />
@@ -66,8 +66,8 @@ export default function TopNavBar() {
                           <Image
                             src={logoImage.imageUrl}
                             alt={logoImage.description}
-                            width={40}
-                            height={40}
+                            width={50}
+                            height={50}
                             data-ai-hint={logoImage.imageHint}
                             className="rounded-full"
                           />
@@ -117,7 +117,7 @@ export default function TopNavBar() {
 
           {/* Get Started Button */}
           <div className="hidden md:block">
-            <Button className="relative overflow-hidden bg-gradient-to-r from-green-400 to-green-600 text-white transition-all duration-500 ease-in-out hover:scale-105 hover:shadow-lg group">
+            <Button className="relative overflow-hidden bg-gradient-to-r from-green-400 to-green-600 text-white transition-all duration-700 ease-in-out hover:scale-110 hover:shadow-lg group">
               Get Started
               <span className="absolute inset-0 bg-white/20 transition-all duration-700 ease-in-out -translate-x-full group-hover:translate-x-0 group-hover:skew-x-[-15deg]"></span>
             </Button>
