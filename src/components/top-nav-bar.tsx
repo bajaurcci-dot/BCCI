@@ -102,7 +102,7 @@ export default function TopNavBar() {
                 key={item.label}
                 href={item.href}
                 onClick={() => setActiveItem(item.label)}
-                className={`text-base font-medium transition-all duration-300 ease-in-out transform hover:scale-110 ${
+                className={`text-base font-medium transition-all duration-500 ease-in-out transform hover:scale-110 ${
                   activeItem === item.label
                     ? 'text-green-600 scale-110'
                     : 'text-muted-foreground hover:text-green-500'
@@ -115,9 +115,9 @@ export default function TopNavBar() {
 
           {/* Get Started Button */}
           <div>
-            <Button className="relative overflow-hidden bg-gradient-to-r from-green-400 to-green-600 text-white transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg group">
+            <Button className="relative overflow-hidden bg-gradient-to-r from-green-400 to-green-600 text-white transition-all duration-500 ease-in-out hover:scale-105 hover:shadow-lg group">
               Get Started
-              <span className="absolute inset-0 bg-white/20 transition-all duration-500 ease-in-out -translate-x-full group-hover:translate-x-0 group-hover:skew-x-[-15deg]"></span>
+              <span className="absolute inset-0 bg-white/20 transition-all duration-700 ease-in-out -translate-x-full group-hover:translate-x-0 group-hover:skew-x-[-15deg]"></span>
             </Button>
           </div>
         </div>
