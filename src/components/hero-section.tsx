@@ -194,7 +194,7 @@ const HeroSection = () => {
             </div>
             <div className="mt-12 sm:mt-16 md:mt-20 flex flex-col items-center gap-5">
               <p className="font-medium text-muted-foreground lg:text-left">
-                Built with open-source technologies
+                Our Services For Growth & Success
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <TooltipProvider delayDuration={0}>
