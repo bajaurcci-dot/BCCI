@@ -38,7 +38,7 @@ export default function TopNavBar() {
               <Link href="#">
                 <Image
                   src={logoImage.imageUrl}
-                  alt={logo.description}
+                  alt={logoImage.description}
                   width={144}
                   height={144}
                   priority
