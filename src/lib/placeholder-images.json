@@ -12,6 +12,42 @@
       "description": "Abstract grid background",
       "imageUrl": "https://picsum.photos/seed/hero-bg/1200/800",
       "imageHint": "abstract grid"
+    },
+    {
+      "id": "hero-bg-alt",
+      "description": "Abstract square grid background",
+      "imageUrl": "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/patterns/square-alt-grid.svg",
+      "imageHint": "abstract grid"
+    },
+    {
+      "id": "hero-block-logo",
+      "description": "Block logo",
+      "imageUrl": "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/block-1.svg",
+      "imageHint": "block logo"
+    },
+    {
+      "id": "shadcn-logo",
+      "description": "shadcn/ui logo",
+      "imageUrl": "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcn-ui-icon.svg",
+      "imageHint": "shadcn logo"
+    },
+    {
+      "id": "ts-logo",
+      "description": "TypeScript logo",
+      "imageUrl": "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/typescript-icon.svg",
+      "imageHint": "typescript logo"
+    },
+    {
+      "id": "react-logo",
+      "description": "React logo",
+      "imageUrl": "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/react-icon.svg",
+      "imageHint": "react logo"
+    },
+    {
+      "id": "tailwind-logo",
+      "description": "Tailwind CSS logo",
+      "imageUrl": "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/tailwind-icon.svg",
+      "imageHint": "tailwind logo"
     }
   ]
 }
