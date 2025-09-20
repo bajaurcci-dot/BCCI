@@ -16,9 +16,9 @@ const HeroSection = () => {
 
 
   return (
-    <section className="relative overflow-hidden py-32">
+    <section className="relative overflow-hidden flex-grow flex items-center justify-center">
       {heroBg &&
-        <div className="absolute inset-x-0 top-0 flex h-full w-full items-center justify-center opacity-100">
+        <div className="absolute inset-0 flex h-full w-full items-center justify-center -z-10">
           <Image
             alt={heroBg.description}
             src={heroBg.imageUrl}
@@ -28,7 +28,7 @@ const HeroSection = () => {
           />
         </div>
       }
-      <div className="relative z-10 container flex items-center justify-center">
+      <div className="container px-4 md:px-6">
         <div className="mx-auto flex max-w-5xl flex-col items-center">
           <div className="flex flex-col items-center gap-6 text-center">
             {heroLogo &&
@@ -43,16 +43,16 @@ const HeroSection = () => {
             </div>
             }
             <div>
-              <h1 className="mb-6 text-2xl font-bold tracking-tight text-pretty lg:text-5xl">
+              <h1 className="mb-6 text-2xl font-bold tracking-tight text-pretty sm:text-3xl md:text-4xl lg:text-5xl">
                 Bajaur Chamber Of Commerce & Industry
               </h1>
-              <p className="mx-auto max-w-3xl text-muted-foreground lg:text-xl">
+              <p className="mx-auto max-w-3xl text-muted-foreground text-base sm:text-lg md:text-xl">
                 The Bajaur Chamber of Commerce & Industry (BCCI) supports economic growth in
 Bajaur District by advocating for local businesses, enhancing trade, and fostering a
 thriving business environment.
               </p>
             </div>
-            <div className="mt-6 flex justify-center gap-3">
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Button className="shadow-sm transition-shadow hover:shadow">
                 Get Started
               </Button>
@@ -61,7 +61,7 @@ thriving business environment.
                 <ExternalLink className="ml-2 h-4 transition-transform group-hover:translate-x-0.5" />
               </Button>
             </div>
-            <div className="mt-20 flex flex-col items-center gap-5">
+            <div className="mt-12 sm:mt-16 md:mt-20 flex flex-col items-center gap-5">
               <p className="font-medium text-muted-foreground lg:text-left">
                 Built with open-source technologies
               </p>
@@ -108,7 +108,7 @@ thriving business environment.
                     alt={reactLogo.description}
                     width={24}
                     height={24}
-                    className="h-6 w-auto saturate-0 transition-all group-hover:sate-100"
+                    className="h-6 w-auto saturate-0 transition-all group-hover:saturate-100"
                   />
                 </a>}
                 {tailwindLogo && <a
