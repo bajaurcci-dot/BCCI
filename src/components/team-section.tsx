@@ -42,8 +42,6 @@ const teamMembers = [
 ];
 
 const TeamSection = () => {
-  const bcciLogo = PlaceHolderImages.find((img) => img.id === 'hero-block-logo');
-  
   return (
     <section className="py-20 md:py-32 bg-background">
       <div className="container mx-auto px-4 md:px-6">
@@ -67,16 +65,6 @@ const TeamSection = () => {
               >
                 <div className="relative">
                   <div className="h-28 bg-gray-800 rounded-t-2xl flex items-center justify-start p-4 gap-4">
-                    {bcciLogo && (
-                        <Image
-                          src={bcciLogo.imageUrl}
-                          alt={bcciLogo.description}
-                          width={60}
-                          height={60}
-                          className="rounded-full"
-                          data-ai-hint={bcciLogo.imageHint}
-                        />
-                    )}
                     <h3 className="text-white text-left font-bold text-lg">
                       Bajaur Chamber Of <br /> Commerce & Industry
                     </h3>
