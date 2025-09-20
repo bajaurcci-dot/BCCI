@@ -3,14 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu } from 'lucide-react';
-import { Info } from 'lucide-react';
-import { Briefcase } from 'lucide-react';
-import { Award } from 'lucide-react';
-import { FileCheck } from 'lucide-react';
-import { Download } from 'lucide-react';
-import { Image as ImageIcon } from 'lucide-react';
-import { Mail } from 'lucide-react';
+import { Menu, Info, Briefcase, Award, FileCheck, Download, ImageIcon, Mail } from 'lucide-react';
 import { Button } from './ui/button';
 import {
   Sheet,
@@ -98,7 +91,7 @@ export default function TopNavBar() {
                       <li
                         key={item.label}
                         className="transform transition-all duration-300 ease-in-out"
-                        style={{ animationDelay: `${index * 100}ms` }}
+                        style={{ animationDelay: `${'index * 100'}ms` }}
                       >
                         <Link
                           href={item.href}
