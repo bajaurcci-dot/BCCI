@@ -64,14 +64,14 @@ const TeamSection = () => {
                 className="bg-card rounded-2xl shadow-lg overflow-hidden w-full max-w-sm mx-auto transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
               >
                 <div className="relative">
-                  <div className="h-28 bg-gray-800 rounded-t-2xl flex items-center justify-start p-4 pl-32">
-                    <h3 className="text-white text-left font-bold text-lg">
+                  <div className="h-28 bg-primary rounded-t-2xl flex items-center justify-start p-4 pl-32">
+                    <h3 className="text-primary-foreground text-left font-bold text-lg">
                       Bajaur Chamber Of <br /> Commerce & Industry
                     </h3>
                   </div>
                   <div className="absolute top-16 left-6">
                     {memberImage && (
-                      <div className="bg-gray-800 rounded-full p-2 border-4 border-card">
+                      <div className="bg-card rounded-full p-2 border-4 border-card">
                         <Image
                           src={memberImage.imageUrl}
                           alt={memberImage.description}
