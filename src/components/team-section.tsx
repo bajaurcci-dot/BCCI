@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Mail, Twitter } from 'lucide-react';
@@ -46,54 +48,47 @@ const TeamSection = () => {
             and strategy.
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {teamMembers.map((member) => {
             const memberImage = PlaceHolderImages.find((img) => img.id === member.id);
             return (
               <div
                 key={member.id}
-                className="bg-card rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row"
+                className="bg-card rounded-xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
               >
-                <div className="md:w-1/3 bg-primary/10 p-6 flex flex-col items-center justify-center text-center">
+                <div className="bg-primary/10 p-6 flex flex-col items-center justify-center text-center">
                   <div className="relative">
                     {memberImage && (
-                      <div className="w-48 h-48 rounded-lg border-4 border-primary p-1">
+                      <div className="w-32 h-32 rounded-full border-4 border-primary p-1">
                         <Image
                           src={memberImage.imageUrl}
                           alt={member.name}
-                          width={192}
-                          height={192}
-                          className="w-full h-full object-cover rounded-md"
+                          width={128}
+                          height={128}
+                          className="w-full h-full object-cover rounded-full"
                           data-ai-hint={memberImage.imageHint}
                         />
                       </div>
                     )}
-                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-green-700/90 backdrop-blur-sm text-white px-4 py-1 rounded-full text-sm font-semibold border-2 border-white/50">
-                      {member.name}
-                    </div>
                   </div>
-                  <div className="mt-8">
-                    <h3 className="text-2xl font-bold font-headline text-primary">{member.role}</h3>
-                    <div className="flex items-center justify-center gap-2 mt-2 text-muted-foreground">
-                      <Twitter size={16} />
-                      <span>{member.twitterHandle}</span>
-                    </div>
+                  <div className="mt-4">
+                    <h3 className="text-xl font-bold font-headline text-primary">{member.name}</h3>
+                    <p className="text-sm text-muted-foreground font-medium">{member.role}</p>
                   </div>
                 </div>
 
-                <div className="md:w-2/3 p-8 flex flex-col justify-center">
-                  <h3 className="text-3xl font-bold font-headline text-primary">
-                    {member.title} {member.name}
-                  </h3>
-                  <p className="mt-4 text-muted-foreground text-base">{member.bio}</p>
-                  <div className="mt-6 flex flex-col gap-4">
-                    <div className="inline-flex items-center gap-2 bg-primary/10 text-primary font-bold px-4 py-2 rounded-full self-start">
+                <div className="p-6 flex flex-col justify-center flex-grow">
+                  <p className="mt-2 text-muted-foreground text-sm text-center">{member.bio}</p>
+                  <div className="mt-4 flex flex-col gap-3">
+                     <div className="inline-flex items-center gap-2 bg-primary/10 text-primary font-bold px-3 py-1 rounded-full self-center text-xs">
                       Bajaur Chamber
                     </div>
-                    <div className="flex items-center gap-3 text-muted-foreground">
-                      <Mail size={18} className="text-primary" />
-                      <a href={`mailto:${member.email}`} className="hover:text-primary">
-                        {member.email}
+                    <div className="flex items-center justify-center gap-3 text-muted-foreground">
+                      <a href={`mailto:${member.email}`} className="hover:text-primary transition-colors">
+                        <Mail size={18} />
+                      </a>
+                       <a href={`https://twitter.com/${member.twitterHandle}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                        <Twitter size={18} />
                       </a>
                     </div>
                   </div>
