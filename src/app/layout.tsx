@@ -16,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preload" href="/fonts/lato.css" as="style" />
         <link rel="stylesheet" href="/fonts/lato.css" />
       </head>
       <body className="font-body antialiased">
