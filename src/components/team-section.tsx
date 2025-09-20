@@ -64,7 +64,7 @@ const TeamSection = () => {
                 className="bg-card rounded-2xl shadow-lg overflow-hidden w-full max-w-sm mx-auto transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
               >
                 <div className="relative">
-                  <div className="h-28 bg-gray-800 rounded-t-2xl flex items-center justify-start p-4 pl-28">
+                  <div className="h-28 bg-gray-800 rounded-t-2xl flex items-center justify-start p-4 pl-32">
                     <h3 className="text-white text-left font-bold text-lg">
                       Bajaur Chamber Of <br /> Commerce & Industry
                     </h3>
