@@ -55,69 +55,71 @@ const TeamSection = () => {
             and strategy.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {teamMembers.map((member) => {
-            const memberImage = PlaceHolderImages.find(img => img.id === member.id);
-            return (
-              <div
-                key={member.id}
-                className="bg-card rounded-2xl shadow-lg overflow-hidden w-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
-              >
-                <div className="relative">
-                  <div className="h-28 bg-gradient-to-r from-primary to-accent rounded-t-2xl flex items-center justify-start p-4 pl-32">
-                    <h3 className="text-primary-foreground text-left font-bold text-lg">
-                      Bajaur Chamber Of <br /> Commerce & Industry
-                    </h3>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {teamMembers.map((member) => {
+              const memberImage = PlaceHolderImages.find(img => img.id === member.id);
+              return (
+                <div
+                  key={member.id}
+                  className="bg-card rounded-2xl shadow-lg overflow-hidden w-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+                >
+                  <div className="relative">
+                    <div className="h-28 bg-gradient-to-r from-primary to-accent rounded-t-2xl flex items-center justify-start p-4 pl-32">
+                      <h3 className="text-primary-foreground text-left font-bold text-lg">
+                        Bajaur Chamber Of <br /> Commerce & Industry
+                      </h3>
+                    </div>
+                    <div className="absolute top-16 left-6">
+                      {memberImage && (
+                        <div className="bg-card rounded-full p-2 border-4 border-card">
+                          <Image
+                            src={memberImage.imageUrl}
+                            alt={memberImage.description}
+                            width={80}
+                            height={80}
+                            className="rounded-full"
+                            data-ai-hint={memberImage.imageHint}
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div className="absolute top-16 left-6">
-                    {memberImage && (
-                      <div className="bg-card rounded-full p-2 border-4 border-card">
-                        <Image
-                          src={memberImage.imageUrl}
-                          alt={memberImage.description}
-                          width={80}
-                          height={80}
-                          className="rounded-full"
-                          data-ai-hint={memberImage.imageHint}
-                        />
+
+                  <div className="pt-16 px-6 pb-6 text-center">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="text-xl font-bold text-foreground text-left">{member.name}</h4>
+                        <p className="text-sm text-muted-foreground flex items-center">
+                          @{member.handle}
+                        </p>
                       </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="pt-16 px-6 pb-6 text-center">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="text-xl font-bold text-foreground text-left">{member.name}</h4>
-                      <p className="text-sm text-muted-foreground flex items-center">
-                        @{member.handle}
-                      </p>
+                      <Badge variant="default">
+                        {member.title}
+                      </Badge>
                     </div>
-                    <Badge variant="default">
-                      {member.title}
-                    </Badge>
-                  </div>
-                  
-                  <p className="text-muted-foreground text-sm my-4 text-left">{member.bio}</p>
+                    
+                    <p className="text-muted-foreground text-sm my-4 text-left">{member.bio}</p>
 
-                  <div className="space-y-3 text-sm border-t border-border pt-4 text-left">
-                    <a href={`mailto:${member.email}`} className="flex items-center text-muted-foreground hover:text-primary transition-colors">
-                      <Mail className="mr-3 h-4 w-4 flex-shrink-0 text-primary" />
-                      <span className="truncate">{member.email}</span>
-                    </a>
-                    <a href={`https://${member.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center text-muted-foreground hover:text-primary transition-colors">
-                      <LinkIcon className="mr-3 h-4 w-4 flex-shrink-0 text-primary" />
-                      <span className="truncate">{member.website}</span>
-                    </a>
-                    <div className="flex items-center text-muted-foreground">
-                      <MapPin className="mr-3 h-4 w-4 flex-shrink-0 text-primary" />
-                      <span className="truncate">{member.location}</span>
+                    <div className="space-y-3 text-sm border-t border-border pt-4 text-left">
+                      <a href={`mailto:${member.email}`} className="flex items-center text-muted-foreground hover:text-primary transition-colors">
+                        <Mail className="mr-3 h-4 w-4 flex-shrink-0 text-primary" />
+                        <span className="truncate">{member.email}</span>
+                      </a>
+                      <a href={`https://${member.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center text-muted-foreground hover:text-primary transition-colors">
+                        <LinkIcon className="mr-3 h-4 w-4 flex-shrink-0 text-primary" />
+                        <span className="truncate">{member.website}</span>
+                      </a>
+                      <div className="flex items-center text-muted-foreground">
+                        <MapPin className="mr-3 h-4 w-4 flex-shrink-0 text-primary" />
+                        <span className="truncate">{member.location}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
