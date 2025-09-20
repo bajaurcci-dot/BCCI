@@ -93,7 +93,7 @@ const TeamSection = () => {
                         @{member.handle}
                       </p>
                     </div>
-                    <Badge variant="default" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold">
+                    <Badge variant="default">
                       {member.title}
                     </Badge>
                   </div>
