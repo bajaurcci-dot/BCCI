@@ -16,7 +16,7 @@ const HeroSection = () => {
 
 
   return (
-    <section className="relative overflow-hidden flex-grow flex items-center justify-center">
+    <section className="relative overflow-hidden flex-grow flex items-center justify-center py-12 sm:py-24 md:py-32">
       {heroBg &&
         <div className="absolute inset-0 flex h-full w-full items-center justify-center -z-10">
           <Image
