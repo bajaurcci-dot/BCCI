@@ -75,7 +75,7 @@ export default function TopNavBar() {
               >
                 <SheetHeader className="border-b border-gray-700 pb-4">
                   <SheetTitle className="sr-only">Menu</SheetTitle>
-                  <div className="flex justify-center">
+                  <div className="flex justify-start">
                     {logoImage && (
                       <Link
                         href="#"
