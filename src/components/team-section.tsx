@@ -102,15 +102,15 @@ const TeamSection = () => {
 
                   <div className="space-y-3 text-sm border-t border-border pt-4 text-left">
                     <a href={`mailto:${member.email}`} className="flex items-center text-muted-foreground hover:text-primary transition-colors">
-                      <Mail className="mr-3 h-4 w-4 flex-shrink-0" />
+                      <Mail className="mr-3 h-4 w-4 flex-shrink-0 text-primary" />
                       <span className="truncate">{member.email}</span>
                     </a>
                     <a href={`https://${member.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center text-muted-foreground hover:text-primary transition-colors">
-                      <LinkIcon className="mr-3 h-4 w-4 flex-shrink-0" />
+                      <LinkIcon className="mr-3 h-4 w-4 flex-shrink-0 text-primary" />
                       <span className="truncate">{member.website}</span>
                     </a>
                     <div className="flex items-center text-muted-foreground">
-                      <MapPin className="mr-3 h-4 w-4 flex-shrink-0" />
+                      <MapPin className="mr-3 h-4 w-4 flex-shrink-0 text-primary" />
                       <span className="truncate">{member.location}</span>
                     </div>
                   </div>
