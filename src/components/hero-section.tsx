@@ -108,7 +108,7 @@ thriving business environment.
                     alt={reactLogo.description}
                     width={24}
                     height={24}
-                    className="h-6 w-auto saturate-0 transition-all group-hover:saturate-100"
+                    className="h-6 w-auto saturate-0 transition-all group-hover:sate-100"
                   />
                 </a>}
                 {tailwindLogo && <a

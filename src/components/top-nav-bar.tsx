@@ -30,7 +30,7 @@ export default function TopNavBar() {
   const [activeItem, setActiveItem] = useState('About');
 
   return (
-    <header className="w-full">
+    <header className="w-full p-4">
       <div className="container mx-auto max-w-7xl">
         <div className="flex h-16 items-center justify-between rounded-xl bg-card p-4 px-6 shadow-md">
           <div className="flex items-center">
