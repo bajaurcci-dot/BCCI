@@ -87,9 +87,6 @@ const TeamSection = () => {
                       <a href={`mailto:${member.email}`} className="hover:text-primary transition-colors">
                         <Mail size={18} />
                       </a>
-                       <a href={`https://twitter.com/${member.twitterHandle}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
-                        <Twitter size={18} />
-                      </a>
                     </div>
                   </div>
                 </div>
