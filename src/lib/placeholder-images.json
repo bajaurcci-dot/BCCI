@@ -51,27 +51,21 @@
     },
     {
       "id": "team-member-1",
-      "description": "Portrait of a female team member",
+      "description": "Portrait of a man",
       "imageUrl": "https://picsum.photos/seed/1/400/400",
-      "imageHint": "woman portrait"
+      "imageHint": "man portrait"
     },
     {
       "id": "team-member-2",
-      "description": "Portrait of a male team member",
+      "description": "Portrait of a man",
       "imageUrl": "https://picsum.photos/seed/2/400/400",
       "imageHint": "man portrait"
     },
     {
       "id": "team-member-3",
-      "description": "Portrait of a female team member",
+      "description": "Portrait of a woman",
       "imageUrl": "https://picsum.photos/seed/3/400/400",
       "imageHint": "woman portrait"
-    },
-    {
-      "id": "team-member-4",
-      "description": "Portrait of a male team member",
-      "imageUrl": "https://picsum.photos/seed/4/400/400",
-      "imageHint": "man portrait"
     }
   ]
 }
