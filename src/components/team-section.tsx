@@ -62,7 +62,7 @@ const TeamSection = () => {
               return (
                 <div
                   key={member.id}
-                  className="bg-card rounded-2xl shadow-lg overflow-hidden w-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+                  className="bg-card rounded-2xl shadow-lg overflow-hidden w-full transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2"
                 >
                   <div className="relative">
                     <div className="h-28 bg-gradient-to-r from-primary to-accent rounded-t-2xl flex items-center justify-start p-4 pl-32">
