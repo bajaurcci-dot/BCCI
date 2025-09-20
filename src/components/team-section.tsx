@@ -2,13 +2,14 @@
 
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Mail, Link as LinkIcon, MapPin, AtSign } from 'lucide-react';
+import { Mail, Link as LinkIcon, MapPin } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 const teamMembers = [
   {
     id: 'team-member-1',
     name: 'Haji Lali Shah',
-    handle: '@lalishah',
+    handle: 'lalishah',
     title: 'Founder',
     role: 'Founder & Group Leader',
     bio: 'Founder and Group Leader of BCCI, drives economic growth and supports businesses in Bajaur District.',
@@ -19,7 +20,7 @@ const teamMembers = [
   {
     id: 'team-member-2',
     name: 'Khan Muhammad',
-    handle: '@khanmuhammad',
+    handle: 'khanmuhammad',
     title: 'President',
     role: 'President',
     bio: 'Leads the chamber with a focus on strategic partnerships and advocating for local business interests.',
@@ -30,7 +31,7 @@ const teamMembers = [
   {
     id: 'team-member-3',
     name: 'Fatima Ahmed',
-    handle: '@fatimaahmed',
+    handle: 'fatimaahmed',
     title: 'Vice President',
     role: 'Vice President',
     bio: 'Supports the president and manages internal operations to ensure the chamber runs efficiently.',
@@ -41,6 +42,8 @@ const teamMembers = [
 ];
 
 const TeamSection = () => {
+  const bcciLogo = PlaceHolderImages.find((img) => img.id === 'hero-block-logo');
+  
   return (
     <section className="py-20 md:py-32 bg-background">
       <div className="container mx-auto px-4 md:px-6">
@@ -54,41 +57,51 @@ const TeamSection = () => {
             and strategy.
           </p>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {teamMembers.map((member) => {
-            const memberImage = PlaceHolderImages.find((img) => img.id === member.id);
             return (
               <div
                 key={member.id}
-                className="bg-card rounded-2xl shadow-lg overflow-hidden w-full max-w-sm mx-auto transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
+                className="bg-card rounded-2xl shadow-lg overflow-hidden w-full max-w-sm mx-auto transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
               >
-                <div className="flex items-center p-6">
-                  <div className="flex-shrink-0">
-                    {memberImage && (
-                      <Image
-                        src={memberImage.imageUrl}
-                        alt={member.name}
-                        width={96}
-                        height={96}
-                        className="w-24 h-24 object-cover rounded-full border-4 border-primary"
-                        data-ai-hint={memberImage.imageHint}
-                      />
+                <div className="relative">
+                  <div className="h-28 bg-gray-800 rounded-t-2xl flex items-center justify-center p-4">
+                    <h3 className="text-white text-center font-bold text-lg">
+                      Bajaur Chamber Of <br /> Commerce & Industry
+                    </h3>
+                  </div>
+                  <div className="absolute top-16 left-1/2 -translate-x-1/2">
+                    {bcciLogo && (
+                      <div className="bg-gray-800 rounded-full p-2 border-4 border-card">
+                        <Image
+                          src={bcciLogo.imageUrl}
+                          alt={bcciLogo.description}
+                          width={80}
+                          height={80}
+                          className="rounded-full"
+                          data-ai-hint={bcciLogo.imageHint}
+                        />
+                      </div>
                     )}
                   </div>
-                  <div className="ml-6 flex-1">
-                    <h4 className="text-xl font-bold text-foreground">{member.name}</h4>
-                    <p className="text-sm text-muted-foreground flex items-center">
-                      <AtSign className="h-3 w-3 mr-1" />
-                      {member.handle}
-                    </p>
-                    <span className="mt-2 inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full">{member.title}</span>
-                  </div>
                 </div>
-                
-                <div className="px-6 pb-6">
-                  <p className="text-muted-foreground text-sm mb-4">{member.bio}</p>
 
-                  <div className="space-y-3 text-sm border-t border-border pt-4">
+                <div className="pt-16 px-6 pb-6 text-center">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-xl font-bold text-foreground">{member.name}</h4>
+                      <p className="text-sm text-muted-foreground flex items-center">
+                        @{member.handle}
+                      </p>
+                    </div>
+                    <Badge variant="default" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold">
+                      {member.title}
+                    </Badge>
+                  </div>
+                  
+                  <p className="text-muted-foreground text-sm my-4 text-left">{member.bio}</p>
+
+                  <div className="space-y-3 text-sm border-t border-border pt-4 text-left">
                     <a href={`mailto:${member.email}`} className="flex items-center text-muted-foreground hover:text-primary transition-colors">
                       <Mail className="mr-3 h-4 w-4 flex-shrink-0" />
                       <span className="truncate">{member.email}</span>
