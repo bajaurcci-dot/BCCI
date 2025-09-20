@@ -43,10 +43,10 @@ const HeroSection = () => {
             </div>
             }
             <div>
-              <h1 className="mb-6 text-2xl font-bold tracking-tight text-pretty sm:text-3xl md:text-4xl lg:text-5xl">
+              <h1 className="mb-6 text-3xl font-bold tracking-tight text-pretty sm:text-4xl md:text-5xl lg:text-6xl">
                 Bajaur Chamber Of Commerce & Industry
               </h1>
-              <p className="mx-auto max-w-3xl text-muted-foreground text-base sm:text-lg md:text-xl">
+              <p className="mx-auto max-w-3xl text-muted-foreground text-lg sm:text-xl md:text-2xl">
                 The Bajaur Chamber of Commerce & Industry (BCCI) supports economic growth in
 Bajaur District by advocating for local businesses, enhancing trade, and fostering a
 thriving business environment.
@@ -123,7 +123,7 @@ thriving business environment.
                     alt={tailwindLogo.description}
                     width={24}
                     height={24}
-                    className="h-6 w-auto saturate-0 transition-all group-hover:saturate-100"
+                    className="h-6 w-auto saturate-0 transition-all group-hover:sate-100"
                   />
                 </a>}
               </div>
