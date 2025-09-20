@@ -124,7 +124,8 @@ const HeroSection = () => {
                         gradientUnits="userSpaceOnUse"
                       >
                         {' '}
-                        <stop stopColor="#575757"></stop> <stop offset="1" stopColor="#151515"></stop>{' '}
+                        <stop stopColor="#575757"></stop>{' '}
+                        <stop offset="1" stopColor="#151515"></stop>{' '}
                       </linearGradient>{' '}
                       <linearGradient
                         id="1752500502767-6164915_book-open_existing_1_gwnxwxu1a"
@@ -196,7 +197,7 @@ const HeroSection = () => {
                 Built with open-source technologies
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
-                <TooltipProvider>
+                <TooltipProvider delayDuration={0}>
                   {iconData.map(
                     (icon, index) =>
                       icon?.imageUrl && (
