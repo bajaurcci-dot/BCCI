@@ -28,7 +28,7 @@ const HeroSection = () => {
           />
         </div>
       }
-      <div className="relative z-10 container">
+      <div className="relative z-10 container flex items-center justify-center">
         <div className="mx-auto flex max-w-5xl flex-col items-center">
           <div className="flex flex-col items-center gap-6 text-center">
             {heroLogo &&
