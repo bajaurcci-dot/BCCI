@@ -6,6 +6,12 @@
       "description": "Company Logo",
       "imageUrl": "https://i.postimg.cc/nzkrPmW3/Untitled-design-13.png",
       "imageHint": "abstract logo"
+    },
+    {
+      "id": "hero-bg",
+      "description": "Abstract grid background",
+      "imageUrl": "https://picsum.photos/seed/hero-bg/1200/800",
+      "imageHint": "abstract grid"
     }
   ]
 }
