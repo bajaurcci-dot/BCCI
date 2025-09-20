@@ -43,10 +43,10 @@ const HeroSection = () => {
             </div>
             }
             <div>
-              <h1 className="mb-6 text-3xl font-bold tracking-tight text-pretty sm:text-4xl md:text-5xl lg:text-6xl">
+              <h1 className="mb-6 text-3xl font-bold tracking-tight text-pretty sm:text-4xl md:text-5xl lg:text-6xl font-headline">
                 <span className="animate-color-change">Bajaur</span> Chamber Of Commerce & Industry
               </h1>
-              <p className="mx-auto max-w-3xl text-muted-foreground text-lg sm:text-xl md:text-2xl font-serif">
+              <p className="mx-auto max-w-3xl text-muted-foreground text-lg sm:text-xl md:text-2xl">
                 The Bajaur Chamber of Commerce & Industry (BCCI) supports economic growth in
 Bajaur District by advocating for local businesses, enhancing trade, and fostering a
 thriving business environment.
