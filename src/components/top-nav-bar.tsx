@@ -3,17 +3,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  Menu,
-  X,
-  Info,
-  Briefcase,
-  Award,
-  FileCheck,
-  Download,
-  Image as ImageIcon,
-  Mail,
-} from 'lucide-react';
+import { Menu } from 'lucide-react';
+import { Info } from 'lucide-react';
+import { Briefcase } from 'lucide-react';
+import { Award } from 'lucide-react';
+import { FileCheck } from 'lucide-react';
+import { Download } from 'lucide-react';
+import { Image as ImageIcon } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { Button } from './ui/button';
 import {
   Sheet,

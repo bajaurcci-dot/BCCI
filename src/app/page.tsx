@@ -1,4 +1,8 @@
-import TopNavBar from '@/components/top-nav-bar';
+'use client';
+
+import dynamic from 'next/dynamic';
+
+const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
 
 export default function Home() {
   return (
