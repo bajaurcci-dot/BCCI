@@ -59,27 +59,38 @@ const TeamSection = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {teamMembers.map((member) => {
+            const memberImage = PlaceHolderImages.find(img => img.id === member.id);
             return (
               <div
                 key={member.id}
                 className="bg-card rounded-2xl shadow-lg overflow-hidden w-full max-w-sm mx-auto transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
               >
                 <div className="relative">
-                  <div className="h-28 bg-gray-800 rounded-t-2xl flex items-center justify-center p-4">
-                    <h3 className="text-white text-center font-bold text-lg">
-                      Bajaur Chamber Of <br /> Commerce & Industry
-                    </h3>
-                  </div>
-                  <div className="absolute top-16 left-1/2 -translate-x-1/2">
+                  <div className="h-28 bg-gray-800 rounded-t-2xl flex items-center justify-start p-4 gap-4">
                     {bcciLogo && (
-                      <div className="bg-gray-800 rounded-full p-2 border-4 border-card">
                         <Image
                           src={bcciLogo.imageUrl}
                           alt={bcciLogo.description}
+                          width={60}
+                          height={60}
+                          className="rounded-full"
+                          data-ai-hint={bcciLogo.imageHint}
+                        />
+                    )}
+                    <h3 className="text-white text-left font-bold text-lg">
+                      Bajaur Chamber Of <br /> Commerce & Industry
+                    </h3>
+                  </div>
+                  <div className="absolute top-16 left-6">
+                    {memberImage && (
+                      <div className="bg-gray-800 rounded-full p-2 border-4 border-card">
+                        <Image
+                          src={memberImage.imageUrl}
+                          alt={memberImage.description}
                           width={80}
                           height={80}
                           className="rounded-full"
-                          data-ai-hint={bcciLogo.imageHint}
+                          data-ai-hint={memberImage.imageHint}
                         />
                       </div>
                     )}
@@ -89,7 +100,7 @@ const TeamSection = () => {
                 <div className="pt-16 px-6 pb-6 text-center">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-xl font-bold text-foreground">{member.name}</h4>
+                      <h4 className="text-xl font-bold text-foreground text-left">{member.name}</h4>
                       <p className="text-sm text-muted-foreground flex items-center">
                         @{member.handle}
                       </p>
