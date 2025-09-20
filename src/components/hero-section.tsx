@@ -68,10 +68,10 @@ const HeroSection = () => {
             )}
             <div>
               <h1 className="mb-6 text-3xl font-bold tracking-tight text-pretty sm:text-4xl md:text-5xl lg:text-6xl font-headline">
-                <span className="animate-color-change">Bajaur</span> Chamber Of Commerce & Industry
+                <span className="animate-color-change">Bajaur</span> Chamber Of Commerce &amp; Industry
               </h1>
               <p className="mx-auto max-w-3xl text-muted-foreground text-lg sm:text-xl md:text-2xl font-body">
-                The Bajaur Chamber of Commerce & Industry (BCCI) supports economic growth in
+                The Bajaur Chamber of Commerce &amp; Industry (BCCI) supports economic growth in
                 Bajaur District by advocating for local businesses, enhancing trade, and fostering a
                 thriving business environment.
               </p>
@@ -121,7 +121,7 @@ const HeroSection = () => {
                         gradientUnits="userSpaceOnUse"
                       >
                         {' '}
-                        <stop stop-color="#575757"></stop> <stop offset="1" stop-color="#151515"></stop>{' '}
+                        <stop stopColor="#575757"></stop> <stop offset="1" stopColor="#151515"></stop>{' '}
                       </linearGradient>{' '}
                       <linearGradient
                         id="1752500502767-6164915_book-open_existing_1_gwnxwxu1a"
@@ -132,8 +132,8 @@ const HeroSection = () => {
                         gradientUnits="userSpaceOnUse"
                       >
                         {' '}
-                        <stop stop-color="#E3E3E5" stop-opacity=".6"></stop>{' '}
-                        <stop offset="1" stop-color="#BBBBC0" stop-opacity=".6"></stop>{' '}
+                        <stop stopColor="#E3E3E5" stopOpacity=".6"></stop>{' '}
+                        <stop offset="1" stopColor="#BBBBC0" stopOpacity=".6"></stop>{' '}
                       </linearGradient>{' '}
                       <linearGradient
                         id="1752500502767-6164915_book-open_existing_2_8znynyepl"
@@ -144,8 +144,8 @@ const HeroSection = () => {
                         gradientUnits="userSpaceOnUse"
                       >
                         {' '}
-                        <stop stop-color="#fff"></stop>{' '}
-                        <stop offset="1" stop-color="#fff" stop-opacity="0"></stop>{' '}
+                        <stop stopColor="#fff"></stop>{' '}
+                        <stop offset="1" stopColor="#fff" stopOpacity="0"></stop>{' '}
                       </linearGradient>{' '}
                       <filter
                         id="1752500502767-6164915_book-open_filter_dric4oey8"
@@ -232,3 +232,5 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
+    
