@@ -26,28 +26,28 @@
       "imageHint": "emblem logo"
     },
     {
-      "id": "shadcn-logo",
-      "description": "shadcn/ui logo",
-      "imageUrl": "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcn-ui-icon.svg",
-      "imageHint": "shadcn logo"
+      "id": "new-icon-1",
+      "description": "Letter Icon",
+      "imageUrl": "https://i.postimg.cc/rF52JTtp/letter.png",
+      "imageHint": "letter icon"
     },
     {
-      "id": "ts-logo",
-      "description": "TypeScript logo",
-      "imageUrl": "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/typescript-icon.svg",
-      "imageHint": "typescript logo"
+      "id": "new-icon-2",
+      "description": "Passport Icon",
+      "imageUrl": "https://i.postimg.cc/k5grqtYV/passport-2.png",
+      "imageHint": "passport icon"
     },
     {
-      "id": "react-logo",
-      "description": "React logo",
-      "imageUrl": "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/react-icon.svg",
-      "imageHint": "react logo"
+      "id": "new-icon-3",
+      "description": "Performance Review Icon",
+      "imageUrl": "https://i.postimg.cc/L8TdcVDK/performance-review.png",
+      "imageHint": "review icon"
     },
     {
-      "id": "tailwind-logo",
-      "description": "Tailwind CSS logo",
-      "imageUrl": "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/tailwind-icon.svg",
-      "imageHint": "tailwind logo"
+      "id": "new-icon-4",
+      "description": "Stamp Icon",
+      "imageUrl": "https://i.postimg.cc/7ZD8tRgn/stamp.png",
+      "imageHint": "stamp icon"
     }
   ]
 }

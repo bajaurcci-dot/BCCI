@@ -9,10 +9,10 @@ import { cn } from '@/lib/utils';
 const HeroSection = () => {
   const heroBg = PlaceHolderImages.find((img) => img.id === 'hero-bg-alt');
   const heroLogo = PlaceHolderImages.find((img) => img.id === 'hero-block-logo');
-  const shadcnLogo = PlaceHolderImages.find((img) => img.id === 'shadcn-logo');
-  const tsLogo = PlaceHolderImages.find((img) => img.id === 'ts-logo');
-  const reactLogo = PlaceHolderImages.find((img) => img.id === 'react-logo');
-  const tailwindLogo = PlaceHolderImages.find((img) => img.id === 'tailwind-logo');
+  const newIcon1 = PlaceHolderImages.find((img) => img.id === 'new-icon-1');
+  const newIcon2 = PlaceHolderImages.find((img) => img.id === 'new-icon-2');
+  const newIcon3 = PlaceHolderImages.find((img) => img.id === 'new-icon-3');
+  const newIcon4 = PlaceHolderImages.find((img) => img.id === 'new-icon-4');
 
 
   return (
@@ -66,7 +66,7 @@ thriving business environment.
                 Built with open-source technologies
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
-                {shadcnLogo && <a
+                {newIcon1 && <a
                   href="#"
                   className={cn(
                     buttonVariants({ variant: "outline" }),
@@ -74,14 +74,14 @@ thriving business environment.
                   )}
                 >
                   <Image
-                    src={shadcnLogo.imageUrl}
-                    alt={shadcnLogo.description}
+                    src={newIcon1.imageUrl}
+                    alt={newIcon1.description}
                     width={24}
                     height={24}
                     className="h-6 w-auto saturate-0 transition-all group-hover:saturate-100"
                   />
                 </a>}
-                {tsLogo && <a
+                {newIcon2 && <a
                   href="#"
                   className={cn(
                     buttonVariants({ variant: "outline" }),
@@ -89,14 +89,14 @@ thriving business environment.
                   )}
                 >
                   <Image
-                    src={tsLogo.imageUrl}
-                    alt={tsLogo.description}
+                    src={newIcon2.imageUrl}
+                    alt={newIcon2.description}
                     width={24}
                     height={24}
                     className="h-6 w-auto saturate-0 transition-all group-hover:saturate-100"
                   />
                 </a>}
-                {reactLogo && <a
+                {newIcon3 && <a
                   href="#"
                   className={cn(
                     buttonVariants({ variant: "outline" }),
@@ -104,14 +104,14 @@ thriving business environment.
                   )}
                 >
                   <Image
-                    src={reactLogo.imageUrl}
-                    alt={reactLogo.description}
+                    src={newIcon3.imageUrl}
+                    alt={newIcon3.description}
                     width={24}
                     height={24}
                     className="h-6 w-auto saturate-0 transition-all group-hover:saturate-100"
                   />
                 </a>}
-                {tailwindLogo && <a
+                {newIcon4 && <a
                   href="#"
                   className={cn(
                     buttonVariants({ variant: "outline" }),
@@ -119,8 +119,8 @@ thriving business environment.
                   )}
                 >
                   <Image
-                    src={tailwindLogo.imageUrl}
-                    alt={tailwindLogo.description}
+                    src={newIcon4.imageUrl}
+                    alt={newIcon4.description}
                     width={24}
                     height={24}
                     className="h-6 w-auto saturate-0 transition-all group-hover:sate-100"
