@@ -46,7 +46,7 @@ const HeroSection = () => {
               <h1 className="mb-6 text-3xl font-bold tracking-tight text-pretty sm:text-4xl md:text-5xl lg:text-6xl font-headline">
                 <span className="animate-color-change">Bajaur</span> Chamber Of Commerce & Industry
               </h1>
-              <p className="mx-auto max-w-3xl text-muted-foreground text-lg sm:text-xl md:text-2xl">
+              <p className="mx-auto max-w-3xl text-muted-foreground text-lg sm:text-xl md:text-2xl font-body">
                 The Bajaur Chamber of Commerce & Industry (BCCI) supports economic growth in
 Bajaur District by advocating for local businesses, enhancing trade, and fostering a
 thriving business environment.
@@ -70,60 +70,60 @@ thriving business environment.
                   href="#"
                   className={cn(
                     buttonVariants({ variant: "outline" }),
-                    "group flex aspect-square h-12 items-center justify-center p-0",
+                    "group flex aspect-square h-16 w-16 items-center justify-center p-0",
                   )}
                 >
                   <Image
                     src={newIcon1.imageUrl}
                     alt={newIcon1.description}
-                    width={24}
-                    height={24}
-                    className="h-6 w-auto saturate-0 transition-all group-hover:saturate-100"
+                    width={32}
+                    height={32}
+                    className="h-8 w-auto saturate-0 transition-all group-hover:saturate-100"
                   />
                 </a>}
                 {newIcon2 && <a
                   href="#"
                   className={cn(
                     buttonVariants({ variant: "outline" }),
-                    "group flex aspect-square h-12 items-center justify-center p-0",
+                    "group flex aspect-square h-16 w-16 items-center justify-center p-0",
                   )}
                 >
                   <Image
                     src={newIcon2.imageUrl}
                     alt={newIcon2.description}
-                    width={24}
-                    height={24}
-                    className="h-6 w-auto saturate-0 transition-all group-hover:saturate-100"
+                    width={32}
+                    height={32}
+                    className="h-8 w-auto saturate-0 transition-all group-hover:saturate-100"
                   />
                 </a>}
                 {newIcon3 && <a
                   href="#"
                   className={cn(
                     buttonVariants({ variant: "outline" }),
-                    "group flex aspect-square h-12 items-center justify-center p-0",
+                    "group flex aspect-square h-16 w-16 items-center justify-center p-0",
                   )}
                 >
                   <Image
                     src={newIcon3.imageUrl}
                     alt={newIcon3.description}
-                    width={24}
-                    height={24}
-                    className="h-6 w-auto saturate-0 transition-all group-hover:saturate-100"
+                    width={32}
+                    height={32}
+                    className="h-8 w-auto saturate-0 transition-all group-hover:saturate-100"
                   />
                 </a>}
                 {newIcon4 && <a
                   href="#"
                   className={cn(
                     buttonVariants({ variant: "outline" }),
-                    "group flex aspect-square h-12 items-center justify-center p-0",
+                    "group flex aspect-square h-16 w-16 items-center justify-center p-0",
                   )}
                 >
                   <Image
                     src={newIcon4.imageUrl}
                     alt={newIcon4.description}
-                    width={24}
-                    height={24}
-                    className="h-6 w-auto saturate-0 transition-all group-hover:sate-100"
+                    width={32}
+                    height={32}
+                    className="h-8 w-auto saturate-0 transition-all group-hover:sate-100"
                   />
                 </a>}
               </div>
