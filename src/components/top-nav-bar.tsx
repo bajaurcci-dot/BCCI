@@ -43,7 +43,6 @@ export default function TopNavBar() {
                   height={48}
                   priority
                   data-ai-hint={logoImage.imageHint}
-                  className="rounded-full"
                 />
               </Link>
             )}
