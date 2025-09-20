@@ -39,8 +39,8 @@ export default function TopNavBar() {
                 <Image
                   src={logoImage.imageUrl}
                   alt={logoImage.description}
-                  width={48}
-                  height={48}
+                  width={96}
+                  height={96}
                   priority
                   data-ai-hint={logoImage.imageHint}
                 />
@@ -75,10 +75,9 @@ export default function TopNavBar() {
                         <Image
                           src={logoImage.imageUrl}
                           alt={logoImage.description}
-                          width={48}
-                          height={48}
+                          width={96}
+                          height={96}
                           data-ai-hint={logoImage.imageHint}
-                          className="rounded-full"
                         />
                       </Link>
                     )}
