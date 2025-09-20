@@ -53,7 +53,7 @@ export default function TopNavBar() {
               <SheetTrigger asChild>
                 <Button
                   size="icon"
-                  className="relative overflow-hidden bg-gradient-to-r from-green-400 to-green-600 text-white transition-all duration-500 ease-in-out hover:scale-105 hover:shadow-lg group"
+                  className="relative overflow-hidden transition-all duration-500 ease-in-out hover:scale-105 hover:shadow-lg group"
                 >
                   <Menu className="h-8 w-8" />
                   <span className="sr-only">Open Menu</span>
@@ -61,9 +61,9 @@ export default function TopNavBar() {
               </SheetTrigger>
               <SheetContent
                 side="left"
-                className="flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-white border-r-0"
+                className="flex flex-col bg-background text-foreground border-r-0"
               >
-                <SheetHeader className="border-b border-gray-700 pb-4">
+                <SheetHeader className="border-b border-border pb-4">
                   <SheetTitle className="sr-only">Menu</SheetTitle>
                   <div className="flex justify-start">
                     {logoImage && (
@@ -95,8 +95,8 @@ export default function TopNavBar() {
                           href={item.href}
                           className={`flex items-center gap-4 rounded-md p-3 text-lg font-medium transition-colors ${
                             activeItem === item.label
-                              ? 'bg-green-600/20 text-green-300'
-                              : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
+                              ? 'bg-primary/10 text-primary'
+                              : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                           }`}
                           onClick={() => {
                             setActiveItem(item.label);
@@ -110,8 +110,8 @@ export default function TopNavBar() {
                     ))}
                   </ul>
                 </nav>
-                <div className="mt-auto border-t border-gray-700 pt-4">
-                  <Button className="w-full relative overflow-hidden bg-gradient-to-r from-green-400 to-green-600 text-white transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-lg group">
+                <div className="mt-auto border-t border-border pt-4">
+                  <Button className="w-full relative overflow-hidden transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-lg group">
                     Get Started
                     <span className="absolute inset-0 bg-white/20 transition-all duration-700 ease-in-out -translate-x-full group-hover:translate-x-0 group-hover:skew-x-[-15deg]"></span>
                   </Button>
@@ -128,8 +128,8 @@ export default function TopNavBar() {
                 onClick={() => setActiveItem(item.label)}
                 className={`text-base font-medium transition-all duration-500 ease-in-out transform hover:scale-110 ${
                   activeItem === item.label
-                    ? 'text-green-600 scale-110'
-                    : 'text-muted-foreground hover:text-green-500'
+                    ? 'text-primary scale-110'
+                    : 'text-muted-foreground hover:text-primary/90'
                 }`}
               >
                 {item.label}
@@ -138,7 +138,7 @@ export default function TopNavBar() {
           </nav>
 
           <div className="hidden md:block">
-            <Button className="relative overflow-hidden bg-gradient-to-r from-green-400 to-green-600 text-white transition-all duration-700 ease-in-out hover:scale-110 hover:shadow-lg group">
+            <Button className="relative overflow-hidden transition-all duration-700 ease-in-out hover:scale-110 hover:shadow-lg group">
               Get Started
               <span className="absolute inset-0 bg-white/20 transition-all duration-700 ease-in-out -translate-x-full group-hover:translate-x-0 group-hover:skew-x-[-15deg]"></span>
             </Button>
