@@ -1,22 +1,34 @@
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Facebook, Twitter, Instagram } from 'lucide-react';
+import { Mail, Twitter } from 'lucide-react';
 
 const teamMembers = [
   {
     id: 'team-member-1',
-    name: 'Melissa Tatcher',
-    role: 'PRESIDENT',
+    name: 'Haji Lali Shah',
+    title: 'Meet The Founder',
+    role: 'Founder & Group Leader',
+    bio: 'Founder and Group Leader of BCCI, drives economic growth and supports businesses in Bajaur District.',
+    twitterHandle: '@HajiLaliShah',
+    email: 'founder@bajaurchamber.org.pk',
   },
   {
     id: 'team-member-2',
-    name: 'Stuard Ferrel',
-    role: 'VICE PRESIDENT',
+    name: 'Khan Muhammad',
+    title: 'Meet The President',
+    role: 'President',
+    bio: 'Leads the chamber with a focus on strategic partnerships and advocating for local business interests.',
+    twitterHandle: '@KhanMuhammad',
+    email: 'president@bajaurchamber.org.pk',
   },
   {
     id: 'team-member-3',
-    name: 'Eva Hudson',
-    role: 'GENERAL SECRETARY',
+    name: 'Fatima Ahmed',
+    title: 'Meet The Vice President',
+    role: 'Vice President',
+    bio: 'Supports the president and manages internal operations to ensure the chamber runs efficiently.',
+    twitterHandle: '@FatimaAhmed',
+    email: 'vp@bajaurchamber.org.pk',
   },
 ];
 
@@ -34,52 +46,56 @@ const TeamSection = () => {
             and strategy.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-12">
           {teamMembers.map((member) => {
             const memberImage = PlaceHolderImages.find((img) => img.id === member.id);
             return (
               <div
                 key={member.id}
-                className="group relative overflow-hidden rounded-xl bg-card shadow-lg text-center transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2"
+                className="bg-card rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row"
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative">
-                  {memberImage && (
-                    <Image
-                      src={memberImage.imageUrl}
-                      alt={member.name}
-                      width={400}
-                      height={400}
-                      className="w-full h-auto object-cover aspect-square"
-                      data-ai-hint={memberImage.imageHint}
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="md:w-1/3 bg-primary/10 p-6 flex flex-col items-center justify-center text-center">
+                  <div className="relative">
+                    {memberImage && (
+                      <div className="w-48 h-48 rounded-lg border-4 border-primary p-1">
+                        <Image
+                          src={memberImage.imageUrl}
+                          alt={member.name}
+                          width={192}
+                          height={192}
+                          className="w-full h-full object-cover rounded-md"
+                          data-ai-hint={memberImage.imageHint}
+                        />
+                      </div>
+                    )}
+                    <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-green-700/90 backdrop-blur-sm text-white px-4 py-1 rounded-full text-sm font-semibold border-2 border-white/50">
+                      {member.name}
+                    </div>
+                  </div>
+                  <div className="mt-8">
+                    <h3 className="text-2xl font-bold font-headline text-primary">{member.role}</h3>
+                    <div className="flex items-center justify-center gap-2 mt-2 text-muted-foreground">
+                      <Twitter size={16} />
+                      <span>{member.twitterHandle}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white z-10">
-                  <h3 className="text-2xl font-bold font-headline">{member.name}</h3>
-                  <p className="text-sm uppercase tracking-widest text-primary-foreground/80 mb-4">
-                    {member.role}
-                  </p>
-                  <div className="flex justify-center space-x-4 text-primary-foreground/70">
-                    <a
-                      href="#"
-                      className="hover:text-primary-foreground transition-colors transform hover:scale-125"
-                    >
-                      <Facebook size={20} />
-                    </a>
-                    <a
-                      href="#"
-                      className="hover:text-primary-foreground transition-colors transform hover:scale-125"
-                    >
-                      <Twitter size={20} />
-                    </a>
-                    <a
-                      href="#"
-                      className="hover:text-primary-foreground transition-colors transform hover:scale-125"
-                    >
-                      <Instagram size={20} />
-                    </a>
+
+                <div className="md:w-2/3 p-8 flex flex-col justify-center">
+                  <h3 className="text-3xl font-bold font-headline text-primary">
+                    {member.title} {member.name}
+                  </h3>
+                  <p className="mt-4 text-muted-foreground text-base">{member.bio}</p>
+                  <div className="mt-6 flex flex-col gap-4">
+                    <div className="inline-flex items-center gap-2 bg-primary/10 text-primary font-bold px-4 py-2 rounded-full self-start">
+                      Bajaur Chamber
+                    </div>
+                    <div className="flex items-center gap-3 text-muted-foreground">
+                      <Mail size={18} className="text-primary" />
+                      <a href={`mailto:${member.email}`} className="hover:text-primary">
+                        {member.email}
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
