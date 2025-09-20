@@ -38,9 +38,9 @@ export default function TopNavBar() {
               <Link href="#">
                 <Image
                   src={logoImage.imageUrl}
-                  alt={logoImage.description}
-                  width={96}
-                  height={96}
+                  alt={logo.description}
+                  width={144}
+                  height={144}
                   priority
                   data-ai-hint={logoImage.imageHint}
                 />
@@ -75,8 +75,8 @@ export default function TopNavBar() {
                         <Image
                           src={logoImage.imageUrl}
                           alt={logoImage.description}
-                          width={96}
-                          height={96}
+                          width={144}
+                          height={144}
                           data-ai-hint={logoImage.imageHint}
                         />
                       </Link>
