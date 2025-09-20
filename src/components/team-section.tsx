@@ -23,7 +23,7 @@ const teamMembers = [
     handle: 'afzalkhan',
     title: 'President',
     role: 'President',
-    bio: 'Afzal Khan, President of BCCI (2022/25), leads economic growth and business support in Bajaur District.',
+    bio: 'Afzal Khan, President of BCCI (2022/25), leads economic growth and business in Bajaur District.',
     email: 'president@bajaurchamber.org.pk',
     website: 'www.bajaurchamber.org.pk',
     location: 'Bajaur District KPK, Pakistan',
