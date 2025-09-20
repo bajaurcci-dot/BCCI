@@ -45,13 +45,12 @@ const HeroSection = () => {
             }
             <div>
               <h1 className="mb-6 text-2xl font-bold tracking-tight text-pretty lg:text-5xl">
-                Build your next project with{" "}
-                <span className="text-primary">Blocks</span>
+                Bajaur Chamber Of Commerce & Industry
               </h1>
               <p className="mx-auto max-w-3xl text-muted-foreground lg:text-xl">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Elig
-                doloremque mollitia fugiat omnis! Porro facilis quo animi
-                consequatur. Explicabo.
+                The Bajaur Chamber of Commerce & Industry (BCCI) supports economic growth in
+Bajaur District by advocating for local businesses, enhancing trade, and fostering a
+thriving business environment.
               </p>
             </div>
             <div className="mt-6 flex justify-center gap-3">
