@@ -71,10 +71,17 @@ export default {
             height: '0',
           },
         },
+        'color-change': {
+          '0%, 100%': { color: '#004700' },
+          '33%': { color: '#008000' },
+          '66%': { color: '#00A300' },
+          '88%': { color: '#00D100'},
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'color-change': 'color-change 4s ease-in-out infinite',
       },
     },
   },
