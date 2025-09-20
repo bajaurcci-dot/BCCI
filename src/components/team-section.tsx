@@ -60,49 +60,46 @@ const TeamSection = () => {
             return (
               <div
                 key={member.id}
-                className="bg-card rounded-2xl shadow-lg overflow-visible w-full max-w-sm mx-auto transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
+                className="bg-card rounded-2xl shadow-lg overflow-hidden w-full max-w-sm mx-auto transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
               >
-                <div className="relative">
-                  <div className="bg-gray-800 text-white text-center p-8 rounded-t-2xl h-36 flex items-center justify-center">
-                    <h3 className="text-xl font-bold font-headline">Bajaur Chamber Of<br/>Commerce & Industry</h3>
-                  </div>
-                  <div className="absolute top-20 left-1/2 -translate-x-1/2 w-32 h-32">
+                <div className="flex items-center p-6">
+                  <div className="flex-shrink-0">
                     {memberImage && (
                       <Image
                         src={memberImage.imageUrl}
                         alt={member.name}
-                        width={128}
-                        height={128}
-                        className="w-full h-full object-cover rounded-full border-4 border-card bg-card"
+                        width={96}
+                        height={96}
+                        className="w-24 h-24 object-cover rounded-full border-4 border-primary"
                         data-ai-hint={memberImage.imageHint}
                       />
                     )}
                   </div>
+                  <div className="ml-6 flex-1">
+                    <h4 className="text-xl font-bold text-foreground">{member.name}</h4>
+                    <p className="text-sm text-muted-foreground flex items-center">
+                      <AtSign className="h-3 w-3 mr-1" />
+                      {member.handle}
+                    </p>
+                    <span className="mt-2 inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full">{member.title}</span>
+                  </div>
                 </div>
                 
-                <div className="pt-20 p-6">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <h4 className="text-2xl font-bold text-foreground">{member.name}</h4>
-                      <p className="text-muted-foreground">{member.handle}</p>
-                    </div>
-                    <span className="bg-blue-500 text-white text-xs font-semibold px-3 py-1 rounded-full">{member.title}</span>
-                  </div>
+                <div className="px-6 pb-6">
+                  <p className="text-muted-foreground text-sm mb-4">{member.bio}</p>
 
-                  <p className="text-muted-foreground text-sm my-4">{member.bio}</p>
-
-                  <div className="space-y-3 text-sm">
+                  <div className="space-y-3 text-sm border-t border-border pt-4">
                     <a href={`mailto:${member.email}`} className="flex items-center text-muted-foreground hover:text-primary transition-colors">
-                      <Mail className="mr-3 h-4 w-4" />
-                      <span>{member.email}</span>
+                      <Mail className="mr-3 h-4 w-4 flex-shrink-0" />
+                      <span className="truncate">{member.email}</span>
                     </a>
                     <a href={`https://${member.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center text-muted-foreground hover:text-primary transition-colors">
-                      <LinkIcon className="mr-3 h-4 w-4" />
-                      <span>{member.website}</span>
+                      <LinkIcon className="mr-3 h-4 w-4 flex-shrink-0" />
+                      <span className="truncate">{member.website}</span>
                     </a>
                     <div className="flex items-center text-muted-foreground">
-                      <MapPin className="mr-3 h-4 w-4" />
-                      <span>{member.location}</span>
+                      <MapPin className="mr-3 h-4 w-4 flex-shrink-0" />
+                      <span className="truncate">{member.location}</span>
                     </div>
                   </div>
                 </div>
