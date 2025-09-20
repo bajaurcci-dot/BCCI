@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Mail, Twitter } from 'lucide-react';
 
 const teamMembers = [
   {
@@ -11,8 +10,6 @@ const teamMembers = [
     title: 'Meet The Founder',
     role: 'Founder & Group Leader',
     bio: 'Founder and Group Leader of BCCI, drives economic growth and supports businesses in Bajaur District.',
-    twitterHandle: '@HajiLaliShah',
-    email: 'founder@bajaurchamber.org.pk',
   },
   {
     id: 'team-member-2',
@@ -20,8 +17,6 @@ const teamMembers = [
     title: 'Meet The President',
     role: 'President',
     bio: 'Leads the chamber with a focus on strategic partnerships and advocating for local business interests.',
-    twitterHandle: '@KhanMuhammad',
-    email: 'president@bajaurchamber.org.pk',
   },
   {
     id: 'team-member-3',
@@ -29,8 +24,6 @@ const teamMembers = [
     title: 'Meet The Vice President',
     role: 'Vice President',
     bio: 'Supports the president and manages internal operations to ensure the chamber runs efficiently.',
-    twitterHandle: '@FatimaAhmed',
-    email: 'vp@bajaurchamber.org.pk',
   },
 ];
 
@@ -54,41 +47,29 @@ const TeamSection = () => {
             return (
               <div
                 key={member.id}
-                className="bg-card rounded-xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+                className="group relative bg-card rounded-xl shadow-lg overflow-hidden flex flex-col text-center transition-all duration-500 ease-in-out hover:shadow-2xl hover:-translate-y-2 hover:bg-primary"
               >
-                <div className="bg-primary/10 p-6 flex flex-col items-center justify-center text-center">
-                  <div className="relative">
+                <div className="p-8">
+                  <div className="relative w-32 h-32 mx-auto">
                     {memberImage && (
-                      <div className="w-32 h-32 rounded-full border-4 border-primary p-1">
-                        <Image
-                          src={memberImage.imageUrl}
-                          alt={member.name}
-                          width={128}
-                          height={128}
-                          className="w-full h-full object-cover rounded-full"
-                          data-ai-hint={memberImage.imageHint}
-                        />
-                      </div>
+                      <Image
+                        src={memberImage.imageUrl}
+                        alt={member.name}
+                        width={128}
+                        height={128}
+                        className="w-full h-full object-cover rounded-full border-4 border-primary transition-all duration-500 group-hover:border-white"
+                        data-ai-hint={memberImage.imageHint}
+                      />
                     )}
                   </div>
-                  <div className="mt-4">
-                    <h3 className="text-xl font-bold font-headline text-primary">{member.name}</h3>
-                    <p className="text-sm text-muted-foreground font-medium">{member.role}</p>
+                  <div className="mt-6">
+                    <h3 className="text-2xl font-bold font-headline text-foreground transition-colors duration-500 group-hover:text-white">{member.name}</h3>
+                    <p className="text-sm text-primary font-medium mt-1 transition-colors duration-500 group-hover:text-green-200">{member.role}</p>
                   </div>
                 </div>
 
-                <div className="p-6 flex flex-col justify-center flex-grow">
-                  <p className="mt-2 text-muted-foreground text-sm text-center">{member.bio}</p>
-                  <div className="mt-4 flex flex-col gap-3">
-                     <div className="inline-flex items-center gap-2 bg-primary/10 text-primary font-bold px-3 py-1 rounded-full self-center text-xs">
-                      Bajaur Chamber
-                    </div>
-                    <div className="flex items-center justify-center gap-3 text-muted-foreground">
-                      <a href={`mailto:${member.email}`} className="hover:text-primary transition-colors">
-                        <Mail size={18} />
-                      </a>
-                    </div>
-                  </div>
+                <div className="p-6 bg-card/50 flex flex-col justify-center flex-grow transition-colors duration-500 group-hover:bg-white/10">
+                  <p className="text-muted-foreground text-sm transition-colors duration-500 group-hover:text-gray-200">{member.bio}</p>
                 </div>
               </div>
             );
