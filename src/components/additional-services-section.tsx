@@ -176,6 +176,7 @@ export default function AdditionalServicesSection() {
                           <SelectContent>
                             <SelectItem value="corporate">Corporate</SelectItem>
                             <SelectItem value="associate">Associate</SelectItem>
+                            <SelectItem value="foreign">Foreign Member Class</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
