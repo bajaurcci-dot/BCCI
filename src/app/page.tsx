@@ -6,6 +6,7 @@ import HeroSection from '@/components/hero-section';
 import TeamSection from '@/components/team-section';
 import BentoSection from '@/components/bento-section';
 import Footer from '@/components/footer';
+import FaqSection from '@/components/faq-section';
 
 const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
 
@@ -19,6 +20,7 @@ export default function Home() {
           <HeroSection />
           <TeamSection />
           <BentoSection />
+          <FaqSection />
         </main>
         <Footer />
       </div>
