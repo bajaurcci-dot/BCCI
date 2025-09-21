@@ -37,7 +37,7 @@ const services = [
 
 const ServicesListSection = () => {
   return (
-    <section className="py-20 md:py-32 bg-background">
+    <section className="py-0 md:py-0 bg-background">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {services.map((service, index) => {
