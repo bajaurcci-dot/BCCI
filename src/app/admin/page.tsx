@@ -7,6 +7,7 @@ import RegistrationManagement from '@/components/registration-management';
 import VacancyManagement from '@/components/vacancy-management';
 import PermissionsManagement from '@/components/permissions-management';
 import ActivityLog from '@/components/activity-log';
+import DashboardOverview from '@/components/dashboard-overview';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function AdminPage() {
@@ -16,7 +17,19 @@ export default function AdminPage() {
         <div className="flex items-center justify-between space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
         </div>
-        <Tabs defaultValue="users" className="space-y-4">
+        <Tabs defaultValue="dashboard" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+            <TabsTrigger value="users">User Management</TabsTrigger>
+            <TabsTrigger value="verification">Member Verification</TabsTrigger>
+            <TabsTrigger value="registration">Online Registration</TabsTrigger>
+            <TabsTrigger value="vacancies">Vacancy Management</TabsTrigger>
+            <TabsTrigger value="permissions">Permissions</TabsTrigger>
+            <TabsTrigger value="activity">Activity Log</TabsTrigger>
+          </TabsList>
+          <TabsContent value="dashboard" className="space-y-4">
+            <DashboardOverview />
+          </TabsContent>
           <TabsContent value="users" className="space-y-4">
             <UserManagement />
           </TabsContent>

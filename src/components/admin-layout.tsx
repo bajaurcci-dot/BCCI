@@ -22,12 +22,12 @@ import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '#', icon: Users, label: 'User Management' },
-  { href: '#', icon: ShieldCheck, label: 'Member Verification' },
-  { href: '#', icon: FileText, label: 'Online Registration' },
-  { href: '#', icon: Briefcase, label: 'Vacancy Management' },
-  { href: '#', icon: Settings, label: 'Permissions' },
-  { href: '#', icon: Activity, label: 'Activity Log' },
+  { href: '#users', icon: Users, label: 'User Management' },
+  { href: '#verification', icon: ShieldCheck, label: 'Member Verification' },
+  { href: '#registration', icon: FileText, label: 'Online Registration' },
+  { href: '#vacancies', icon: Briefcase, label: 'Vacancy Management' },
+  { href: '#permissions', icon: Settings, label: 'Permissions' },
+  { href: '#activity', icon: Activity, label: 'Activity Log' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
