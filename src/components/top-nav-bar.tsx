@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, Info, Briefcase, Award, FileCheck, Download, ImageIcon, Mail } from 'lucide-react';
+import { Menu, Info, Briefcase, Award, FileCheck, Download, UserCog, Mail } from 'lucide-react';
 import { Button } from './ui/button';
 import {
   Sheet,
@@ -22,7 +22,7 @@ const menuItems = [
   { label: 'Membership', href: '/membership', icon: Award },
   { label: 'Compliances', href: '/compliances', icon: FileCheck },
   { label: 'Download', href: '#', icon: Download },
-  { label: 'Gallery', href: '#', icon: ImageIcon },
+  { label: 'Admin', href: '/admin', icon: UserCog },
   { label: 'Contact Us', href: '/contact', icon: Mail },
 ];
 
