@@ -37,7 +37,6 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase-client';
-import { applicantsList } from '@/lib/vacancies'; // This will be removed in a later step if we make applicants dynamic
 
 export type Vacancy = {
   id: number;
@@ -46,28 +45,55 @@ export type Vacancy = {
   created_at: string;
 };
 
+type Applicant = {
+  id: number;
+  name: string;
+  email: string;
+  vacancy_id: number;
+};
+
+type ApplicantCounts = {
+  [key: number]: number;
+};
+
 export default function VacancyManagement() {
   const { toast } = useToast();
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [loading, setLoading] = useState(true);
+  const [applicantCounts, setApplicantCounts] = useState<ApplicantCounts>({});
   
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isApplicantsOpen, setIsApplicantsOpen] = useState(false);
   const [selectedVacancy, setSelectedVacancy] = useState<Vacancy | null>(null);
-  const [currentApplicants, setCurrentApplicants] = useState<any[]>([]);
+  const [currentApplicants, setCurrentApplicants] = useState<Applicant[]>([]);
 
   useEffect(() => {
-    const fetchVacancies = async () => {
+    const fetchData = async () => {
       setLoading(true);
-      const { data, error } = await supabase.from('vacancies').select('*').order('created_at', { ascending: false });
-      if (error) {
-        toast({ title: 'Error fetching vacancies', description: error.message, variant: 'destructive' });
+      const vacanciesPromise = supabase.from('vacancies').select('*').order('created_at', { ascending: false });
+      const applicantsPromise = supabase.from('applicants').select('vacancy_id');
+
+      const [vacanciesResult, applicantsResult] = await Promise.all([vacanciesPromise, applicantsPromise]);
+
+      if (vacanciesResult.error) {
+        toast({ title: 'Error fetching vacancies', description: vacanciesResult.error.message, variant: 'destructive' });
       } else {
-        setVacancies(data as Vacancy[]);
+        setVacancies(vacanciesResult.data as Vacancy[]);
       }
+      
+      if (applicantsResult.error) {
+         toast({ title: 'Error fetching applicants', description: applicantsResult.error.message, variant: 'destructive' });
+      } else {
+        const counts: ApplicantCounts = {};
+        for (const applicant of applicantsResult.data) {
+          counts[applicant.vacancy_id] = (counts[applicant.vacancy_id] || 0) + 1;
+        }
+        setApplicantCounts(counts);
+      }
+
       setLoading(false);
     };
-    fetchVacancies();
+    fetchData();
   }, [toast]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -120,10 +146,17 @@ export default function VacancyManagement() {
     }
   };
 
-  const viewApplicants = (vacancy: Vacancy) => {
-    setCurrentApplicants(applicantsList[vacancy.title as keyof typeof applicantsList] || []);
+  const viewApplicants = async (vacancy: Vacancy) => {
     setSelectedVacancy(vacancy);
     setIsApplicantsOpen(true);
+    setCurrentApplicants([]); // Clear previous applicants
+
+    const { data, error } = await supabase.from('applicants').select('*').eq('vacancy_id', vacancy.id);
+    if (error) {
+       toast({ title: 'Error fetching applicants', description: error.message, variant: 'destructive' });
+    } else {
+      setCurrentApplicants(data as Applicant[]);
+    }
   };
 
   return (
@@ -160,7 +193,7 @@ export default function VacancyManagement() {
               ) : vacancies.map((vacancy) => (
                 <TableRow key={vacancy.id}>
                   <TableCell className="font-medium">{vacancy.title}</TableCell>
-                  <TableCell>{(applicantsList[vacancy.title as keyof typeof applicantsList] || []).length}</TableCell>
+                  <TableCell>{applicantCounts[vacancy.id] || 0}</TableCell>
                   <TableCell>
                     <Badge
                       variant={vacancy.status === 'Open' ? 'default' : 'secondary'}
