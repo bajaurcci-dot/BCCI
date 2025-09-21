@@ -28,6 +28,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Calendar } from './ui/calendar';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { Combobox } from './ui/combobox';
 
 const formSchema = z.object({
   fullName: z.string().min(1, 'Full name is required.'),
@@ -41,6 +42,105 @@ const formSchema = z.object({
   membershipCode: z.string().min(1, 'Membership code is required.'),
   membershipExpiry: z.date({ required_error: 'Expiry date is required.' }),
   photo: z.any().optional(),
+});
+
+const businessTypes = [
+    { value: 'accounting', label: 'Accounting' },
+    { value: 'advertising', label: 'Advertising' },
+    { value: 'agriculture', label: 'Agriculture' },
+    { value: 'architecture', label: 'Architecture' },
+    { value: 'automotive', label: 'Automotive' },
+    { value: 'baking', label: 'Baking' },
+    { value: 'banking', label: 'Banking' },
+    { value: 'biotechnology', label: 'Biotechnology' },
+    { value: 'carpentry', label: 'Carpentry' },
+    { value: 'chemicals', label: 'Chemicals' },
+    { value: 'cleaning_services', label: 'Cleaning Services' },
+    { value: 'construction', label: 'Construction' },
+    { value: 'consulting', label: 'Consulting' },
+    { value: 'consumer_goods', label: 'Consumer Goods' },
+    { value: 'cosmetics', label: 'Cosmetics' },
+    { value: 'crafts', label: 'Crafts' },
+    { value: 'design', label: 'Design' },
+    { value: 'e-commerce', label: 'E-commerce' },
+    { value: 'education', label: 'Education' },
+    { value: 'electronics', label: 'Electronics' },
+    { value: 'energy', label: 'Energy' },
+    { value: 'engineering', label: 'Engineering' },
+    { value: 'entertainment', label: 'Entertainment' },
+    { value: 'environmental_services', label: 'Environmental Services' },
+    { value: 'event_planning', label: 'Event Planning' },
+    { value: 'exporter', label: 'Exporter' },
+    { value: 'fashion', label: 'Fashion' },
+    { value: 'finance', label: 'Finance' },
+    { value: 'food_and_beverage', label: 'Food and Beverage' },
+    { value: 'franchise', label: 'Franchise' },
+    { value: 'freelancing', label: 'Freelancing' },
+    { value: 'graphic_design', label: 'Graphic Design' },
+    { value: 'healthcare', label: 'Healthcare' },
+    { value: 'hospitality', label: 'Hospitality' },
+    { value: 'human_resources', label: 'Human Resources' },
+    { value: 'importer', label: 'Importer' },
+    { value: 'information_technology', label: 'Information Technology' },
+    { value: 'insurance', label: 'Insurance' },
+    { value: 'interior_design', label: 'Interior Design' },
+    { value: 'internet_services', label: 'Internet Services' },
+    { value: 'investment', label: 'Investment' },
+    { value: 'it_services', label: 'IT Services' },
+    { value: 'jewelry', label: 'Jewelry' },
+    { value: 'journalism', label: 'Journalism' },
+    { value: 'landscaping', label: 'Landscaping' },
+    { value: 'legal_services', label: 'Legal Services' },
+    { value: 'logistics', label: 'Logistics' },
+    { value: 'manufacturing', label: 'Manufacturing' },
+    { value: 'marketing', label: 'Marketing' },
+    { value: 'media', label: 'Media' },
+    { value: 'medical_devices', label: 'Medical Devices' },
+    { value: 'mining', label: 'Mining' },
+    { value: 'music', label: 'Music' },
+    { value: 'non-profit', label: 'Non-profit' },
+    { value: 'online_retail', label: 'Online Retail' },
+    { value: 'packaging', label: 'Packaging' },
+    { value: 'painting', label: 'Painting' },
+    { value: 'personal_training', label: 'Personal Training' },
+    { value: 'photography', label: 'Photography' },
+    { value: 'plumbing', label: 'Plumbing' },
+    { value: 'printing', label: 'Printing' },
+    { value: 'private_equity', label: 'Private Equity' },
+    { value: 'programming', label: 'Programming' },
+    { value: 'public_relations', label: 'Public Relations' },
+    { value: 'publishing', label: 'Publishing' },
+    { value: 'real_estate', label: 'Real Estate' },
+    { value: 'recruitment', label: 'Recruitment' },
+    { value: 'renewable_energy', label: 'Renewable Energy' },
+    { value: 'research', label: 'Research' },
+    { value: 'restaurant', label: 'Restaurant' },
+    { value: 'retail', label: 'Retail' },
+    { value: 'security', label: 'Security' },
+    { value: 'service_provider', label: 'Service Provider' },
+    { value: 'social_media_management', label: 'Social Media Management' },
+    { value: 'software_development', label: 'Software Development' },
+    { value: 'sports', label: 'Sports' },
+    { value: 'staffing', label: 'Staffing' },
+    { value: 'telecommunications', label: 'Telecommunications' },
+    { value: 'textiles', label: 'Textiles' },
+    { value: 'tourism', label: 'Tourism' },
+    { value: 'trader', label: 'Trader' },
+    { value: 'transportation', label: 'Transportation' },
+    { value: 'travel', label: 'Travel' },
+    { value: 'tutoring', label: 'Tutoring' },
+    { value: 'utilities', label: 'Utilities' },
+    { value: 'venture_capital', label: 'Venture Capital' },
+    { value: 'video_production', label: 'Video Production' },
+    { value: 'web_design', label: 'Web Design' },
+    { value: 'web_development', label: 'Web Development' },
+    { value: 'wellness', label: 'Wellness' },
+    { value: 'writing', label: 'Writing' },
+    { value: 'other', label: 'Other' }
+].sort((a, b) => {
+    if (a.label === 'Other') return 1;
+    if (b.label === 'Other') return -1;
+    return a.label.localeCompare(b.label);
 });
 
 export default function RegistrationManagement() {
@@ -189,22 +289,16 @@ export default function RegistrationManagement() {
                     control={form.control}
                     name="businessType"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="flex flex-col">
                         <FormLabel>Type of Business</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select business type" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="trader">Trader</SelectItem>
-                            <SelectItem value="manufacturer">Manufacturer</SelectItem>
-                             <SelectItem value="service-provider">Service Provider</SelectItem>
-                            <SelectItem value="importer">Importer</SelectItem>
-                            <SelectItem value="exporter">Exporter</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Combobox
+                          options={businessTypes}
+                          value={field.value}
+                          onChange={field.onChange}
+                          placeholder="Select business type..."
+                          searchPlaceholder="Search business type..."
+                          notFoundText="No business type found."
+                        />
                         <FormMessage />
                       </FormItem>
                     )}
@@ -349,3 +443,5 @@ export default function RegistrationManagement() {
     </Card>
   );
 }
+
+    
