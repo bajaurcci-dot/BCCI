@@ -10,32 +10,83 @@ import { Badge } from './ui/badge';
 
 const faqsLeft = [
   {
-    question: 'How do I become a member of the Bajaur Chamber of Commerce & Industry?',
+    question: 'What is the Bajaur Chamber of Commerce & Industry (BCCI)?',
     answer:
-      'To become a member, you need to fill out the membership application form available on our website. The form requires details about your business, including registration documents and proof of address. Once submitted, our team will review your application, and upon approval, you will be notified of the membership fee and next steps.',
+      'BCCI is a registered chamber that supports economic growth, trade, and local businesses in Bajaur District.',
   },
   {
-    question: 'How can the Chamber help me with visa applications?',
+    question: 'Where is the BCCI office located?',
     answer:
-      'The Bajaur Chamber of Commerce & Industry provides visa facilitation services, including issuing visa recommendation letters for our members. These letters can support your visa application for business travel by verifying your affiliation with a registered business in Bajaur. Please contact our office for more information on the required documents.',
+      'The offices are in Khar, District Bajaur and Chamber House, Aiwan-e-Tijarat Road, Karachi, Pakistan.',
   },
   {
-    question: 'What kind of documents can be attested by the Chamber?',
+    question: 'How can I contact BCCI?',
     answer:
-      'We offer attestation services for a variety of business documents, such as certificates of origin, commercial invoices, and other trade-related documents. This service helps authenticate your documents, ensuring they are accepted for official and legal purposes both locally and internationally.',
+      'You can contact via Phone: +92 308 2275587 / +92 21 99218001-09, Email: contact@bajaurcci.com.pk / info@bcci.com.pk, Website: www.bajaurcci.com.pk.',
+  },
+  {
+    question: 'How can I become a member of BCCI?',
+    answer:
+      'By applying online with Full Name, NTN, and Membership Type, or by contacting the chamber directly.',
+  },
+  {
+    question: 'What types of memberships are available?',
+    answer:
+      'Two types: Corporate Class and Associate Class.',
+  },
+  {
+    question: 'How can I verify my membership?',
+    answer:
+      'By entering your Full Name, NTN, and Membership Type on the verification portal or contacting BCCI.',
+  },
+  {
+    question: 'What are the membership charges?',
+    answer:
+      'Corporate: Rs. 8,000/-, Associate: Rs. 6,000/-, Renewals vary from Rs. 3,000/- to Rs. 12,000/-.',
+  },
+  {
+    question: 'Does BCCI provide visa facilitation services?',
+    answer:
+      'Yes, BCCI assists with visa applications through recommendation and invitation letters.',
   },
 ];
 
 const faqsRight = [
   {
-    question: 'What are the benefits of becoming a member?',
+    question: 'What are the charges for visa recommendation letters?',
     answer:
-      'As a member, you gain access to a wide range of benefits, including networking opportunities with other local businesses, invitations to exclusive events and seminars, and access to resources and support for business development. You will also have a voice in our advocacy efforts to promote a favorable business environment in the region.',
+      'Asian Countries: Rs. 8,000/- (Owners/Employees), Western Countries: Rs. 10,000/- (Owners/Employees).',
   },
   {
-    question: 'Where can I find the annual reports?',
+    question: 'Does BCCI issue invitation letters for foreign visitors?',
+    answer: 'Yes. Asian Countries: Rs. 8,000/-, Western Countries: Rs. 8,000/-.',
+  },
+  {
+    question: 'Does BCCI provide attestation services?',
     answer:
-      'Our annual reports are available for download on our website in the "Download" section. These reports provide a comprehensive overview of our activities, financial performance, and contributions to the local economy throughout the year.',
+      'Yes, BCCI certifies and authenticates business documents for legal and official purposes.',
+  },
+  {
+    question: 'What are the charges for document attestation and certification?',
+    answer:
+      'Certificate of Origin: Rs. 250/-, Commercial Documents: Rs. 400/-, Extra Pages: Rs. 50/-, Duplicate Certificate: Rs. 3,000/-.',
+  },
+  {
+    question: 'Does BCCI publish annual reports?',
+    answer:
+      'Yes, annual reports highlight activities, financial performance, and economic contributions.',
+  },
+  {
+    question: 'Where can I download official documents of BCCI?',
+    answer: 'From the Downloads Section on the official website.',
+  },
+  {
+    question: 'How can I get more support or information?',
+    answer: 'By phone, email, WhatsApp, or the official website.',
+  },
+  {
+    question: 'Does BCCI offer WhatsApp support?',
+    answer: 'Yes, members can chat directly on WhatsApp for assistance and updates.',
   },
 ];
 
