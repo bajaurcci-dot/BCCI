@@ -65,7 +65,7 @@ const TeamSection = () => {
                   key={member.id}
                   className="relative bg-card rounded-2xl shadow-lg overflow-hidden w-full transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2"
                 >
-                  <BorderBeam />
+                  <BorderBeam colorFrom="#33d65b" colorTo="#1a9c3b" />
                   <div className="relative">
                     <div className="h-28 bg-gradient-to-r from-primary to-accent rounded-t-2xl flex items-center justify-start p-4 pl-32">
                       <h3 className="text-primary-foreground text-left font-bold text-lg">
