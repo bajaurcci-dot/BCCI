@@ -5,6 +5,7 @@ import AboutSection from '@/components/about-section';
 import Footer from '@/components/footer';
 import BentoSection from '@/components/bento-section';
 import IntroSection from '@/components/intro-section';
+import StorySection from '@/components/story-section';
 
 const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
 
@@ -17,6 +18,7 @@ export default function AboutPage() {
         <main className="flex-grow">
           <IntroSection />
           <AboutSection />
+          <StorySection />
           <BentoSection />
         </main>
         <Footer />
