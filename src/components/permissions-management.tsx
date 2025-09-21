@@ -11,110 +11,89 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase-client';
 import { Loader2 } from 'lucide-react';
 
 type Permission = { id: number; name: string };
-type Role = { id: number; name: string; permissions: string[] };
+type Role = { id: number; name: string; };
+type RolePermission = { role_id: number; permission_id: number };
 
 export default function PermissionsManagement() {
   const { toast } = useToast();
   const [roles, setRoles] = useState<Role[]>([]);
   const [allPermissions, setAllPermissions] = useState<Permission[]>([]);
+  const [rolePermissions, setRolePermissions] = useState<RolePermission[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      
-      // Fetch all permissions
-      const { data: permissionsData, error: permissionsError } = await supabase
-        .from('permissions')
-        .select('id, name');
-
-      if (permissionsError) {
-        toast({ title: 'Error fetching permissions', description: permissionsError.message, variant: 'destructive' });
-        setLoading(false);
-        return;
-      }
-      setAllPermissions(permissionsData || []);
-
-      // Fetch all roles
-      const { data: rolesData, error: rolesError } = await supabase
-        .from('roles')
-        .select('id, name');
-        
-      if (rolesError) {
-        toast({ title: 'Error fetching roles', description: rolesError.message, variant: 'destructive' });
-        setLoading(false);
-        return;
-      }
-
-      // Fetch role_permissions and map them
-      const { data: rolePermissionsData, error: rolePermissionsError } = await supabase
-        .from('role_permissions')
-        .select('role_id, permission_id');
-
-      if (rolePermissionsError) {
-        toast({ title: 'Error fetching role permissions', description: rolePermissionsError.message, variant: 'destructive'});
-        setLoading(false);
-        return;
-      }
-      
-      const mappedRoles = (rolesData || []).map(role => {
-        const rolePermIds = (rolePermissionsData || [])
-          .filter(rp => rp.role_id === role.id)
-          .map(rp => rp.permission_id);
-        
-        const rolePermNames = (permissionsData || [])
-          .filter(p => rolePermIds.includes(p.id))
-          .map(p => p.name);
-
-        return { ...role, permissions: rolePermNames };
-      });
-      
-      setRoles(mappedRoles);
-      setLoading(false);
-    };
-
     fetchData();
-  }, [toast]);
+  }, []);
+  
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const [
+        { data: rolesData, error: rolesError },
+        { data: permissionsData, error: permissionsError },
+        { data: rolePermsData, error: rolePermsError },
+      ] = await Promise.all([
+        supabase.from('roles').select('id, name'),
+        supabase.from('permissions').select('id, name'),
+        supabase.from('role_permissions').select('role_id, permission_id'),
+      ]);
 
-  const handlePermissionChange = (roleName: string, permission: string, checked: boolean | string) => {
-    setRoles(roles.map(r => {
-      if (r.name === roleName) {
-        let newPermissions = [...r.permissions];
-        if (checked) {
-          if (!newPermissions.includes(permission)) {
-            newPermissions.push(permission);
-          }
-        } else {
-          newPermissions = newPermissions.filter(p => p !== permission);
-        }
-        return { ...r, permissions: newPermissions };
+      if (rolesError || permissionsError || rolePermsError) {
+        throw rolesError || permissionsError || rolePermsError;
       }
-      return r;
-    }));
+      
+      setRoles(rolesData || []);
+      setAllPermissions(permissionsData || []);
+      setRolePermissions(rolePermsData || []);
+
+    } catch (error: any) {
+       toast({ title: 'Error fetching permissions data', description: error.message, variant: 'destructive' });
+    } finally {
+       setLoading(false);
+    }
+  }
+
+  const handlePermissionChange = (roleId: number, permissionId: number, checked: boolean | string) => {
+    if (checked) {
+      setRolePermissions([...rolePermissions, { role_id: roleId, permission_id: permissionId }]);
+    } else {
+      setRolePermissions(rolePermissions.filter(rp => !(rp.role_id === roleId && rp.permission_id === permissionId)));
+    }
   };
 
-  const handleSave = (roleName: string) => {
-    // This is a client-side placeholder. A real implementation would require a secure backend/RPC function.
-    // For now, it just shows a success message.
-    console.log(`Saving permissions for ${roleName}:`, roles.find(r => r.name === roleName)?.permissions);
-    toast({
-      title: 'Permissions Saved (Client-Side)',
-      description: `Permissions for the ${roleName} role have been updated in the local state. A backend function is needed to persist this.`,
+  const handleSave = async (roleId: number) => {
+    setLoading(true);
+    const role = roles.find(r => r.id === roleId);
+    if (!role) return;
+
+    const currentPerms = rolePermissions.filter(rp => rp.role_id === roleId);
+    
+    // This RPC function approach is much safer than client-side deletes/inserts.
+    const { error } = await supabase.rpc('update_role_permissions', {
+      role_id_to_update: roleId,
+      new_permission_ids: currentPerms.map(p => p.permission_id)
     });
+    
+    if (error) {
+      toast({ title: `Failed to update ${role.name} role`, description: error.message, variant: 'destructive' });
+    } else {
+      toast({ title: 'Permissions Saved', description: `Permissions for the ${role.name} role have been updated.` });
+    }
+    setLoading(false);
   };
 
-  if (loading) {
+  if (loading && roles.length === 0) {
     return (
       <Card>
         <CardHeader>
           <CardTitle>Roles & Permissions</CardTitle>
-          <p className="text-sm text-muted-foreground">Define roles and assign granular permissions for admin sub-accounts.</p>
+          <CardDescription>Define roles and assign granular permissions for admin sub-accounts.</CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-center p-16">
           <Loader2 className="h-8 w-8 animate-spin" />
@@ -127,7 +106,7 @@ export default function PermissionsManagement() {
     <Card>
       <CardHeader>
         <CardTitle>Roles & Permissions</CardTitle>
-        <p className="text-sm text-muted-foreground">Define roles and assign granular permissions for admin sub-accounts.</p>
+        <CardDescription>Define roles and assign granular permissions for admin sub-accounts.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="rounded-md border">
@@ -135,25 +114,36 @@ export default function PermissionsManagement() {
             <TableHeader>
               <TableRow>
                 <TableHead>Role</TableHead>
-                {allPermissions.map(p => <TableHead key={p.id} className="capitalize text-center">{p.name.replace(/_/g, ' ').replace(/:/g, ' - ')}</TableHead>)}
+                {allPermissions.map(p => (
+                    <TableHead key={p.id} className="capitalize text-center">
+                        {p.name.replace(/_/g, ' ').replace(/:/g, ' - ')}
+                    </TableHead>
+                ))}
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {roles.map((role) => (
-                <TableRow key={role.name}>
+                <TableRow key={role.id}>
                   <TableCell className="font-medium capitalize">{role.name}</TableCell>
                   {allPermissions.map(p => (
                     <TableCell key={p.id} className="text-center">
                       <Checkbox
-                        checked={role.permissions.includes('all') || role.permissions.includes(p.name)}
-                        disabled={(role.permissions.includes('all') && p.name !== 'all') || role.name === 'admin'}
-                        onCheckedChange={(checked) => handlePermissionChange(role.name, p.name, checked)}
+                        checked={rolePermissions.some(rp => rp.role_id === role.id && rp.permission_id === p.id)}
+                        disabled={role.name === 'admin' || loading}
+                        onCheckedChange={(checked) => handlePermissionChange(role.id, p.id, checked)}
                       />
                     </TableCell>
                   ))}
                   <TableCell className="text-right">
-                    <Button variant="outline" size="sm" onClick={() => handleSave(role.name)} disabled={role.name === 'admin'}>Save</Button>
+                    <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => handleSave(role.id)} 
+                        disabled={role.name === 'admin' || loading}
+                    >
+                      {loading ? <Loader2 className="h-4 w-4 animate-spin"/> : 'Save'}
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
