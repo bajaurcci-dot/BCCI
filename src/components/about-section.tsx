@@ -22,7 +22,7 @@ const AboutSection = () => {
 
   return (
     <section className="py-20 md:py-32 bg-background overflow-hidden">
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="container mx-auto px-4 md:px-6 max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-[350px_1fr] items-center gap-x-12">
           <div className="relative w-[350px] h-[450px] rounded-2xl overflow-hidden shadow-2xl">
              {founderImage && (
