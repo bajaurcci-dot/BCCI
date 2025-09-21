@@ -78,7 +78,7 @@ const DownloadSection = () => {
             {downloadItems.map((item, index) => (
               <div
                 key={index}
-                className="relative bg-card rounded-2xl shadow-lg p-6 pt-10 flex flex-col text-left items-start transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1"
+                className="relative bg-card rounded-2xl shadow-lg p-6 pt-12 flex flex-col text-left items-start transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1"
               >
                 <FileTypeIcon type={item.type} />
                 <div className="flex-grow flex flex-col items-start w-full">
