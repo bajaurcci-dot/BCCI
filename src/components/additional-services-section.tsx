@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Phone, Mail, UploadCloud, X } from 'lucide-react';
+import { Phone, Mail, UploadCloud, X, MessageSquare, CheckCircle, BrainCircuit } from 'lucide-react';
 import { useState } from 'react';
 
 const formSchema = z.object({
@@ -81,6 +81,24 @@ const supportContacts = [
     },
 ];
 
+const supportProcedure = [
+  {
+    icon: MessageSquare,
+    step: 'Step 1: Contact Us',
+    description: 'Reach out to our support team through your preferred channel—phone, WhatsApp, or email.'
+  },
+  {
+    icon: BrainCircuit,
+    step: 'Step 2: Describe Your Issue',
+    description: 'Clearly explain your question or concern to our team so we can understand your needs.'
+  },
+  {
+    icon: CheckCircle,
+    step: 'Step 3: Get a Solution',
+    description: 'Our dedicated support staff will work to provide a prompt and effective solution to your query.'
+  }
+]
+
 export default function AdditionalServicesSection() {
   const { toast } = useToast();
   const [fileName, setFileName] = useState<string | null>(null);
@@ -93,6 +111,7 @@ export default function AdditionalServicesSection() {
       email: '',
       phone: '',
       photo: undefined,
+      membershipType: undefined,
     },
   });
   
@@ -248,20 +267,37 @@ export default function AdditionalServicesSection() {
             </div>
 
             <div className="flex flex-col animate-slide-in-right">
-              <h3 className="text-2xl font-bold font-headline mb-6">24/7 Support Services</h3>
-              <p className="text-muted-foreground mb-8">We are here to help you around the clock. Whether you have a question, need assistance, or want to provide feedback, our team is always available. Reach out to us through any of the channels below.</p>
-              <div className="space-y-6">
-                {supportContacts.map((contact) => (
-                    <a key={contact.name} href={contact.href} target="_blank" rel="noopener noreferrer" className="flex items-start gap-4 text-muted-foreground hover:text-primary transition-colors group">
-                        <div className="bg-primary/10 p-3 rounded-full mt-1 group-hover:bg-primary/20 transition-colors">
-                            <contact.icon />
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-foreground">{contact.name}</h4>
-                            <p>{contact.value}</p>
-                        </div>
-                    </a>
-                ))}
+              <div>
+                <h3 className="text-2xl font-bold font-headline mb-6">24/7 Support Services</h3>
+                <p className="text-muted-foreground mb-8">We are here to help you around the clock. Whether you have a question, need assistance, or want to provide feedback, our team is always available. Reach out to us through any of the channels below.</p>
+                <div className="space-y-6">
+                  {supportContacts.map((contact) => (
+                      <a key={contact.name} href={contact.href} target="_blank" rel="noopener noreferrer" className="flex items-start gap-4 text-muted-foreground hover:text-primary transition-colors group">
+                          <div className="bg-primary/10 p-3 rounded-full mt-1 group-hover:bg-primary/20 transition-colors">
+                              <contact.icon />
+                          </div>
+                          <div>
+                              <h4 className="font-bold text-foreground">{contact.name}</h4>
+                              <p>{contact.value}</p>
+                          </div>
+                      </a>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-12">
+                <h3 className="text-2xl font-bold font-headline mb-6">How It Works</h3>
+                <ol className="relative border-l border-border/50">
+                  {supportProcedure.map((item, index) => (
+                    <li key={index} className="mb-10 ml-6">
+                      <span className="absolute flex items-center justify-center w-8 h-8 bg-primary/10 rounded-full -left-4 ring-8 ring-card">
+                        <item.icon className="w-5 h-5 text-primary" />
+                      </span>
+                      <h4 className="flex items-center mb-1 text-lg font-semibold text-foreground">{item.step}</h4>
+                      <p className="block mb-2 text-sm font-normal leading-relaxed text-muted-foreground">{item.description}</p>
+                    </li>
+                  ))}
+                </ol>
               </div>
             </div>
           </div>
