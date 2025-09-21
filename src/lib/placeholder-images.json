@@ -81,9 +81,9 @@
     },
     {
       "id": "about-us-image",
-      "description": "Team working in an office",
-      "imageUrl": "https://i.postimg.cc/XNDbBPb2/Greenand-White-Modern-Happy-Pakistan-Independence-Day-Instagram-Pos.jpg",
-      "imageHint": "office team"
+      "description": "Portrait of Haji Lali Shah",
+      "imageUrl": "https://picsum.photos/seed/1/400/400",
+      "imageHint": "man portrait"
     }
   ]
 }
