@@ -36,17 +36,9 @@ export default function TopNavBar() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const updateVacancyInfo = () => {
-      const open = vacancies.filter((v) => v.status === 'Open');
-      setOpenVacancyCount(open.length);
-      setOpenVacancies(open.map(v => v.title));
-    };
-
-    updateVacancyInfo();
-    // In a real app, this might be triggered by a more sophisticated event system
-    const interval = setInterval(updateVacancyInfo, 2000); 
-
-    return () => clearInterval(interval);
+    const open = vacancies.filter((v) => v.status === 'Open');
+    setOpenVacancyCount(open.length);
+    setOpenVacancies(open.map(v => v.title));
   }, []);
 
   const VacancyPopoverContent = () => (
@@ -64,7 +56,7 @@ export default function TopNavBar() {
                <div key={index} className="grid grid-cols-3 items-center gap-4">
                 <span className="col-span-2 font-medium">{vacancy}</span>
                  <Button asChild variant="secondary" size="sm" className="h-7 bg-primary-foreground text-primary hover:bg-primary-foreground/90">
-                    <Link href="/contact">Apply</Link>
+                    <Link href="/contact">Contact Us</Link>
                   </Button>
               </div>
             ))
