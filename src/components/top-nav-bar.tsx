@@ -21,7 +21,7 @@ const menuItems = [
   { label: 'Compliances', href: '#', icon: FileCheck },
   { label: 'Download', href: '#', icon: Download },
   { label: 'Gallery', href: '#', icon: ImageIcon },
-  { label: 'Contact Us', href: '#', icon: Mail },
+  { label: 'Contact Us', href: '/contact', icon: Mail },
 ];
 
 export default function TopNavBar() {
