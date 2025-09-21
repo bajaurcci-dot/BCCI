@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, Info, Briefcase, Award, FileCheck, Download, UserCog, Mail } from 'lucide-react';
+import { Menu, Info, Briefcase, Award, FileCheck, Download, UserCog, Mail, Bell } from 'lucide-react';
 import { Button } from './ui/button';
 import {
   Sheet,
@@ -111,7 +111,11 @@ export default function TopNavBar() {
                     ))}
                   </ul>
                 </nav>
-                <div className="mt-auto border-t border-border pt-4">
+                <div className="mt-auto border-t border-border pt-4 space-y-2">
+                  <Button variant="outline" className="w-full">
+                    <Bell className="mr-2 h-4 w-4" />
+                    Notifications
+                  </Button>
                   <Button className="w-full relative overflow-hidden transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-lg group">
                     Get Started
                     <span className="absolute inset-0 bg-white/20 transition-all duration-700 ease-in-out -translate-x-full group-hover:translate-x-0 group-hover:skew-x-[-15deg]"></span>
@@ -137,7 +141,11 @@ export default function TopNavBar() {
             ))}
           </nav>
 
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center gap-2">
+             <Button variant="ghost" size="icon">
+                <Bell className="h-6 w-6" />
+                <span className="sr-only">Notifications</span>
+              </Button>
             <Button className="relative overflow-hidden transition-all duration-700 ease-in-out hover:scale-110 hover:shadow-lg group">
               Get Started
               <span className="absolute inset-0 bg-white/20 transition-all duration-700 ease-in-out -translate-x-full group-hover:translate-x-0 group-hover:skew-x-[-15deg]"></span>
