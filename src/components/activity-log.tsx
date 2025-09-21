@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -10,38 +10,55 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Loader2, Search } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { supabase } from '@/lib/supabase-client';
+import { useToast } from '@/hooks/use-toast';
+import { format } from 'date-fns';
 
-const logs = [
-  {
-    admin: 'Admin User',
-    action: 'Approved verification for Tech Innovators Inc.',
-    timestamp: '2023-10-26 10:00 AM',
-  },
-  {
-    admin: 'Admin User',
-    action: 'Added new vacancy: Project Manager',
-    timestamp: '2023-10-26 09:30 AM',
-  },
-  {
-    admin: 'Editor User',
-    action: 'Updated user role for jane.smith@example.com',
-    timestamp: '2023-10-26 09:00 AM',
-  },
-];
+type Log = {
+  id: number;
+  created_at: string;
+  action: string;
+  details: {
+    user_email?: string;
+    description?: string;
+  };
+};
 
 export default function ActivityLog() {
+  const { toast } = useToast();
+  const [logs, setLogs] = useState<Log[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const fetchLogs = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('activity_logs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(100);
+
+      if (error) {
+        toast({ title: 'Error fetching activity logs', description: error.message, variant: 'destructive'});
+      } else {
+        setLogs(data as Log[]);
+      }
+      setLoading(false);
+    };
+    fetchLogs();
+  }, [toast]);
 
   const filteredLogs = useMemo(() => {
     if (!searchTerm) return logs;
     return logs.filter(
       (log) =>
-        log.admin.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (log.details?.user_email && log.details.user_email.toLowerCase().includes(searchTerm.toLowerCase())) ||
         log.action.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [searchTerm]);
+  }, [logs, searchTerm]);
 
   return (
     <Card>
@@ -55,7 +72,7 @@ export default function ActivityLog() {
               <div className="relative flex-grow">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input 
-                    placeholder="Filter logs by admin or action..." 
+                    placeholder="Filter logs by admin email or action..." 
                     className="pl-10"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -73,13 +90,27 @@ export default function ActivityLog() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredLogs.map((log, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-medium">{log.admin}</TableCell>
-                  <TableCell>{log.action}</TableCell>
-                  <TableCell className="text-right">{log.timestamp}</TableCell>
-                </TableRow>
-              ))}
+              {loading ? (
+                 <TableRow>
+                    <TableCell colSpan={3} className="text-center p-16">
+                      <Loader2 className="h-8 w-8 animate-spin mx-auto" />
+                    </TableCell>
+                  </TableRow>
+              ) : filteredLogs.length > 0 ? (
+                filteredLogs.map((log) => (
+                  <TableRow key={log.id}>
+                    <TableCell className="font-medium">{log.details?.user_email || 'System'}</TableCell>
+                    <TableCell>{log.action}</TableCell>
+                    <TableCell className="text-right">{format(new Date(log.created_at), "PPP p")}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                 <TableRow>
+                    <TableCell colSpan={3} className="text-center p-8">
+                      No activity logs found.
+                    </TableCell>
+                  </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>
