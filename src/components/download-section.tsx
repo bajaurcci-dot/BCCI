@@ -74,8 +74,7 @@ const DownloadSection = () => {
   return (
     <section className="pt-8 pb-20 md:pb-32 bg-background">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {downloadItems.map((item, index) => (
               <div
                 key={index}
@@ -89,24 +88,6 @@ const DownloadSection = () => {
                 <GradientButton href={item.href} />
               </div>
             ))}
-          </div>
-
-          <div className="w-full max-w-sm mx-auto">
-            <div className="bg-gray-800 rounded-[2.5rem] p-2 shadow-2xl">
-              <div className="bg-background rounded-[2rem] p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-blue-500 p-2 rounded-full">
-                    <Download className="h-5 w-5 text-white" />
-                  </div>
-                  <h3 className="font-bold text-foreground">DOWNLOAD ZIP FILE</h3>
-                </div>
-                <p className="text-muted-foreground text-sm mb-6">
-                  To get all the files, first download the entire archive in one batch. Once downloaded, extract the archive to access each file individually. This will allow you to view and use each file separately.
-                </p>
-                <GradientButton href="#" />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
