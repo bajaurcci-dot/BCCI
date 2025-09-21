@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Mail, MapPin, Phone, Facebook, Instagram, Search, AtSign, ArrowRight } from 'lucide-react';
+import { Mail, MapPin, Phone, Facebook, Instagram, AtSign } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
@@ -59,22 +59,22 @@ const Footer = () => {
   return (
     <footer className="bg-background">
       <div className="container mx-auto px-4 md:px-6 relative z-10 -mb-20">
-          <div className="bg-blue-600 rounded-2xl p-8 md:p-12 shadow-2xl">
+          <div className="bg-blue-600 rounded-2xl p-8 shadow-2xl">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                   <div className="flex justify-center md:justify-start">
                       {newsletterIllustration && (
                           <Image
                           src={newsletterIllustration.imageUrl}
                           alt={newsletterIllustration.description}
-                          width={250}
-                          height={250}
-                          className="w-48 md:w-64"
+                          width={200}
+                          height={200}
+                          className="w-48"
                           data-ai-hint={newsletterIllustration.imageHint}
                           />
                       )}
                   </div>
                   <div className="text-white text-center md:text-left">
-                      <h2 className="text-3xl md:text-4xl font-bold mb-4">Subscribe to our newsletter for the latest updates and insights.</h2>
+                      <h2 className="text-2xl md:text-3xl font-bold mb-4">Subscribe to our newsletter for the latest updates and insights.</h2>
                       <p className="mb-6 text-blue-100">Stay ahead with the latest updates, insights, and events from Bajaur Chamber of Commerce.</p>
                       <div className="flex flex-col sm:flex-row gap-2">
                         <div className="relative flex-grow">
