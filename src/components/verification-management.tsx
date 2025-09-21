@@ -28,6 +28,13 @@ const verifications = [
     date: '2023-10-25',
     status: 'Approved',
   },
+   {
+    name: 'Creative Minds',
+    ntn: '9988776-5',
+    type: 'Corporate',
+    date: '2023-10-24',
+    status: 'Rejected',
+  },
 ];
 
 export default function VerificationManagement() {
@@ -74,7 +81,7 @@ export default function VerificationManagement() {
                 </TableCell>
                 <TableCell className="space-x-2">
                   <Button variant="outline" size="sm">View</Button>
-                  <Button variant="secondary" size="sm" className="bg-green-500 hover:bg-green-600 text-white">Approve</Button>
+                  <Button variant="secondary" size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">Approve</Button>
                   <Button variant="destructive" size="sm">Reject</Button>
                 </TableCell>
               </TableRow>

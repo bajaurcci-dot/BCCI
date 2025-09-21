@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PlusCircle, Search } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 const users = [
   {
@@ -64,9 +65,9 @@ export default function UserManagement() {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.role}</TableCell>
                 <TableCell>
-                    <span className={`px-2 py-1 text-xs rounded-full ${user.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                    <Badge variant={user.status === 'Active' ? 'default' : 'destructive'}>
                         {user.status}
-                    </span>
+                    </Badge>
                 </TableCell>
                 <TableCell className="space-x-2">
                   <Button variant="outline" size="sm">Edit</Button>
