@@ -205,7 +205,11 @@ const HeroSection = () => {
                         <Tooltip key={index}>
                           <TooltipTrigger asChild>
                             <div className="relative">
-                              <BorderBeam colorFrom="#33d65b" colorTo="#1a9c3b" />
+                              <BorderBeam
+                                colorFrom="#33d65b"
+                                colorTo="#1a9c3b"
+                                className="rounded-md"
+                              />
                               <a
                                 href="#"
                                 className="group flex aspect-square h-16 w-16 items-center justify-center rounded-md border border-input bg-background p-0 transition-all hover:scale-110 hover:border-primary"
@@ -237,3 +241,5 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
+    
