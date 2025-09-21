@@ -148,14 +148,14 @@ const FeeList = ({ data }: { data: typeof membershipServices | typeof supportSer
         key={item.id}
         className="flex justify-between items-center py-3 px-1 hover:bg-muted/50 rounded-lg transition-colors"
       >
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <div className="text-primary font-bold w-6 text-center text-sm">{item.id}</div>
-          <div className="flex flex-col items-start text-left">
+          <div className="flex flex-col items-start">
             <p className="font-semibold text-foreground text-sm leading-snug">{item.name}</p>
             <p className="text-xs text-muted-foreground">{item.description}</p>
           </div>
         </div>
-        <div className="text-right font-semibold text-primary whitespace-nowrap text-sm pl-2">{item.price}</div>
+        <div className="text-right font-semibold text-primary whitespace-nowrap text-sm pl-2 pr-2">{item.price}</div>
       </li>
     ))}
   </ul>
