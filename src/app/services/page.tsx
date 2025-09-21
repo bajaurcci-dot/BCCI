@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import Footer from '@/components/footer';
 import ServicesIntroSection from '@/components/services-intro-section';
 import ServicesListSection from '@/components/services-list-section';
+import AdditionalServicesSection from '@/components/additional-services-section';
 import CtaSection from '@/components/cta-section';
 
 const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
@@ -17,6 +18,7 @@ export default function ServicesPage() {
         <main className="flex-grow">
           <ServicesIntroSection />
           <ServicesListSection />
+          <AdditionalServicesSection />
           <CtaSection />
         </main>
         <Footer />
