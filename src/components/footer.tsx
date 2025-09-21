@@ -58,41 +58,41 @@ const Footer = () => {
 
   return (
     <footer className="bg-background">
-      <div className="container mx-auto px-4 md:px-6 relative">
-        <div className="relative -top-20 z-10">
-            <div className="bg-blue-600 rounded-2xl p-8 md:p-12 shadow-2xl">
-                <div className="grid md:grid-cols-2 gap-8 items-center">
-                    <div className="flex justify-center md:justify-start">
-                        {newsletterIllustration && (
-                            <Image
-                            src={newsletterIllustration.imageUrl}
-                            alt={newsletterIllustration.description}
-                            width={250}
-                            height={250}
-                            className="w-48 md:w-64"
-                            data-ai-hint={newsletterIllustration.imageHint}
-                            />
-                        )}
-                    </div>
-                    <div className="text-white text-center md:text-left">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Subscribe to our newsletter for the latest updates and insights.</h2>
-                        <p className="mb-6 text-blue-100">Stay ahead with the latest updates, insights, and events from Bajaur Chamber of Commerce.</p>
-                        <div className="flex flex-col sm:flex-row gap-2">
-                          <div className="relative flex-grow">
-                            <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                            <Input type="email" placeholder="Enter your email" className="pl-10 w-full bg-blue-700/50 border-blue-500 text-white placeholder:text-blue-200" />
-                          </div>
-                            <Button variant="secondary" className="bg-white text-blue-600 hover:bg-gray-200">
-                              Subscribe
-                            </Button>
+      <div className="container mx-auto px-4 md:px-6 relative z-10 -mb-20">
+          <div className="bg-blue-600 rounded-2xl p-8 md:p-12 shadow-2xl">
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                  <div className="flex justify-center md:justify-start">
+                      {newsletterIllustration && (
+                          <Image
+                          src={newsletterIllustration.imageUrl}
+                          alt={newsletterIllustration.description}
+                          width={250}
+                          height={250}
+                          className="w-48 md:w-64"
+                          data-ai-hint={newsletterIllustration.imageHint}
+                          />
+                      )}
+                  </div>
+                  <div className="text-white text-center md:text-left">
+                      <h2 className="text-3xl md:text-4xl font-bold mb-4">Subscribe to our newsletter for the latest updates and insights.</h2>
+                      <p className="mb-6 text-blue-100">Stay ahead with the latest updates, insights, and events from Bajaur Chamber of Commerce.</p>
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <div className="relative flex-grow">
+                          <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                          <Input type="email" placeholder="Enter your email" className="pl-10 w-full bg-blue-700/50 border-blue-500 text-white placeholder:text-blue-200" />
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div className="pt-8 pb-12 -mt-20 bg-card rounded-b-2xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pt-24 px-8 md:px-12">
+                          <Button variant="secondary" className="bg-white text-blue-600 hover:bg-gray-200">
+                            Subscribe
+                          </Button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <div className="bg-card pt-32 pb-12">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="flex flex-col space-y-4 md:col-span-2 lg:col-span-1">
                 {logoImage && (
                   <Link href="#">
