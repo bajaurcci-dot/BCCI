@@ -1,12 +1,17 @@
+'use client';
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
+import { VacanciesProvider } from '@/hooks/use-vacancies';
 
-export const metadata: Metadata = {
-  title: 'CardNav Customizer',
-  description:
-    'Create and customize your own responsive card-based navigation component for Next.js.',
-};
+// This metadata can't be set here in a client component.
+// If you need metadata, you would move this to a server component parent.
+// export const metadata: Metadata = {
+//   title: 'CardNav Customizer',
+//   description:
+//     'Create and customize your own responsive card-based navigation component for Next.js.',
+// };
 
 export default function RootLayout({
   children,
@@ -24,8 +29,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        {children}
-        <Toaster />
+        <VacanciesProvider>
+          {children}
+          <Toaster />
+        </VacanciesProvider>
       </body>
     </html>
   );

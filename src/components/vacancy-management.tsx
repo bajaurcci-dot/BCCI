@@ -36,40 +36,32 @@ import {
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { vacancies, applicantsList } from '@/lib/vacancies';
+import { applicantsList } from '@/lib/vacancies';
+import { useVacancies } from '@/hooks/use-vacancies';
+import type { Vacancy } from '@/hooks/use-vacancies';
 
 export default function VacancyManagement() {
   const { toast } = useToast();
-  const [vacancyList, setVacancyList] = useState(vacancies);
+  const { vacancies, addVacancy, updateVacancy, deleteVacancy } = useVacancies();
+  
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isApplicantsOpen, setIsApplicantsOpen] = useState(false);
-  const [selectedVacancy, setSelectedVacancy] = useState<any>(null);
+  const [selectedVacancy, setSelectedVacancy] = useState<Vacancy | null>(null);
   const [currentApplicants, setCurrentApplicants] = useState<any[]>([]);
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const title = formData.get('title') as string;
-    const status = formData.get('status') as string;
+    const status = formData.get('status') as 'Open' | 'Closed';
 
     if (selectedVacancy) {
       // Edit existing
-      const updatedVacancies = vacancyList.map((v) =>
-        v.title === selectedVacancy.title ? { ...v, title, status } : v
-      );
-      setVacancyList(updatedVacancies);
-      // In a real app, you'd update the shared vacancies array here
-      const sharedIndex = vacancies.findIndex(v => v.title === selectedVacancy.title);
-      if (sharedIndex > -1) {
-        vacancies[sharedIndex] = { ...vacancies[sharedIndex], title, status };
-      }
+      updateVacancy(selectedVacancy.title, { title, status, applicants: selectedVacancy.applicants });
       toast({ title: 'Vacancy Updated', description: `The vacancy "${title}" has been updated.` });
     } else {
       // Add new
-      const newVacancy = { title, status, applicants: 0 };
-      setVacancyList([...vacancyList, newVacancy]);
-      // In a real app, you'd update the shared vacancies array here
-      vacancies.push(newVacancy);
+      addVacancy({ title, status, applicants: 0 });
       toast({ title: 'Vacancy Added', description: `The vacancy "${title}" has been created.` });
     }
 
@@ -77,17 +69,13 @@ export default function VacancyManagement() {
     setSelectedVacancy(null);
   };
 
-  const openForm = (vacancy: any | null) => {
+  const openForm = (vacancy: Vacancy | null) => {
     setSelectedVacancy(vacancy);
     setIsFormOpen(true);
   };
 
-  const handleDelete = (title: string) => {
-    setVacancyList(vacancyList.filter((v) => v.title !== title));
-    const sharedIndex = vacancies.findIndex(v => v.title === title);
-      if (sharedIndex > -1) {
-        vacancies.splice(sharedIndex, 1);
-      }
+  const handleDeleteConfirm = (title: string) => {
+    deleteVacancy(title);
     toast({
       title: 'Vacancy Deleted',
       description: `The vacancy "${title}" has been deleted.`,
@@ -95,9 +83,9 @@ export default function VacancyManagement() {
     });
   };
 
-  const viewApplicants = (title: string) => {
-    setCurrentApplicants(applicantsList[title as keyof typeof applicantsList] || []);
-    setSelectedVacancy(vacancyList.find((v) => v.title === title) || null);
+  const viewApplicants = (vacancy: Vacancy) => {
+    setCurrentApplicants(applicantsList[vacancy.title as keyof typeof applicantsList] || []);
+    setSelectedVacancy(vacancy);
     setIsApplicantsOpen(true);
   };
 
@@ -126,10 +114,10 @@ export default function VacancyManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {vacancyList.map((vacancy) => (
+              {vacancies.map((vacancy) => (
                 <TableRow key={vacancy.title}>
                   <TableCell className="font-medium">{vacancy.title}</TableCell>
-                  <TableCell>{vacancy.applicants}</TableCell>
+                  <TableCell>{(applicantsList[vacancy.title as keyof typeof applicantsList] || []).length}</TableCell>
                   <TableCell>
                     <Badge
                       variant={vacancy.status === 'Open' ? 'default' : 'secondary'}
@@ -142,7 +130,7 @@ export default function VacancyManagement() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => viewApplicants(vacancy.title)}
+                      onClick={() => viewApplicants(vacancy)}
                     >
                       View Applicants
                     </Button>
@@ -164,7 +152,7 @@ export default function VacancyManagement() {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(vacancy.title)}>
+                          <AlertDialogAction onClick={() => handleDeleteConfirm(vacancy.title)}>
                             Delete
                           </AlertDialogAction>
                         </AlertDialogFooter>
@@ -194,6 +182,7 @@ export default function VacancyManagement() {
                   name="title"
                   defaultValue={selectedVacancy?.title}
                   className="col-span-3"
+                  required
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
@@ -204,10 +193,10 @@ export default function VacancyManagement() {
                   id="status"
                   name="status"
                   defaultValue={selectedVacancy?.status}
-                  className="col-span-3 border border-input rounded-md px-3 py-2 text-sm"
+                  className="col-span-3 border h-10 border-input rounded-md px-3 py-2 text-sm bg-transparent"
                 >
-                  <option>Open</option>
-                  <option>Closed</option>
+                  <option value="Open">Open</option>
+                  <option value="Closed">Closed</option>
                 </select>
               </div>
             </div>

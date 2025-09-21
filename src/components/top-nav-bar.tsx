@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -16,7 +15,7 @@ import {
 } from '@/components/ui/sheet';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { vacancies } from '@/lib/vacancies';
+import { useVacancies } from '@/hooks/use-vacancies';
 
 const menuItems = [
   { label: 'About', href: '/about', icon: Info },
@@ -30,16 +29,12 @@ const menuItems = [
 
 export default function TopNavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [openVacancyCount, setOpenVacancyCount] = useState(0);
-  const [openVacancies, setOpenVacancies] = useState<string[]>([]);
+  const { vacancies } = useVacancies();
   const logoImage = PlaceHolderImages.find(img => img.id === 'logo');
   const pathname = usePathname();
 
-  useEffect(() => {
-    const open = vacancies.filter((v) => v.status === 'Open');
-    setOpenVacancyCount(open.length);
-    setOpenVacancies(open.map(v => v.title));
-  }, []);
+  const openVacancies = vacancies.filter((v) => v.status === 'Open');
+  const openVacancyCount = openVacancies.length;
 
   const VacancyPopoverContent = () => (
     <PopoverContent className="w-80">
@@ -53,8 +48,8 @@ export default function TopNavBar() {
         <div className="grid gap-2">
           {openVacancies.length > 0 ? (
             openVacancies.map((vacancy, index) => (
-               <div key={index} className="grid grid-cols-3 items-center gap-4">
-                <span className="col-span-2 font-medium">{vacancy}</span>
+               <div key={index} className="grid grid-cols-[1fr_auto] items-center gap-4">
+                <span className="font-medium">{vacancy.title}</span>
                  <Button asChild variant="secondary" size="sm" className="h-7 bg-primary-foreground text-primary hover:bg-primary-foreground/90">
                     <Link href="/contact">Contact Us</Link>
                   </Button>
@@ -196,7 +191,7 @@ export default function TopNavBar() {
                   <Button variant="ghost" size="icon" className="relative">
                     <Bell className="h-6 w-6" />
                      {openVacancyCount > 0 && (
-                        <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                        <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
                           {openVacancyCount}
                         </span>
                       )}
