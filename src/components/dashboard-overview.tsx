@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import {
   Card,
   CardContent,
@@ -16,6 +17,15 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Users, UserCheck, UserX, Clock } from 'lucide-react';
 
 const expiringUsers = [
@@ -24,22 +34,44 @@ const expiringUsers = [
     membershipId: 'COR-0123',
     expiryDate: '2024-08-15',
     daysLeft: 20,
+    cnic: '12345-1234567-1',
+    ntn: '1234567-8',
+    address: '123, Main Street, City',
+    businessName: 'Khan Trading Co.',
+    mobileNumber: '+92 300 1234567',
+    membershipType: 'Corporate',
   },
   {
     name: 'Fatima Ali',
     membershipId: 'ASC-0456',
     expiryDate: '2024-08-25',
     daysLeft: 30,
+    cnic: '54321-7654321-2',
+    ntn: '8765432-1',
+    address: '456, Park Avenue, Town',
+    businessName: 'Ali Enterprises',
+    mobileNumber: '+92 311 9876543',
+    membershipType: 'Associate',
   },
   {
     name: 'Zainab Corporation',
     membershipId: 'COR-0789',
     expiryDate: '2024-08-05',
     daysLeft: 10,
+    cnic: 'N/A',
+    ntn: '9876543-2',
+    address: '789, Industrial Area, Metropolis',
+    businessName: 'Zainab Corporation',
+    mobileNumber: '+92 333 1122334',
+    membershipType: 'Corporate',
   },
 ];
 
+type User = (typeof expiringUsers)[0];
+
 export default function DashboardOverview() {
+  const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
+
   return (
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -85,40 +117,97 @@ export default function DashboardOverview() {
         </Card>
       </div>
       <div className="grid gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Membership Expiring Next Month</CardTitle>
-            <CardDescription>
-              A list of members whose membership is expiring soon.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Member Name</TableHead>
-                    <TableHead>Membership ID</TableHead>
-                    <TableHead>Expiry Date</TableHead>
-                    <TableHead className="text-right">Days Left</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {expiringUsers.map((user) => (
-                    <TableRow key={user.membershipId}>
-                      <TableCell className="font-medium">{user.name}</TableCell>
-                      <TableCell>{user.membershipId}</TableCell>
-                      <TableCell>{user.expiryDate}</TableCell>
-                      <TableCell className="text-right">
-                        <Badge variant="destructive">{user.daysLeft} days</Badge>
-                      </TableCell>
+        <Dialog>
+          <Card>
+            <CardHeader>
+              <CardTitle>Membership Expiring Next Month</CardTitle>
+              <CardDescription>A list of members whose membership is expiring soon.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Member Name</TableHead>
+                      <TableHead>Membership ID</TableHead>
+                      <TableHead>Expiry Date</TableHead>
+                      <TableHead>Days Left</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+                  </TableHeader>
+                  <TableBody>
+                    {expiringUsers.map((user) => (
+                      <TableRow key={user.membershipId}>
+                        <TableCell className="font-medium">{user.name}</TableCell>
+                        <TableCell>{user.membershipId}</TableCell>
+                        <TableCell>{user.expiryDate}</TableCell>
+                        <TableCell>
+                          <Badge variant="destructive">{user.daysLeft} days</Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <DialogTrigger asChild>
+                            <Button variant="outline" size="sm" onClick={() => setSelectedUser(user)}>
+                              View
+                            </Button>
+                          </DialogTrigger>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+
+          {selectedUser && (
+            <DialogContent className="sm:max-w-[625px]">
+              <DialogHeader>
+                <DialogTitle>Member Details</DialogTitle>
+                <DialogDescription>
+                  Full details for {selectedUser.name}.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <span className="text-right text-sm text-muted-foreground col-span-1">Full Name</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.name}</span>
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <span className="text-right text-sm text-muted-foreground">CNIC</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.cnic}</span>
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <span className="text-right text-sm text-muted-foreground">NTN</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.ntn}</span>
+                </div>
+                 <div className="grid grid-cols-4 items-center gap-4">
+                  <span className="text-right text-sm text-muted-foreground">Address</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.address}</span>
+                </div>
+                 <div className="grid grid-cols-4 items-center gap-4">
+                  <span className="text-right text-sm text-muted-foreground">Business Name</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.businessName}</span>
+                </div>
+                 <div className="grid grid-cols-4 items-center gap-4">
+                  <span className="text-right text-sm text-muted-foreground">Mobile</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.mobileNumber}</span>
+                </div>
+                 <div className="grid grid-cols-4 items-center gap-4">
+                  <span className="text-right text-sm text-muted-foreground">Membership ID</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.membershipId}</span>
+                </div>
+                 <div className="grid grid-cols-4 items-center gap-4">
+                  <span className="text-right text-sm text-muted-foreground">Membership Type</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.membershipType}</span>
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <span className="text-right text-sm text-muted-foreground">Expiry Date</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.expiryDate}</span>
+                </div>
+              </div>
+            </DialogContent>
+          )}
+        </Dialog>
       </div>
     </>
   );
