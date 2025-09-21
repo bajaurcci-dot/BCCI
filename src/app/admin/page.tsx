@@ -9,7 +9,7 @@ import VacancyManagement from '@/components/vacancy-management';
 import PermissionsManagement from '@/components/permissions-management';
 import ActivityLog from '@/components/activity-log';
 import DashboardOverview from '@/components/dashboard-overview';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Suspense } from 'react';
 
 function AdminPageComponent() {
@@ -21,16 +21,9 @@ function AdminPageComponent() {
       <div className="flex-1 space-y-4 p-4 sm:p-8 pt-6">
         <Tabs value={tab} className="space-y-4">
           <div className="flex items-center justify-between space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-            <TabsList>
-              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-              <TabsTrigger value="users">User Management</TabsTrigger>
-              <TabsTrigger value="verification">Member Verification</TabsTrigger>
-              <TabsTrigger value="registration">Online Registration</TabsTrigger>
-              <TabsTrigger value="vacancies">Vacancy Management</TabsTrigger>
-              <TabsTrigger value="permissions">Permissions</TabsTrigger>
-              <TabsTrigger value="activity">Activity Log</TabsTrigger>
-            </TabsList>
+            <h1 className="text-3xl font-bold tracking-tight">
+              {tab.charAt(0).toUpperCase() + tab.slice(1).replace('-', ' ')}
+            </h1>
           </div>
           <TabsContent value="dashboard" className="space-y-4">
             <DashboardOverview />
