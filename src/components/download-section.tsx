@@ -73,7 +73,7 @@ const GradientButton = ({ href }: { href: string }) => (
 
 const DownloadSection = () => {
   return (
-    <section className="pt-8 pb-20 md:pb-32 bg-background">
+    <section className="pt-0 pb-20 md:pb-32 bg-background">
       <div className="container mx-auto px-8 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-5xl mx-auto">
             {downloadItems.map((item, index) => (
