@@ -26,6 +26,12 @@
       "imageHint": "emblem logo"
     },
     {
+      "id": "newsletter-illustration",
+      "description": "Mailbox illustration for newsletter",
+      "imageUrl": "https://i.postimg.cc/JzKmFYfJ/Untitled-design-14.png",
+      "imageHint": "mailbox illustration"
+    },
+    {
       "id": "new-icon-1",
       "description": "Letter Icon",
       "imageUrl": "https://i.postimg.cc/rF52JTtp/letter.png",
