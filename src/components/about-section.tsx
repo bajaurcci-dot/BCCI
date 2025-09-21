@@ -38,7 +38,7 @@ const AboutSection = () => {
               )}
           </div>
 
-          <div className="flex flex-col ml-4">
+          <div className="flex flex-col">
             <Badge
               variant="outline"
               className="py-1 px-4 self-start border-primary/50 text-primary font-semibold"
