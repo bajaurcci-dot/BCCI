@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useMemo } from 'react';
 import {
   Table,
   TableBody,
@@ -23,9 +24,25 @@ const logs = [
     action: 'Added new vacancy: Project Manager',
     timestamp: '2023-10-26 09:30 AM',
   },
+  {
+    admin: 'Editor User',
+    action: 'Updated user role for jane.smith@example.com',
+    timestamp: '2023-10-26 09:00 AM',
+  },
 ];
 
 export default function ActivityLog() {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredLogs = useMemo(() => {
+    if (!searchTerm) return logs;
+    return logs.filter(
+      (log) =>
+        log.admin.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        log.action.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm]);
+
   return (
     <Card>
       <CardHeader>
@@ -34,9 +51,16 @@ export default function ActivityLog() {
       </CardHeader>
       <CardContent>
         <div className="mb-4">
-          <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Filter logs by admin or action..." className="pl-10"/>
+          <div className="flex gap-2">
+              <div className="relative flex-grow">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    placeholder="Filter logs by admin or action..." 
+                    className="pl-10"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+              </div>
           </div>
         </div>
         <div className="rounded-md border">
@@ -49,7 +73,7 @@ export default function ActivityLog() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {logs.map((log, index) => (
+              {filteredLogs.map((log, index) => (
                 <TableRow key={index}>
                   <TableCell className="font-medium">{log.admin}</TableCell>
                   <TableCell>{log.action}</TableCell>

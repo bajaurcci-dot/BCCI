@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Table,
   TableBody,
@@ -69,6 +69,16 @@ export default function VerificationManagement() {
   const { toast } = useToast();
   const [verifications, setVerifications] = useState(initialVerifications);
   const [selectedVerification, setSelectedVerification] = useState<Verification | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredVerifications = useMemo(() => {
+    if (!searchTerm) return verifications;
+    return verifications.filter(
+      (item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.ntn.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [verifications, searchTerm]);
 
   const handleAction = (ntn: string, newStatus: 'Approved' | 'Rejected') => {
     setVerifications(
@@ -90,9 +100,16 @@ export default function VerificationManagement() {
       </CardHeader>
       <CardContent>
         <div className="mb-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search by name, NTN..." className="pl-10" />
+          <div className="flex gap-2">
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by name, NTN..."
+                className="pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
         </div>
         <Dialog>
@@ -109,7 +126,7 @@ export default function VerificationManagement() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {verifications.map((item) => (
+                {filteredVerifications.map((item) => (
                   <TableRow key={item.ntn}>
                     <TableCell className="font-medium">{item.name}</TableCell>
                     <TableCell>{item.ntn}</TableCell>
