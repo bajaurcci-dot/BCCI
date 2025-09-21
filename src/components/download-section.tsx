@@ -1,69 +1,112 @@
-
 'use client';
 
 import { Download } from 'lucide-react';
-import Image from 'next/image';
 import { Button } from './ui/button';
-import { BorderBeam } from './ui/border-beam';
 
 const downloadItems = [
   {
     title: 'Election Schedule 2024-26',
     description: 'With executive committee approval, the 2024-26 election schedule is issued per the trade organization act & rules, 2013.',
     href: '#',
+    type: 'DOCX',
   },
   {
     title: 'DGTO Rules 2013',
     description: '4(2)/2013-admn-iii.—under section 31 of the trade organizations act, 2013 (ii of 2013), the federal government.',
     href: '#',
+    type: 'PDF',
   },
   {
     title: 'Trade Organizations Act',
     description: 'F. 22(121)/2021-legis.—the act of majlis-e-shoora (parliament) received presidential assent on november 1, 2022, and is published.',
     href: '#',
+    type: 'PDF',
   },
   {
     title: 'Vote List 2024-2026',
     description: 'Approved by the executive committee, the 2024-26 election schedule is issued per the trade organization act & rules, 2013.',
     href: '#',
+    type: 'DOCX',
   },
   {
     title: 'DGTO Act 2013 Senate',
     description: 'F. 9(15)/2012-legis.—the act of majlis-e-shoora (parliament) received presidential assent on february 20, 2013.',
     href: '#',
+    type: 'DOCX',
   },
   {
     title: 'MOA & AOA BCCI',
     description: "Defines the chamber's role in supporting local commerce and industry, including objectives, powers, and management structure.",
     href: '#',
+    type: 'PDF',
   },
 ];
+
+const FileTypeIcon = ({ type }: { type: string }) => {
+  const isDocx = type === 'DOCX';
+  const bgColor = isDocx ? 'bg-blue-500' : 'bg-red-500';
+  const iconPath = isDocx
+    ? "M4 0C1.79086 0 0 1.79086 0 4V20C0 22.2091 1.79086 24 4 24H20C22.2091 24 24 22.2091 24 20V4C24 1.79086 22.2091 0 20 0H4Z"
+    : "M4 0C1.79086 0 0 1.79086 0 4V20C0 22.2091 1.79086 24 4 24H20C22.2091 24 24 22.2091 24 20V4C24 1.79086 22.2091 0 20 0H4Z";
+
+  return (
+    <div className="absolute -top-3 -left-3 transform">
+      <div className={`relative w-14 h-14 ${bgColor} rounded-lg shadow-md flex items-center justify-center`}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute">
+          <path d={iconPath} fill="white" fillOpacity="0.1"/>
+        </svg>
+        <span className="text-white font-bold text-xs">{type}</span>
+      </div>
+    </div>
+  );
+};
+
+const GradientButton = ({ href }: { href: string }) => (
+  <Button asChild className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105">
+    <a href={href}>
+      Download
+      <Download className="ml-2 h-4 w-4" />
+    </a>
+  </Button>
+);
 
 const DownloadSection = () => {
   return (
     <section className="pb-20 md:pb-32 bg-background">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {downloadItems.map((item, index) => (
-            <div
-              key={index}
-              className="relative bg-card rounded-2xl shadow-lg overflow-hidden p-8 flex flex-col text-left items-start transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 animate-slide-in-up"
-              style={{ animationDelay: `${index * 150}ms` }}
-            >
-              <BorderBeam colorFrom="#33d65b" colorTo="#1a9c3b" />
-              <div className="flex-grow flex flex-col items-start">
-                 <Image src="https://i.postimg.cc/1zctM22w/pdf.png" alt="PDF Icon" width={64} height={64} className="mb-4" />
-                <h3 className="text-2xl font-bold font-headline mb-3 text-foreground">{item.title}</h3>
-                <p className="text-muted-foreground text-base mb-6 flex-grow">{item.description}</p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12">
+            {downloadItems.map((item, index) => (
+              <div
+                key={index}
+                className="relative bg-card rounded-2xl shadow-lg p-6 pt-10 flex flex-col text-left items-start transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1"
+              >
+                <FileTypeIcon type={item.type} />
+                <div className="flex-grow flex flex-col items-start w-full">
+                  <h3 className="text-lg font-bold font-headline mb-3 text-foreground uppercase">{item.title}</h3>
+                  <p className="text-muted-foreground text-sm mb-4 flex-grow">{item.description}</p>
+                </div>
+                <GradientButton href={item.href} />
               </div>
-              <Button asChild className="mt-auto w-full group">
-                <a href={item.href}>
-                  <Download className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
-                  Download
-                </a>
-              </Button>
+            ))}
+          </div>
+
+          <div className="w-full max-w-sm mx-auto">
+            <div className="bg-gray-800 rounded-[2.5rem] p-2 shadow-2xl">
+              <div className="bg-background rounded-[2rem] p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-blue-500 p-2 rounded-full">
+                    <Download className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 className="font-bold text-foreground">DOWNLOAD ZIP FILE</h3>
+                </div>
+                <p className="text-muted-foreground text-sm mb-6">
+                  To get all the files, first download the entire archive in one batch. Once downloaded, extract the archive to access each file individually. This will allow you to view and use each file separately.
+                </p>
+                <GradientButton href="#" />
+              </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
