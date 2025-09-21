@@ -150,7 +150,7 @@ const FeeList = ({ data }: { data: typeof membershipServices | typeof supportSer
       >
         <div className="flex items-center gap-4">
           <div className="text-primary font-bold w-6 text-center">{item.id}</div>
-          <div>
+          <div className="flex flex-col items-start">
             <p className="font-semibold text-foreground">{item.name}</p>
             <p className="text-sm text-muted-foreground">{item.description}</p>
           </div>
