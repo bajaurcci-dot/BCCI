@@ -130,7 +130,7 @@ export default function AdditionalServicesSection() {
   return (
     <section className="py-20 md:py-32 bg-background">
       <div className="container mx-auto px-4 md:px-6 max-w-6xl">
-        <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-lg">
+        <div className="bg-card p-8 md:p-12 rounded-2xl border border-border/50 shadow-lg">
           <div className="grid md:grid-cols-2 gap-12">
             <div className="animate-slide-in-left">
               <h3 className="text-2xl font-bold font-headline mb-6">Online Registration</h3>
