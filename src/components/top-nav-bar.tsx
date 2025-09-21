@@ -15,7 +15,7 @@ import {
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const menuItems = [
-  { label: 'About', href: '#', icon: Info },
+  { label: 'About', href: '/about', icon: Info },
   { label: 'Services', href: '#', icon: Briefcase },
   { label: 'Membership', href: '#', icon: Award },
   { label: 'Compliances', href: '#', icon: FileCheck },
@@ -35,7 +35,7 @@ export default function TopNavBar() {
         <div className="flex h-16 items-center justify-between rounded-xl bg-card p-4 px-6 shadow-md">
           <div className="flex items-center">
             {logoImage && (
-              <Link href="#">
+              <Link href="/">
                 <Image
                   src={logoImage.imageUrl}
                   alt={logoImage.description}
@@ -68,7 +68,7 @@ export default function TopNavBar() {
                   <div className="flex justify-start">
                     {logoImage && (
                       <Link
-                        href="#"
+                        href="/"
                         className="flex items-center gap-2 text-lg font-semibold"
                         onClick={() => setIsMenuOpen(false)}
                       >

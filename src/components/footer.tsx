@@ -8,7 +8,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 
 const legalPages = [
-  { name: 'About Us', href: '#' },
+  { name: 'About Us', href: '/about' },
   { name: 'Contact Us', href: '#' },
   { name: 'Disclaimer', href: '#' },
   { name: 'Privacy Policy', href: '#' },
@@ -51,7 +51,8 @@ const socialMedia = [
 ];
 
 const Footer = () => {
-  const logoImage = PlaceHolderImages.find((img) => img.id === 'footer-logo');
+  const logoImage = PlaceHolderImages.find((img) => img.id === 'logo');
+  const footerLogo = PlaceHolderImages.find((img) => img.id === 'footer-logo');
   const newsletterIllustration = PlaceHolderImages.find((img) => img.id === 'newsletter-illustration');
 
   return (
@@ -94,14 +95,14 @@ const Footer = () => {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="flex flex-col space-y-4 md:col-span-2 lg:col-span-1">
-                {logoImage && (
+                {footerLogo && (
                   <Link href="#">
                     <Image
-                      src={logoImage.imageUrl}
-                      alt={logoImage.description}
+                      src={footerLogo.imageUrl}
+                      alt={footerLogo.description}
                       width={144}
                       height={144}
-                      data-ai-hint={logoImage.imageHint}
+                      data-ai-hint={footerLogo.imageHint}
                     />
                   </Link>
                 )}
