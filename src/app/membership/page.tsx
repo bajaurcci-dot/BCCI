@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import Footer from '@/components/footer';
 import MembershipIntroSection from '@/components/membership-intro-section';
 import MembershipVerificationSection from '@/components/membership-verification-section';
+import MembershipFeesSection from '@/components/membership-fees-section';
 
 const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
 
@@ -16,6 +17,7 @@ export default function MembershipPage() {
         <main className="flex-grow">
           <MembershipIntroSection />
           <MembershipVerificationSection />
+          <MembershipFeesSection />
         </main>
         <Footer />
       </div>
