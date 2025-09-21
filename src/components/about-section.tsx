@@ -24,7 +24,7 @@ const AboutSection = () => {
     <section className="py-20 md:py-32 bg-background overflow-hidden">
       <div className="container mx-auto px-4 md:px-6 max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-[350px_1fr] items-center gap-x-12 gap-y-12 md:gap-y-0">
-          <div className="relative w-full max-w-[350px] h-[450px] rounded-2xl overflow-hidden shadow-2xl mx-auto">
+          <div className="relative w-full max-w-[350px] h-[450px] rounded-2xl overflow-hidden shadow-2xl mx-auto animate-slide-in-left">
              {founderImage && (
                 <Image
                   src={founderImage.imageUrl}
@@ -36,7 +36,7 @@ const AboutSection = () => {
               )}
           </div>
 
-          <div className="flex flex-col text-center md:text-left">
+          <div className="flex flex-col text-center md:text-left animate-slide-in-right">
             <Badge
               variant="outline"
               className="py-1 px-4 self-center md:self-start border-primary/50 text-primary font-semibold"

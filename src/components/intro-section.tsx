@@ -7,7 +7,7 @@ const IntroSection = () => {
   return (
     <section className="py-20 md:py-32 bg-background">
       <div className="container mx-auto px-4 md:px-6 max-w-6xl">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 animate-fade-in">
           <Badge
             variant="outline"
             className="py-1 px-4 self-center border-primary/50 text-primary font-semibold mb-4"
@@ -20,7 +20,7 @@ const IntroSection = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 items-stretch">
-          <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all flex flex-col">
+          <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all flex flex-col animate-slide-in-up">
             <div className="flex items-center gap-4 mb-6">
               <div className="bg-primary/10 p-3 rounded-full">
                 <Building className="h-8 w-8 text-primary" />
@@ -35,7 +35,7 @@ const IntroSection = () => {
               create a thriving business environment for our members and the community.
             </p>
           </div>
-          <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all flex flex-col">
+          <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all flex flex-col animate-slide-in-up [animation-delay:200ms]">
             <div className="flex items-center gap-4 mb-6">
               <div className="bg-primary/10 p-3 rounded-full">
                 <Rocket className="h-8 w-8 text-primary" />

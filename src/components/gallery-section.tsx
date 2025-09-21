@@ -20,7 +20,7 @@ const GallerySection = () => {
   return (
     <section className="py-20 md:py-32 bg-background">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 animate-fade-in">
           <Badge
             variant="outline"
             className="py-1 px-4 self-center border-primary/50 text-primary font-semibold mb-4"
@@ -38,7 +38,8 @@ const GallerySection = () => {
           {images.map((src, index) => (
             <div
               key={index}
-              className="relative aspect-square rounded-lg overflow-hidden group transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105"
+              className="relative aspect-square rounded-lg overflow-hidden group transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105 animate-fade-in"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
               <Image
                 src={src}
