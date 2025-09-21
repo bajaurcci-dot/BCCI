@@ -73,63 +73,65 @@ export default function MembershipVerificationSection() {
   return (
     <section className="pb-20 md:pb-32 bg-background">
       <div className="container mx-auto px-4 md:px-6 max-w-6xl">
-        <div className="grid md:grid-cols-2 gap-8 items-start">
-          <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-lg animate-slide-in-left">
+        <div className="grid md:grid-cols-2 gap-8 items-stretch">
+          <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-lg animate-slide-in-left flex flex-col">
             <h3 className="text-2xl font-bold font-headline mb-2">Member Verification</h3>
             <p className="text-muted-foreground mb-6">
               Enter Full Name, NTN and Membership Type to verify.
             </p>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="fullName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Full Name *</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter full name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="ntn"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>NTN *</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter NTN" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="membershipType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Membership Type *</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 flex-grow flex flex-col">
+                <div className="flex-grow">
+                  <FormField
+                    control={form.control}
+                    name="fullName"
+                    render={({ field }) => (
+                      <FormItem className="mb-4">
+                        <FormLabel>Full Name *</FormLabel>
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a membership type" />
-                          </SelectTrigger>
+                          <Input placeholder="Enter full name" {...field} />
                         </FormControl>
-                        <SelectContent>
-                          <SelectItem value="corporate">Corporate</SelectItem>
-                          <SelectItem value="associate">Associate</SelectItem>
-                          <SelectItem value="foreign">Foreign Member Class</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="w-full" size="lg">
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="ntn"
+                    render={({ field }) => (
+                      <FormItem className="mb-4">
+                        <FormLabel>NTN *</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter NTN" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="membershipType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Membership Type *</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a membership type" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="corporate">Corporate</SelectItem>
+                            <SelectItem value="associate">Associate</SelectItem>
+                            <SelectItem value="foreign">Foreign Member Class</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <Button type="submit" className="w-full mt-auto" size="lg">
                   <Search className="mr-2 h-4 w-4" />
                   Search Member
                 </Button>
