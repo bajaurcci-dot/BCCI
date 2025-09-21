@@ -146,7 +146,7 @@ const FeeList = ({ data }: { data: typeof membershipServices | typeof supportSer
     {data.map((item) => (
       <li
         key={item.id}
-        className="flex justify-between items-center py-4 px-2 hover:bg-muted/50 rounded-lg transition-colors"
+        className="flex justify-between items-center py-3 px-2 hover:bg-muted/50 rounded-lg transition-colors"
       >
         <div className="flex items-center gap-4">
           <div className="text-primary font-bold w-6 text-center">{item.id}</div>
@@ -164,7 +164,7 @@ const FeeList = ({ data }: { data: typeof membershipServices | typeof supportSer
 export default function MembershipFeesSection() {
   return (
     <section className="py-20 md:py-32 bg-background">
-      <div className="container mx-auto px-4 md:px-6 max-w-4xl">
+      <div className="container mx-auto px-4 md:px-6 max-w-6xl">
         <div className="text-center mb-16 animate-fade-in">
           <Badge
             variant="outline"
