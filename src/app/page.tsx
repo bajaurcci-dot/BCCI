@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import HeroSection from '@/components/hero-section';
 import TeamSection from '@/components/team-section';
+import BentoSection from '@/components/bento-section';
 
 const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
 
@@ -15,6 +16,7 @@ export default function Home() {
         <main className="flex-grow">
           <HeroSection />
           <TeamSection />
+          <BentoSection />
         </main>
       </div>
     </div>
