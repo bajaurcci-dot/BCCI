@@ -17,13 +17,11 @@ const legalPages = [
 ];
 
 const quickLinks = [
-  { name: 'About', href: '#' },
   { name: 'Services', href: '#' },
   { name: 'Membership', href: '#' },
   { name: 'Gallery', href: '#' },
   { name: 'Compliances', href: '#' },
   { name: 'Download', href: '#' },
-  { name: 'Contact Us', href: '#' },
 ];
 
 const socialMedia = [
