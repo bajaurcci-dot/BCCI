@@ -62,7 +62,7 @@ const FileTypeIcon = ({ type }: { type: string }) => {
 };
 
 const GradientButton = ({ href }: { href: string }) => (
-  <Button asChild className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105">
+  <Button asChild className="w-full mt-4 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105">
     <a href={href}>
       Download
       <Download className="ml-2 h-4 w-4" />
