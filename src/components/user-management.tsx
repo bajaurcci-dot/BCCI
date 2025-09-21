@@ -26,47 +26,68 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { supabase } from '@/lib/supabase-client';
 
-const initialUsers = [
-  {
-    name: 'John Doe',
-    ntn: '1234567-8',
-    email: 'john.doe@example.com',
-    role: 'Member',
-    status: 'Active',
-  },
-  {
-    name: 'Jane Smith',
-    ntn: '8765432-1',
-    email: 'jane.smith@example.com',
-    role: 'Admin',
-    status: 'Suspended',
-  },
-];
+type User = {
+  id: string;
+  full_name: string;
+  ntn: string | null;
+  membership_type: string | null;
+  status: string | null;
+};
 
 export default function UserManagement() {
   const { toast } = useToast();
-  const [users, setUsers] = useState(initialUsers);
+  const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setLoading(true);
+      const { data, error } = await supabase.from('members').select('id, full_name, ntn, membership_type, status');
+
+      if (error) {
+        toast({
+          title: 'Error fetching users',
+          description: error.message,
+          variant: 'destructive',
+        });
+      } else if (data) {
+        setUsers(data);
+      }
+      setLoading(false);
+    };
+
+    fetchUsers();
+  }, [toast]);
 
   const filteredUsers = useMemo(() => {
     if (!searchTerm) return users;
     return users.filter(
       (user) =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.ntn.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+        user.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (user.ntn && user.ntn.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   }, [users, searchTerm]);
 
-  const handleDelete = (email: string) => {
-    setUsers(users.filter((user) => user.email !== email));
-    toast({
-      title: 'User Deleted',
-      description: `The user ${email} has been successfully deleted.`,
-      variant: 'destructive',
-    });
+  const handleDelete = async (userId: string) => {
+    const { error } = await supabase.from('members').delete().eq('id', userId);
+
+    if (error) {
+      toast({
+        title: 'Error deleting user',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } else {
+      setUsers(users.filter((user) => user.id !== userId));
+      toast({
+        title: 'User Deleted',
+        description: `The user has been successfully deleted.`,
+      });
+    }
   };
 
   return (
@@ -75,11 +96,11 @@ export default function UserManagement() {
         <div className="flex items-center justify-between">
           <div>
             <CardTitle>User Management</CardTitle>
-            <p className="text-sm text-muted-foreground">Manage all users in the system.</p>
+            <p className="text-sm text-muted-foreground">Manage all members in the system.</p>
           </div>
           <Button asChild>
-            <Link href="/admin?tab=registration">
-              <PlusCircle className="mr-2 h-4 w-4" /> Add User
+            <Link href="/admin/dashboard?tab=registration">
+              <PlusCircle className="mr-2 h-4 w-4" /> Add Member
             </Link>
           </Button>
         </div>
@@ -90,7 +111,7 @@ export default function UserManagement() {
             <div className="relative flex-grow">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search by name, NTN, email..."
+                placeholder="Search by name, NTN..."
                 className="pl-10"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -104,53 +125,65 @@ export default function UserManagement() {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>NTN</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
+                <TableHead>Membership Type</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredUsers.map((user) => (
-                <TableRow key={user.email}>
-                  <TableCell className="font-medium">{user.name}</TableCell>
-                  <TableCell>{user.ntn}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={user.status === 'Active' ? 'default' : 'destructive'}
-                      className={user.status === 'Active' ? 'bg-green-500' : ''}
-                    >
-                      {user.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right space-x-2">
-                    <Button variant="outline" size="sm" asChild>
-                       <Link href={`/admin?tab=registration&user=${user.email}`}>Edit</Link>
-                    </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="destructive" size="sm">
-                          Delete
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete the user account.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(user.email)}>Continue</AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center">
+                    Loading members...
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : filteredUsers.length > 0 ? (
+                filteredUsers.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell className="font-medium">{user.full_name}</TableCell>
+                    <TableCell>{user.ntn || 'N/A'}</TableCell>
+                    <TableCell>{user.membership_type || 'N/A'}</TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={user.status === 'Active' ? 'default' : 'destructive'}
+                        className={user.status === 'Active' ? 'bg-green-500' : ''}
+                      >
+                        {user.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right space-x-2">
+                      <Button variant="outline" size="sm" asChild>
+                        <Link href={`/admin/dashboard?tab=registration&id=${user.id}`}>Edit</Link>
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="destructive" size="sm">
+                            Delete
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will permanently delete the member account.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(user.id)}>Continue</AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                 <TableRow>
+                  <TableCell colSpan={5} className="text-center">
+                    No members found.
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>

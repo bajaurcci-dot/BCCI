@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -21,75 +21,86 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/lib/supabase-client';
 
-const initialVerifications = [
-  {
-    name: 'Tech Innovators Inc.',
-    ntn: '1122334-5',
-    type: 'Corporate',
-    date: '2023-10-26',
-    status: 'Pending',
-    details: {
-      address: '123 Tech Park, Silicon Valley',
-      contact: 'John Doe',
-      phone: '123-456-7890',
-    },
-  },
-  {
-    name: 'Global Exports',
-    ntn: '5566778-9',
-    type: 'Associate',
-    date: '2023-10-25',
-    status: 'Approved',
-    details: {
-      address: '456 Trade Tower, Metropolis',
-      contact: 'Jane Smith',
-      phone: '987-654-3210',
-    },
-  },
-  {
-    name: 'Creative Minds',
-    ntn: '9988776-5',
-    type: 'Corporate',
-    date: '2023-10-24',
-    status: 'Rejected',
-    details: {
-      address: '789 Art Plaza, Downtown',
-      contact: 'Peter Jones',
-      phone: '555-555-5555',
-    },
-  },
-];
-
-type Verification = (typeof initialVerifications)[0];
+type Verification = {
+  id: number;
+  company_name: string;
+  ntn: string | null;
+  created_at: string;
+  status: string | null;
+  details: {
+    address: string;
+    contact: string;
+    phone: string;
+  } | null;
+};
 
 export default function VerificationManagement() {
   const { toast } = useToast();
-  const [verifications, setVerifications] = useState(initialVerifications);
+  const [verifications, setVerifications] = useState<Verification[]>([]);
   const [selectedVerification, setSelectedVerification] = useState<Verification | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchVerifications = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('verification_requests')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        toast({
+          title: 'Error fetching requests',
+          description: error.message,
+          variant: 'destructive',
+        });
+      } else {
+        setVerifications(data);
+      }
+      setLoading(false);
+    };
+
+    fetchVerifications();
+  }, [toast]);
 
   const filteredVerifications = useMemo(() => {
     if (!searchTerm) return verifications;
     return verifications.filter(
       (item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.ntn.toLowerCase().includes(searchTerm.toLowerCase())
+        item.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (item.ntn && item.ntn.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   }, [verifications, searchTerm]);
 
-  const handleAction = (ntn: string, newStatus: 'Approved' | 'Rejected') => {
-    setVerifications(
-      verifications.map((item) =>
-        item.ntn === ntn ? { ...item, status: newStatus } : item
-      )
-    );
-    toast({
-      title: `Request ${newStatus}`,
-      description: `The verification request for NTN ${ntn} has been ${newStatus.toLowerCase()}.`,
-    });
+  const handleAction = async (id: number, ntn: string | null, newStatus: 'Approved' | 'Rejected') => {
+    const { error } = await supabase
+      .from('verification_requests')
+      .update({ status: newStatus })
+      .eq('id', id);
+
+    if (error) {
+       toast({
+        title: 'Error updating status',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } else {
+       setVerifications(
+        verifications.map((item) =>
+          item.id === id ? { ...item, status: newStatus } : item
+        )
+      );
+      toast({
+        title: `Request ${newStatus}`,
+        description: `The verification request for NTN ${ntn} has been ${newStatus.toLowerCase()}.`,
+      });
+    }
   };
 
   return (
@@ -104,7 +115,7 @@ export default function VerificationManagement() {
             <div className="relative flex-grow">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search by name, NTN..."
+                placeholder="Search by company name, NTN..."
                 className="pl-10"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -119,19 +130,22 @@ export default function VerificationManagement() {
                 <TableRow>
                   <TableHead>Company Name</TableHead>
                   <TableHead>NTN</TableHead>
-                  <TableHead>Membership Type</TableHead>
                   <TableHead>Submission Date</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredVerifications.map((item) => (
-                  <TableRow key={item.ntn}>
-                    <TableCell className="font-medium">{item.name}</TableCell>
-                    <TableCell>{item.ntn}</TableCell>
-                    <TableCell>{item.type}</TableCell>
-                    <TableCell>{item.date}</TableCell>
+                {loading ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center">Loading requests...</TableCell>
+                  </TableRow>
+                ) : filteredVerifications.length > 0 ? (
+                  filteredVerifications.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="font-medium">{item.company_name}</TableCell>
+                    <TableCell>{item.ntn || 'N/A'}</TableCell>
+                    <TableCell>{new Date(item.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
                       <Badge
                         variant={
@@ -152,13 +166,18 @@ export default function VerificationManagement() {
                       </DialogTrigger>
                       {item.status === 'Pending' && (
                         <>
-                          <Button variant="default" size="sm" onClick={() => handleAction(item.ntn, 'Approved')} className="bg-green-600 hover:bg-green-700">Approve</Button>
-                          <Button variant="destructive" size="sm" onClick={() => handleAction(item.ntn, 'Rejected')}>Reject</Button>
+                          <Button variant="default" size="sm" onClick={() => handleAction(item.id, item.ntn, 'Approved')} className="bg-green-600 hover:bg-green-700">Approve</Button>
+                          <Button variant="destructive" size="sm" onClick={() => handleAction(item.id, item.ntn, 'Rejected')}>Reject</Button>
                         </>
                       )}
                     </TableCell>
                   </TableRow>
-                ))}
+                ))
+                ) : (
+                   <TableRow>
+                    <TableCell colSpan={5} className="text-center">No verification requests found.</TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </div>
@@ -167,13 +186,13 @@ export default function VerificationManagement() {
                 <DialogHeader>
                   <DialogTitle>Verification Details</DialogTitle>
                   <DialogDescription>
-                    Review the details for {selectedVerification.name}.
+                    Review the details for {selectedVerification.company_name}.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4 text-sm">
                     <div className="grid grid-cols-3 items-center gap-4">
                         <span className="text-muted-foreground">Company Name</span>
-                        <span className="col-span-2 font-medium">{selectedVerification.name}</span>
+                        <span className="col-span-2 font-medium">{selectedVerification.company_name}</span>
                     </div>
                      <div className="grid grid-cols-3 items-center gap-4">
                         <span className="text-muted-foreground">NTN</span>
@@ -181,17 +200,20 @@ export default function VerificationManagement() {
                     </div>
                      <div className="grid grid-cols-3 items-center gap-4">
                         <span className="text-muted-foreground">Address</span>
-                        <span className="col-span-2 font-medium">{selectedVerification.details.address}</span>
+                        <span className="col-span-2 font-medium">{selectedVerification.details?.address || 'N/A'}</span>
                     </div>
                      <div className="grid grid-cols-3 items-center gap-4">
                         <span className="text-muted-foreground">Contact Person</span>
-                        <span className="col-span-2 font-medium">{selectedVerification.details.contact}</span>
+                        <span className="col-span-2 font-medium">{selectedVerification.details?.contact || 'N/A'}</span>
                     </div>
                      <div className="grid grid-cols-3 items-center gap-4">
                         <span className="text-muted-foreground">Phone</span>
-                        <span className="col-span-2 font-medium">{selectedVerification.details.phone}</span>
+                        <span className="col-span-2 font-medium">{selectedVerification.details?.phone || 'N/A'}</span>
                     </div>
                 </div>
+                 <DialogClose asChild>
+                    <Button type="button" variant="secondary">Close</Button>
+                 </DialogClose>
               </DialogContent>
           )}
         </Dialog>

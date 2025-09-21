@@ -21,26 +21,29 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { CalendarIcon, UploadCloud, User, X } from 'lucide-react';
+import { CalendarIcon, UploadCloud, User, X, Loader2 } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Calendar } from './ui/calendar';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { Combobox } from './ui/combobox';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/lib/supabase-client';
 
 const formSchema = z.object({
-  fullName: z.string().min(1, 'Full name is required.'),
-  cnic: z.string().min(1, 'CNIC is required.'),
-  ntn: z.string().min(1, 'NTN is required.'),
-  address: z.string().min(1, 'Address is required.'),
-  businessName: z.string().min(1, 'Business name is required.'),
-  mobileNumber: z.string().min(1, 'Mobile number is required.'),
-  businessType: z.string({ required_error: 'Please select a business type.' }),
-  membershipType: z.string({ required_error: 'Please select a membership type.' }),
-  membershipCode: z.string().min(1, 'Membership code is required.'),
-  membershipExpiry: z.date({ required_error: 'Expiry date is required.' }),
+  full_name: z.string().min(1, 'Full name is required.'),
+  cnic: z.string().optional(),
+  ntn: z.string().optional(),
+  address: z.string().optional(),
+  business_name: z.string().optional(),
+  mobile_number: z.string().optional(),
+  business_type: z.string().optional(),
+  membership_type: z.string().optional(),
+  membership_code: z.string().optional(),
+  membership_expiry: z.date().optional(),
   photo: z.any().optional(),
 });
 
@@ -144,29 +147,100 @@ const businessTypes = [
 });
 
 export default function RegistrationManagement() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { toast } = useToast();
+  const memberId = searchParams.get('id');
+
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(!!memberId);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: '',
+      full_name: '',
       cnic: '',
       ntn: '',
       address: '',
-      businessName: '',
-      mobileNumber: '',
+      business_name: '',
+      mobile_number: '',
     },
   });
 
   const photoRef = form.register('photo');
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('Member Data:', values);
-    // You can add your toast notification here
-    form.reset();
-    setPhotoPreview(null);
-    setFileName(null);
+  useEffect(() => {
+    if (memberId) {
+      const fetchMember = async () => {
+        setIsFetching(true);
+        const { data, error } = await supabase.from('members').select('*').eq('id', memberId).single();
+        if (error) {
+          toast({ title: 'Error fetching member', description: error.message, variant: 'destructive' });
+        } else if (data) {
+          form.reset({
+            ...data,
+            membership_expiry: data.membership_expiry ? new Date(data.membership_expiry) : undefined,
+          });
+          if (data.photo_url) {
+            setPhotoPreview(data.photo_url);
+            setFileName(data.photo_url.split('/').pop()?.split('?')[0] ?? 'member-photo');
+          }
+        }
+        setIsFetching(false);
+      };
+      fetchMember();
+    }
+  }, [memberId, form, toast]);
+
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
+    let photoUrl = values.photo_url;
+    const photoFile = values.photo?.[0];
+
+    if (photoFile) {
+        const fileExt = photoFile.name.split('.').pop();
+        const filePath = `${Date.now()}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage.from('member_photos').upload(filePath, photoFile);
+
+        if (uploadError) {
+            toast({ title: 'Photo Upload Failed', description: uploadError.message, variant: 'destructive'});
+            setLoading(false);
+            return;
+        }
+
+        const { data: urlData } = supabase.storage.from('member_photos').getPublicUrl(filePath);
+        photoUrl = urlData.publicUrl;
+    }
+    
+    const { photo, ...dbValues } = { ...values, photo_url: photoUrl };
+
+    if (memberId) {
+      // Update existing member
+      const { error } = await supabase.from('members').update(dbValues).eq('id', memberId);
+      if (error) {
+        toast({ title: 'Update Failed', description: error.message, variant: 'destructive'});
+      } else {
+        toast({ title: 'Member Updated', description: 'Member details have been successfully updated.'});
+        router.push('/admin/dashboard?tab=users');
+      }
+    } else {
+      // Create new member
+      const { error } = await supabase.from('members').insert(dbValues);
+      if (error) {
+        toast({ title: 'Creation Failed', description: error.message, variant: 'destructive'});
+      } else {
+        toast({ title: 'Member Added', description: 'New member has been successfully created.'});
+        form.reset();
+        setPhotoPreview(null);
+        setFileName(null);
+        router.push('/admin/dashboard?tab=users');
+      }
+    }
+    
+    setLoading(false);
   }
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,7 +252,7 @@ export default function RegistrationManagement() {
         setPhotoPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
-      form.setValue('photo', file);
+      form.setValue('photo', e.target.files);
     }
   };
 
@@ -187,11 +261,20 @@ export default function RegistrationManagement() {
     setFileName(null);
     form.setValue('photo', null);
   };
+  
+  if (isFetching) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <span className="ml-2">Loading member details...</span>
+      </div>
+    );
+  }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Enter Member Details</CardTitle>
+        <CardTitle>{memberId ? 'Edit Member Details' : 'Enter Member Details'}</CardTitle>
         <CardDescription>
           Please fill in all required fields accurately. You can upload a member photo for easier
           identification.
@@ -205,7 +288,7 @@ export default function RegistrationManagement() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
-                    name="fullName"
+                    name="full_name"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Full Name</FormLabel>
@@ -246,7 +329,7 @@ export default function RegistrationManagement() {
                   />
                    <FormField
                     control={form.control}
-                    name="mobileNumber"
+                    name="mobile_number"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Mobile Number</FormLabel>
@@ -273,7 +356,7 @@ export default function RegistrationManagement() {
                 />
                  <FormField
                   control={form.control}
-                  name="businessName"
+                  name="business_name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Business Name</FormLabel>
@@ -287,7 +370,7 @@ export default function RegistrationManagement() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
-                    name="businessType"
+                    name="business_type"
                     render={({ field }) => (
                       <FormItem className="flex flex-col">
                         <FormLabel>Type of Business</FormLabel>
@@ -305,20 +388,20 @@ export default function RegistrationManagement() {
                   />
                   <FormField
                     control={form.control}
-                    name="membershipType"
+                    name="membership_type"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Membership Type</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select membership type" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="corporate">Corporate</SelectItem>
-                            <SelectItem value="associate">Associate</SelectItem>
-                            <SelectItem value="foreign">Foreign</SelectItem>
+                            <SelectItem value="Corporate">Corporate</SelectItem>
+                            <SelectItem value="Associate">Associate</SelectItem>
+                            <SelectItem value="Foreign">Foreign</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -329,7 +412,7 @@ export default function RegistrationManagement() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
-                    name="membershipCode"
+                    name="membership_code"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Membership Code</FormLabel>
@@ -342,7 +425,7 @@ export default function RegistrationManagement() {
                   />
                   <FormField
                     control={form.control}
-                    name="membershipExpiry"
+                    name="membership_expiry"
                     render={({ field }) => (
                       <FormItem className="flex flex-col">
                         <FormLabel>Membership Expiry</FormLabel>
@@ -370,9 +453,6 @@ export default function RegistrationManagement() {
                               mode="single"
                               selected={field.value}
                               onSelect={field.onChange}
-                              disabled={(date) =>
-                                date < new Date() || date < new Date('1900-01-01')
-                              }
                               initialFocus
                             />
                           </PopoverContent>
@@ -426,7 +506,7 @@ export default function RegistrationManagement() {
                 />
                 {photoPreview && (
                   <div className="flex items-center text-sm text-muted-foreground">
-                    <span>{fileName}</span>
+                    <span className="max-w-[150px] truncate">{fileName}</span>
                     <Button variant="ghost" size="icon" onClick={removePhoto} className="h-6 w-6 ml-2">
                        <X className="h-4 w-4" />
                     </Button>
@@ -434,8 +514,11 @@ export default function RegistrationManagement() {
                 )}
               </div>
             </div>
-            <div className="flex justify-end pt-4">
-              <Button type="submit" size="lg">Add Member</Button>
+            <div className="flex justify-end pt-4 gap-2">
+              <Button type="button" variant="outline" onClick={() => router.push('/admin/dashboard?tab=users')}>Cancel</Button>
+              <Button type="submit" size="lg" disabled={loading}>
+                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : memberId ? 'Save Changes' : 'Add Member'}
+              </Button>
             </div>
           </form>
         </Form>
@@ -443,5 +526,3 @@ export default function RegistrationManagement() {
     </Card>
   );
 }
-
-    
