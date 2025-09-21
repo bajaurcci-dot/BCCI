@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -19,7 +20,7 @@ const menuItems = [
   { label: 'About', href: '/about', icon: Info },
   { label: 'Services', href: '/services', icon: Briefcase },
   { label: 'Membership', href: '/membership', icon: Award },
-  { label: 'Compliances', href: '#', icon: FileCheck },
+  { label: 'Compliances', href: '/compliances', icon: FileCheck },
   { label: 'Download', href: '#', icon: Download },
   { label: 'Gallery', href: '#', icon: ImageIcon },
   { label: 'Contact Us', href: '/contact', icon: Mail },
