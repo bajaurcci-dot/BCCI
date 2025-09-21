@@ -1,7 +1,7 @@
 'use client';
 
 import { Badge } from './ui/badge';
-import { Separator } from './ui/separator';
+import { Building, Rocket } from 'lucide-react';
 
 const IntroSection = () => {
   return (
@@ -19,10 +19,15 @@ const IntroSection = () => {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-foreground font-headline">What We Do</h3>
-            <p className="text-muted-foreground text-lg">
+        <div className="grid md:grid-cols-2 gap-8 items-stretch">
+          <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all flex flex-col">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="bg-primary/10 p-3 rounded-full">
+                <Building className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground font-headline">What We Do</h3>
+            </div>
+            <p className="text-muted-foreground text-lg flex-grow">
               The Bajaur Chamber of Commerce & Industry (BCCI) is dedicated to fostering economic
               growth and prosperity within the Bajaur District. We support local businesses by
               providing essential services such as visa facilitation, document attestation, and
@@ -30,11 +35,14 @@ const IntroSection = () => {
               create a thriving business environment for our members and the community.
             </p>
           </div>
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-foreground font-headline">
-              Our Origins
-            </h3>
-            <p className="text-muted-foreground text-lg">
+          <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all flex flex-col">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="bg-primary/10 p-3 rounded-full">
+                <Rocket className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground font-headline">Our Origins</h3>
+            </div>
+            <p className="text-muted-foreground text-lg flex-grow">
               The BCCI was established to address the need for a unified platform to represent the
               interests of the business community in Bajaur. What started as a small initiative
               has grown into a vital resource for local entrepreneurs, driving economic progress
