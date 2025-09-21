@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { Menu, Info, Briefcase, Award, FileCheck, Download, ImageIcon, Mail } from 'lucide-react';
 import { Button } from './ui/button';
 import {
@@ -27,7 +28,7 @@ const menuItems = [
 export default function TopNavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const logoImage = PlaceHolderImages.find(img => img.id === 'logo');
-  const [activeItem, setActiveItem] = useState('About');
+  const pathname = usePathname();
 
   return (
     <header className="w-full p-4">
@@ -94,12 +95,11 @@ export default function TopNavBar() {
                         <Link
                           href={item.href}
                           className={`flex items-center gap-4 rounded-md p-3 text-lg font-medium transition-colors ${
-                            activeItem === item.label
+                            pathname === item.href
                               ? 'bg-primary/10 text-primary'
                               : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                           }`}
                           onClick={() => {
-                            setActiveItem(item.label);
                             setIsMenuOpen(false);
                           }}
                         >
@@ -125,9 +125,8 @@ export default function TopNavBar() {
               <Link
                 key={item.label}
                 href={item.href}
-                onClick={() => setActiveItem(item.label)}
                 className={`text-base font-medium transition-all duration-500 ease-in-out transform hover:scale-110 ${
-                  activeItem === item.label
+                  pathname === item.href
                     ? 'text-primary scale-110'
                     : 'text-muted-foreground hover:text-primary/90'
                 }`}
