@@ -33,20 +33,20 @@ const contactInfo = [
   {
     icon: MapPin,
     title: 'Address',
-    value: 'Chamber House, Aiwan-e-Tijarat Road, Karachi, Pakistan',
+    value: 'Khar, District Bajaur',
     href: 'https://maps.app.goo.gl/82hQdwoCeyAgj5iu5',
   },
   {
     icon: Mail,
     title: 'Email',
-    value: 'info@bcci.com.pk',
-    href: 'mailto:info@bcci.com.pk',
+    value: 'contact@bajaurcci.com.pk',
+    href: 'mailto:contact@bajaurcci.com.pk',
   },
   {
     icon: Phone,
     title: 'Phone',
-    value: '+92 21 99218001-09',
-    href: 'tel:+922199218001',
+    value: '+92 308 2275587',
+    href: 'tel:+923082275587',
   },
 ];
 
