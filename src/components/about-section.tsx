@@ -23,7 +23,7 @@ const AboutSection = () => {
   return (
     <section className="py-20 md:py-32 bg-background overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid md:grid-cols-2 gap-4 items-center">
+        <div className="grid md:grid-cols-2 items-center">
           <div className="relative flex justify-center items-center">
              {founderImage && (
                 <div className="relative w-[350px] h-[450px] rounded-2xl overflow-hidden shadow-2xl">
@@ -38,7 +38,7 @@ const AboutSection = () => {
               )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col ml-4">
             <Badge
               variant="outline"
               className="py-1 px-4 self-start border-primary/50 text-primary font-semibold"
