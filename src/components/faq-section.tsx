@@ -10,7 +10,7 @@ import { Badge } from './ui/badge';
 
 const faqsLeft = [
   {
-    question: 'What is the Bajaur Chamber of Commerce & Industry (BCCI)?',
+    question: 'What is the Bajaur Chamber of Commerce & Industry?',
     answer:
       'BCCI is a registered chamber that promotes trade, supports local businesses, and drives economic growth in Bajaur District.',
   },
