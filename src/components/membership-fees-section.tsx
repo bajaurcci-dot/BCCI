@@ -94,7 +94,7 @@ const supportServices = [
   {
     id: 15,
     name: 'Western Countries Visa Letter (Owners)',
-    description: 'Europe/USA/UK/Canada/Australia/Africa',
+    description: 'All Countries',
     price: 'Rs.10,000/-',
   },
   {
@@ -112,7 +112,7 @@ const supportServices = [
   {
     id: 18,
     name: 'Western Countries Invitation Letter',
-    description: 'Europe/USA/Canada/UK/Australia/Africa',
+    description: 'All Countries',
     price: 'Rs.8,000/-',
   },
   {
@@ -150,7 +150,7 @@ const FeeList = ({ data }: { data: typeof membershipServices | typeof supportSer
       >
         <div className="flex items-start gap-3 sm:gap-4">
           <div className="text-primary font-bold w-6 text-center text-sm pt-0.5">{item.id}</div>
-          <div className="flex flex-col items-start">
+          <div className="flex-1">
             <p className="font-semibold text-foreground text-sm leading-snug">{item.name}</p>
             <p className="text-xs text-muted-foreground">{item.description}</p>
           </div>
