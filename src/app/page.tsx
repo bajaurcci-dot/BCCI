@@ -7,6 +7,7 @@ import TeamSection from '@/components/team-section';
 import BentoSection from '@/components/bento-section';
 import Footer from '@/components/footer';
 import FaqSection from '@/components/faq-section';
+import VacancyBanner from '@/components/vacancy-banner';
 
 const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
 
@@ -15,6 +16,7 @@ export default function Home() {
     <div className="relative w-full min-h-screen bg-background">
       <div className="absolute inset-0 bg-grid-pattern"></div>
       <div className="relative z-10 flex flex-col min-h-screen">
+        <VacancyBanner />
         <TopNavBar />
         <main className="flex-grow">
           <HeroSection />
