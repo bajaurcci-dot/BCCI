@@ -1,7 +1,10 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { supabase } from '@/lib/supabase-client';
 import {
   Users,
   ShieldCheck,
@@ -12,13 +15,13 @@ import {
   LogOut,
   Menu,
   LayoutDashboard,
+  Loader2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 const navItems = [
   { href: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -31,12 +34,53 @@ const navItems = [
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const { toast } = useToast();
   const logoImage = PlaceHolderImages.find((img) => img.id === 'logo');
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const activeTab = searchParams.get('tab') || 'dashboard';
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push('/admin');
+      } else {
+        setLoading(false);
+      }
+    };
+
+    checkSession();
+  }, [router]);
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast({
+        title: 'Logout Failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } else {
+      toast({
+        title: 'Logged Out',
+        description: 'You have been successfully logged out.',
+      });
+      router.push('/admin');
+    }
+  };
+  
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <Loader2 className="h-16 w-16 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   const NavContent = () => (
     <div className="flex h-full flex-col">
@@ -57,7 +101,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {navItems.map((item) => (
           <Link
             key={item.label}
-            href={`/admin?tab=${item.href}`}
+            href={`/admin/dashboard?tab=${item.href}`}
             className={cn(
               'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-muted hover:text-primary',
               activeTab === item.href && 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
@@ -70,7 +114,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         ))}
       </nav>
       <div className="mt-auto p-4 border-t">
-        <Button variant="ghost" className="w-full justify-start">
+        <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
           Logout
         </Button>
