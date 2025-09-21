@@ -150,7 +150,7 @@ const FeeList = ({ data }: { data: typeof membershipServices | typeof supportSer
       >
         <div className="flex items-center gap-4">
           <div className="text-primary font-bold w-6 text-center">{item.id}</div>
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col items-start text-left">
             <p className="font-semibold text-foreground">{item.name}</p>
             <p className="text-sm text-muted-foreground">{item.description}</p>
           </div>
@@ -172,10 +172,10 @@ export default function MembershipFeesSection() {
           >
             Fee Structure
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold font-headline mt-4 mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold font-headline mt-4 mb-6">
             BCCI Membership Fee & Service Charges
           </h2>
-          <p className="max-w-3xl mx-auto text-muted-foreground text-lg">
+          <p className="max-w-3xl mx-auto text-base md:text-lg text-muted-foreground">
             Find a comprehensive list of all our membership and support service charges below.
           </p>
         </div>
