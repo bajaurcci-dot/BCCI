@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import HeroSection from '@/components/hero-section';
 import TeamSection from '@/components/team-section';
 import BentoSection from '@/components/bento-section';
+import Footer from '@/components/footer';
 
 const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
 
@@ -18,6 +19,7 @@ export default function Home() {
           <TeamSection />
           <BentoSection />
         </main>
+        <Footer />
       </div>
     </div>
   );
