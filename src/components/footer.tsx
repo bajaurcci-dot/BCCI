@@ -51,7 +51,7 @@ const socialMedia = [
 ];
 
 const Footer = () => {
-  const logoImage = PlaceHolderImages.find((img) => img.id === 'logo');
+  const logoImage = PlaceHolderImages.find((img) => img.id === 'footer-logo');
   const newsletterIllustration = PlaceHolderImages.find((img) => img.id === 'newsletter-illustration');
 
   return (

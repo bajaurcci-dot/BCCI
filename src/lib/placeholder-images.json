@@ -8,6 +8,12 @@
       "imageHint": "abstract logo"
     },
     {
+      "id": "footer-logo",
+      "description": "Footer Company Logo",
+      "imageUrl": "https://i.postimg.cc/7Z352jVv/Untitled-design-6.png",
+      "imageHint": "emblem logo"
+    },
+    {
       "id": "hero-bg",
       "description": "Abstract grid background",
       "imageUrl": "https://picsum.photos/seed/hero-bg/1200/800",
