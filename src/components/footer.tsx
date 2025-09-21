@@ -171,22 +171,6 @@ const Footer = () => {
             </div>
           </div>
       </div>
-      <div className="bg-gray-800 text-gray-400">
-        <div className="container mx-auto px-4 md:px-6 py-4 flex flex-col sm:flex-row justify-between items-center text-sm">
-          <p>&copy; {new Date().getFullYear()} Bajaur Chamber of Commerce & Industry. All rights reserved.</p>
-          <p>
-            Developed By{' '}
-            <a
-              href="https://umarhashmi.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-white hover:underline"
-            >
-              Umar Hashmi
-            </a>
-          </p>
-        </div>
-      </div>
     </footer>
   );
 };
