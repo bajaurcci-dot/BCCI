@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/tooltip';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
+import { BorderBeam } from '@/components/ui/border-beam';
 
 const HeroSection = () => {
   const heroBg = PlaceHolderImages.find((img) => img.id === 'hero-bg-alt');
@@ -203,18 +204,21 @@ const HeroSection = () => {
                       icon?.imageUrl && (
                         <Tooltip key={index}>
                           <TooltipTrigger asChild>
-                            <a
-                              href="#"
-                              className="group flex aspect-square h-16 w-16 items-center justify-center rounded-md border border-input bg-background p-0 transition-all hover:scale-110 hover:border-primary"
-                            >
-                              <Image
-                                src={icon.imageUrl}
-                                alt={icon.description || 'icon'}
-                                width={32}
-                                height={32}
-                                className="h-8 w-auto saturate-0 transition-all group-hover:saturate-100"
-                              />
-                            </a>
+                            <div className="relative">
+                              <BorderBeam colorFrom="#33d65b" colorTo="#1a9c3b" />
+                              <a
+                                href="#"
+                                className="group flex aspect-square h-16 w-16 items-center justify-center rounded-md border border-input bg-background p-0 transition-all hover:scale-110 hover:border-primary"
+                              >
+                                <Image
+                                  src={icon.imageUrl}
+                                  alt={icon.description || 'icon'}
+                                  width={32}
+                                  height={32}
+                                  className="h-8 w-auto saturate-0 transition-all group-hover:saturate-100"
+                                />
+                              </a>
+                            </div>
                           </TooltipTrigger>
                           <TooltipContent>
                             <p>{icon.name}</p>
