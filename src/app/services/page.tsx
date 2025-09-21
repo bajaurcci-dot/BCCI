@@ -5,7 +5,6 @@ import Footer from '@/components/footer';
 import ServicesIntroSection from '@/components/services-intro-section';
 import ServicesListSection from '@/components/services-list-section';
 import AdditionalServicesSection from '@/components/additional-services-section';
-import CtaSection from '@/components/cta-section';
 
 const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
 
@@ -19,7 +18,6 @@ export default function ServicesPage() {
           <ServicesIntroSection />
           <ServicesListSection />
           <AdditionalServicesSection />
-          <CtaSection />
         </main>
         <Footer />
       </div>
