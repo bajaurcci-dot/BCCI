@@ -16,23 +16,26 @@ import {
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '#users', icon: Users, label: 'User Management' },
-  { href: '#verification', icon: ShieldCheck, label: 'Member Verification' },
-  { href: '#registration', icon: FileText, label: 'Online Registration' },
-  { href: '#vacancies', icon: Briefcase, label: 'Vacancy Management' },
-  { href: '#permissions', icon: Settings, label: 'Permissions' },
-  { href: '#activity', icon: Activity, label: 'Activity Log' },
+  { href: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: 'users', icon: Users, label: 'User Management' },
+  { href: 'verification', icon: ShieldCheck, label: 'Member Verification' },
+  { href: 'registration', icon: FileText, label: 'Online Registration' },
+  { href: 'vacancies', icon: Briefcase, label: 'Vacancy Management' },
+  { href: 'permissions', icon: Settings, label: 'Permissions' },
+  { href: 'activity', icon: Activity, label: 'Activity Log' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const logoImage = PlaceHolderImages.find((img) => img.id === 'logo');
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get('tab') || 'dashboard';
+
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const NavContent = () => (
@@ -54,10 +57,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {navItems.map((item) => (
           <Link
             key={item.label}
-            href={item.href}
+            href={`/admin?tab=${item.href}`}
             className={cn(
               'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-muted hover:text-primary',
-              pathname === item.href && 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
+              activeTab === item.href && 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
             )}
             onClick={() => isSheetOpen && setIsSheetOpen(false)}
           >

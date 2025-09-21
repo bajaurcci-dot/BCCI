@@ -1,5 +1,6 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import AdminLayout from '@/components/admin-layout';
 import UserManagement from '@/components/user-management';
 import VerificationManagement from '@/components/verification-management';
@@ -9,24 +10,28 @@ import PermissionsManagement from '@/components/permissions-management';
 import ActivityLog from '@/components/activity-log';
 import DashboardOverview from '@/components/dashboard-overview';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Suspense } from 'react';
 
-export default function AdminPage() {
+function AdminPageComponent() {
+  const searchParams = useSearchParams();
+  const tab = searchParams.get('tab') || 'dashboard';
+
   return (
     <AdminLayout>
       <div className="flex-1 space-y-4 p-4 sm:p-8 pt-6">
-        <div className="flex items-center justify-between space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-        </div>
-        <Tabs defaultValue="dashboard" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="users">User Management</TabsTrigger>
-            <TabsTrigger value="verification">Member Verification</TabsTrigger>
-            <TabsTrigger value="registration">Online Registration</TabsTrigger>
-            <TabsTrigger value="vacancies">Vacancy Management</TabsTrigger>
-            <TabsTrigger value="permissions">Permissions</TabsTrigger>
-            <TabsTrigger value="activity">Activity Log</TabsTrigger>
-          </TabsList>
+        <Tabs value={tab} className="space-y-4">
+          <div className="flex items-center justify-between space-y-2">
+            <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+            <TabsList>
+              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+              <TabsTrigger value="users">User Management</TabsTrigger>
+              <TabsTrigger value="verification">Member Verification</TabsTrigger>
+              <TabsTrigger value="registration">Online Registration</TabsTrigger>
+              <TabsTrigger value="vacancies">Vacancy Management</TabsTrigger>
+              <TabsTrigger value="permissions">Permissions</TabsTrigger>
+              <TabsTrigger value="activity">Activity Log</TabsTrigger>
+            </TabsList>
+          </div>
           <TabsContent value="dashboard" className="space-y-4">
             <DashboardOverview />
           </TabsContent>
@@ -51,5 +56,13 @@ export default function AdminPage() {
         </Tabs>
       </div>
     </AdminLayout>
+  );
+}
+
+export default function AdminPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AdminPageComponent />
+    </Suspense>
   );
 }
