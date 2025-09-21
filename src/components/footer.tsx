@@ -110,20 +110,6 @@ const Footer = () => {
                  <p className="text-muted-foreground">
                   The Bajaur Chamber of Commerce & Industry supports economic growth in Bajaur District by advocating for local businesses, enhancing trade, and fostering a thriving business environment.
                  </p>
-                  <div className="flex space-x-4 pt-2">
-                    {socialMedia.map((social) => (
-                      <Link
-                        key={social.name}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-primary transition-transform duration-300 hover:scale-110"
-                        aria-label={social.name}
-                      >
-                        {social.icon}
-                      </Link>
-                    ))}
-                  </div>
               </div>
 
               <div>
@@ -167,6 +153,20 @@ const Footer = () => {
                       <MapPin className="h-5 w-5 text-primary" />
                       <span>Khar, District Bajaur</span>
                     </p>
+                </div>
+                <div className="flex space-x-4 pt-4">
+                  {socialMedia.map((social) => (
+                    <Link
+                      key={social.name}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-transform duration-300 hover:scale-110"
+                      aria-label={social.name}
+                    >
+                      {social.icon}
+                    </Link>
+                  ))}
                 </div>
               </div>
 
