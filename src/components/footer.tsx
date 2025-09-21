@@ -60,7 +60,7 @@ const Footer = () => {
     <footer className="bg-background">
       <div className="container mx-auto px-4 md:px-6 relative z-10 -mb-20">
         <div className="max-w-5xl mx-auto">
-          <div className="bg-blue-600 rounded-2xl p-8 shadow-2xl">
+          <div className="bg-primary rounded-2xl p-8 shadow-2xl">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                   <div className="flex justify-center md:justify-start">
                       {newsletterIllustration && (
@@ -74,15 +74,15 @@ const Footer = () => {
                           />
                       )}
                   </div>
-                  <div className="text-white text-center md:text-left">
+                  <div className="text-primary-foreground text-center md:text-left">
                       <h2 className="text-2xl md:text-3xl font-bold mb-4">Subscribe to our newsletter for the latest updates and insights.</h2>
-                      <p className="mb-6 text-blue-100">Stay ahead with the latest updates, insights, and events from Bajaur Chamber of Commerce.</p>
+                      <p className="mb-6 text-primary-foreground/80">Stay ahead with the latest updates, insights, and events from Bajaur Chamber of Commerce.</p>
                       <div className="flex flex-col sm:flex-row gap-2">
                         <div className="relative flex-grow">
-                          <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                          <Input type="email" placeholder="Enter your email" className="pl-10 w-full bg-blue-700/50 border-blue-500 text-white placeholder:text-blue-200" />
+                          <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-foreground/60" />
+                          <Input type="email" placeholder="Enter your email" className="pl-10 w-full bg-primary/80 border-primary/50 text-primary-foreground placeholder:text-primary-foreground/70" />
                         </div>
-                          <Button variant="secondary" className="bg-white text-blue-600 hover:bg-gray-200">
+                          <Button variant="secondary" className="bg-white text-primary hover:bg-gray-200">
                             Subscribe
                           </Button>
                       </div>
