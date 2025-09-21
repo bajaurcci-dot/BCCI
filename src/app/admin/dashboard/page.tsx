@@ -8,6 +8,7 @@ import RegistrationManagement from '@/components/registration-management';
 import VacancyManagement from '@/components/vacancy-management';
 import PermissionsManagement from '@/components/permissions-management';
 import ActivityLog from '@/components/activity-log';
+import DownloadsManagement from '@/components/downloads-management';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
@@ -27,6 +28,8 @@ function AdminDashboardContent() {
         return <RegistrationManagement />;
       case 'vacancies':
         return <VacancyManagement />;
+      case 'downloads':
+        return <DownloadsManagement />;
       case 'permissions':
         return <PermissionsManagement />;
       case 'activity':
