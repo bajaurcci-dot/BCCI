@@ -79,7 +79,7 @@ const Footer = () => {
                       <div className="flex flex-col sm:flex-row gap-2">
                         <div className="relative flex-grow">
                           <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-foreground/60" />
-                          <Input type="email" placeholder="Enter your email" className="pl-10 w-full bg-primary/80 border-primary/50 text-primary-foreground placeholder:text-primary-foreground/70" />
+                          <Input type="email" placeholder="Enter your email" className="pl-10 w-full bg-primary/80 border-white/50 text-primary-foreground placeholder:text-primary-foreground/70" />
                         </div>
                           <Button variant="secondary" className="bg-white text-primary hover:bg-gray-200">
                             Subscribe
