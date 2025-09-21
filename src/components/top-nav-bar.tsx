@@ -95,7 +95,7 @@ export default function TopNavBar() {
                         <Link
                           href={item.href}
                           className={`flex items-center gap-4 rounded-md p-3 text-lg font-medium transition-colors ${
-                            pathname === item.href
+                            pathname === item.href && item.href !== '/'
                               ? 'bg-primary/10 text-primary'
                               : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                           }`}
@@ -126,7 +126,7 @@ export default function TopNavBar() {
                 key={item.label}
                 href={item.href}
                 className={`text-base font-medium transition-all duration-500 ease-in-out transform hover:scale-110 ${
-                  pathname === item.href
+                  pathname === item.href && item.href !== '/'
                     ? 'text-primary scale-110'
                     : 'text-muted-foreground hover:text-primary/90'
                 }`}
