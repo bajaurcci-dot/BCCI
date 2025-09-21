@@ -17,14 +17,6 @@ export default function AdminPage() {
           <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
         </div>
         <Tabs defaultValue="users" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="users">User Management</TabsTrigger>
-            <TabsTrigger value="verification">Member Verification</TabsTrigger>
-            <TabsTrigger value="registration">Online Registration</TabsTrigger>
-            <TabsTrigger value="vacancies">Vacancy Management</TabsTrigger>
-            <TabsTrigger value="permissions">Permissions</TabsTrigger>
-            <TabsTrigger value="activity">Activity Log</TabsTrigger>
-          </TabsList>
           <TabsContent value="users" className="space-y-4">
             <UserManagement />
           </TabsContent>
