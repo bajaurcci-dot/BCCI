@@ -13,6 +13,7 @@ const images = [
   'https://i.postimg.cc/xCN4J9SY/7.jpg',
   'https://i.postimg.cc/kGrhWLnS/8.jpg',
   'https://i.postimg.cc/L4fWm4T3/10.jpg',
+  'https://i.postimg.cc/k54ZCx12/5.jpg',
 ];
 
 const GallerySection = () => {
