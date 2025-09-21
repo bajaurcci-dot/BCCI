@@ -39,6 +39,9 @@ const formSchema = z.object({
   membershipType: z.string({
     required_error: 'Please select a membership type.',
   }),
+  photo: z
+    .any()
+    .refine((files) => files?.length == 1, 'Photo is required.')
 });
 
 const supportContacts = [
@@ -87,8 +90,11 @@ export default function AdditionalServicesSection() {
       companyName: '',
       email: '',
       phone: '',
+      photo: undefined,
     },
   });
+  
+  const photoRef = form.register("photo");
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log('Registration Data:', values);
@@ -179,6 +185,19 @@ export default function AdditionalServicesSection() {
                             <SelectItem value="foreign">Foreign Member Class</SelectItem>
                           </SelectContent>
                         </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="photo"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Your Photo</FormLabel>
+                        <FormControl>
+                          <Input type="file" accept="image/*" {...photoRef} />
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
