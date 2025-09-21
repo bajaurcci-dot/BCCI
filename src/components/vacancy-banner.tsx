@@ -9,18 +9,19 @@ import { useVacancies } from '@/hooks/use-vacancies';
 export default function VacancyBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const [currentVacancyIndex, setCurrentVacancyIndex] = useState(0);
-  const { vacancies } = useVacancies();
+  const { vacancies, loading } = useVacancies();
 
   const openVacancies = vacancies.filter((v) => v.status === 'Open');
 
   useEffect(() => {
+    if (loading) return; // Don't show banner while loading
     const wasDismissed = sessionStorage.getItem('vacancyBannerDismissed') === 'true';
     if (openVacancies.length > 0 && !wasDismissed) {
       setIsVisible(true);
     } else {
       setIsVisible(false);
     }
-  }, [openVacancies.length]);
+  }, [openVacancies.length, loading]);
 
   useEffect(() => {
     if (openVacancies.length > 1) {
@@ -40,7 +41,7 @@ export default function VacancyBanner() {
     }
   };
 
-  if (!isVisible || openVacancies.length === 0) {
+  if (!isVisible || openVacancies.length === 0 || loading) {
     return null;
   }
 

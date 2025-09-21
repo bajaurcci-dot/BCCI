@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -10,7 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, Loader2 } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import {
@@ -36,20 +36,41 @@ import {
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { applicantsList } from '@/lib/vacancies';
-import { useVacancies } from '@/hooks/use-vacancies';
-import type { Vacancy } from '@/hooks/use-vacancies';
+import { supabase } from '@/lib/supabase-client';
+import { applicantsList } from '@/lib/vacancies'; // This will be removed in a later step if we make applicants dynamic
+
+export type Vacancy = {
+  id: number;
+  title: string;
+  status: 'Open' | 'Closed';
+  created_at: string;
+};
 
 export default function VacancyManagement() {
   const { toast } = useToast();
-  const { vacancies, addVacancy, updateVacancy, deleteVacancy } = useVacancies();
+  const [vacancies, setVacancies] = useState<Vacancy[]>([]);
+  const [loading, setLoading] = useState(true);
   
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isApplicantsOpen, setIsApplicantsOpen] = useState(false);
   const [selectedVacancy, setSelectedVacancy] = useState<Vacancy | null>(null);
   const [currentApplicants, setCurrentApplicants] = useState<any[]>([]);
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    const fetchVacancies = async () => {
+      setLoading(true);
+      const { data, error } = await supabase.from('vacancies').select('*').order('created_at', { ascending: false });
+      if (error) {
+        toast({ title: 'Error fetching vacancies', description: error.message, variant: 'destructive' });
+      } else {
+        setVacancies(data as Vacancy[]);
+      }
+      setLoading(false);
+    };
+    fetchVacancies();
+  }, [toast]);
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const title = formData.get('title') as string;
@@ -57,12 +78,22 @@ export default function VacancyManagement() {
 
     if (selectedVacancy) {
       // Edit existing
-      updateVacancy(selectedVacancy.title, { title, status, applicants: selectedVacancy.applicants });
-      toast({ title: 'Vacancy Updated', description: `The vacancy "${title}" has been updated.` });
+      const { data, error } = await supabase.from('vacancies').update({ title, status }).eq('id', selectedVacancy.id).select().single();
+      if (error) {
+        toast({ title: 'Update Failed', description: error.message, variant: 'destructive' });
+      } else {
+        setVacancies(vacancies.map(v => v.id === selectedVacancy.id ? data as Vacancy : v));
+        toast({ title: 'Vacancy Updated', description: `The vacancy "${title}" has been updated.` });
+      }
     } else {
       // Add new
-      addVacancy({ title, status, applicants: 0 });
-      toast({ title: 'Vacancy Added', description: `The vacancy "${title}" has been created.` });
+      const { data, error } = await supabase.from('vacancies').insert({ title, status }).select().single();
+      if (error) {
+        toast({ title: 'Creation Failed', description: error.message, variant: 'destructive' });
+      } else if (data) {
+        setVacancies([data as Vacancy, ...vacancies]);
+        toast({ title: 'Vacancy Added', description: `The vacancy "${title}" has been created.` });
+      }
     }
 
     setIsFormOpen(false);
@@ -74,13 +105,19 @@ export default function VacancyManagement() {
     setIsFormOpen(true);
   };
 
-  const handleDeleteConfirm = (title: string) => {
-    deleteVacancy(title);
-    toast({
-      title: 'Vacancy Deleted',
-      description: `The vacancy "${title}" has been deleted.`,
-      variant: 'destructive',
-    });
+  const handleDeleteConfirm = async (vacancyId: number) => {
+    const { error } = await supabase.from('vacancies').delete().eq('id', vacancyId);
+    if (error) {
+        toast({ title: 'Deletion Failed', description: error.message, variant: 'destructive' });
+    } else {
+        const deletedVacancy = vacancies.find(v => v.id === vacancyId);
+        setVacancies(vacancies.filter(v => v.id !== vacancyId));
+        toast({
+          title: 'Vacancy Deleted',
+          description: `The vacancy "${deletedVacancy?.title}" has been deleted.`,
+          variant: 'destructive',
+        });
+    }
   };
 
   const viewApplicants = (vacancy: Vacancy) => {
@@ -114,14 +151,20 @@ export default function VacancyManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {vacancies.map((vacancy) => (
-                <TableRow key={vacancy.title}>
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center h-24">
+                    <Loader2 className="mx-auto h-6 w-6 animate-spin" />
+                  </TableCell>
+                </TableRow>
+              ) : vacancies.map((vacancy) => (
+                <TableRow key={vacancy.id}>
                   <TableCell className="font-medium">{vacancy.title}</TableCell>
                   <TableCell>{(applicantsList[vacancy.title as keyof typeof applicantsList] || []).length}</TableCell>
                   <TableCell>
                     <Badge
                       variant={vacancy.status === 'Open' ? 'default' : 'secondary'}
-                      className={vacancy.status === 'Open' ? 'bg-green-500' : ''}
+                      className={vacancy.status === 'Open' ? 'bg-green-500 hover:bg-green-600' : ''}
                     >
                       {vacancy.status}
                     </Badge>
@@ -152,7 +195,7 @@ export default function VacancyManagement() {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDeleteConfirm(vacancy.title)}>
+                          <AlertDialogAction onClick={() => handleDeleteConfirm(vacancy.id)}>
                             Delete
                           </AlertDialogAction>
                         </AlertDialogFooter>
@@ -192,7 +235,7 @@ export default function VacancyManagement() {
                 <select
                   id="status"
                   name="status"
-                  defaultValue={selectedVacancy?.status}
+                  defaultValue={selectedVacancy?.status || 'Open'}
                   className="col-span-3 border h-10 border-input rounded-md px-3 py-2 text-sm bg-transparent"
                 >
                   <option value="Open">Open</option>
