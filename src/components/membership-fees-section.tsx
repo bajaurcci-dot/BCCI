@@ -42,11 +42,12 @@ const FeeTable = ({ title, data }: { title: string; data: typeof membershipServi
                     <div className="text-right">Charges</div>
                 </div>
                 <div className="divide-y divide-border/50">
-                    {data.map((item, index) => (
+                    {data.map((item) => (
                         <div key={item.id} className="grid grid-cols-[auto_1fr_auto] md:grid-cols-[auto_1fr_1fr_auto] gap-4 py-4 px-4 items-center transition-colors hover:bg-muted/50">
                             <div className="font-semibold text-primary">{item.id}</div>
                             <div>
                                 <p className="font-semibold text-foreground">{item.name}</p>
+
                                 <p className="md:hidden text-sm text-muted-foreground">{item.description}</p>
                             </div>
                             <div className="hidden md:block text-muted-foreground">{item.description}</div>
