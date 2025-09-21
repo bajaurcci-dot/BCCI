@@ -21,28 +21,17 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Phone, Mail, UploadCloud, X, MessageSquare, CheckCircle, BrainCircuit } from 'lucide-react';
+import { Phone, Mail, UploadCloud, X, MessageSquare, CheckCircle, BrainCircuit, Loader2 } from 'lucide-react';
 import { useState } from 'react';
+import { supabase } from '@/lib/supabase-client';
 
 const formSchema = z.object({
-  fullName: z.string().min(1, {
-    message: 'Full name is required.',
-  }),
-  companyName: z.string().min(1, {
-    message: 'Company name is required.',
-  }),
-  email: z.string().email({
-    message: 'Please enter a valid email address.',
-  }),
-  phone: z.string().min(1, {
-    message: 'Phone number is required.',
-  }),
-  membershipType: z.string({
-    required_error: 'Please select a membership type.',
-  }),
-  photo: z
-    .any()
-    .refine((files) => files?.length == 1, 'Photo is required.')
+  fullName: z.string().min(1, { message: 'Full name is required.' }),
+  companyName: z.string().min(1, { message: 'Company name is required.' }),
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+  phone: z.string().min(1, { message: 'Phone number is required.' }),
+  membershipType: z.string({ required_error: 'Please select a membership type.' }),
+  photo: z.any().optional(),
 });
 
 const supportContacts = [
@@ -102,6 +91,7 @@ const supportProcedure = [
 export default function AdditionalServicesSection() {
   const { toast } = useToast();
   const [fileName, setFileName] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -117,14 +107,46 @@ export default function AdditionalServicesSection() {
   
   const photoRef = form.register("photo");
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('Registration Data:', values);
-    toast({
-      title: 'Registration Submitted!',
-      description: 'Thank you for registering. We will be in touch shortly.',
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
+    let photoUrl = null;
+    const photoFile = values.photo?.[0];
+
+    if (photoFile) {
+        const fileExt = photoFile.name.split('.').pop();
+        const filePath = `verification_photos/${Date.now()}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage.from('member_photos').upload(filePath, photoFile);
+
+        if (uploadError) {
+            toast({ title: 'Photo Upload Failed', description: uploadError.message, variant: 'destructive'});
+            setLoading(false);
+            return;
+        }
+
+        const { data: urlData } = supabase.storage.from('member_photos').getPublicUrl(filePath);
+        photoUrl = urlData.publicUrl;
+    }
+    
+    const { photo, companyName, ...details } = { ...values, photo_url: photoUrl };
+
+    const { error } = await supabase.from('verification_requests').insert({
+        company_name: companyName,
+        ntn: null, // NTN is not in this form
+        status: 'Pending',
+        details: details
     });
-    form.reset();
-    setFileName(null);
+
+    if (error) {
+        toast({ title: 'Submission Failed', description: error.message, variant: 'destructive'});
+    } else {
+        toast({
+            title: 'Registration Submitted!',
+            description: 'Thank you for registering. Your request is pending approval.',
+        });
+        form.reset();
+        setFileName(null);
+    }
+    setLoading(false);
   }
 
   return (
@@ -144,7 +166,7 @@ export default function AdditionalServicesSection() {
                       <FormItem>
                         <FormLabel>Full Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Your Full Name" {...field} />
+                          <Input placeholder="Your Full Name" {...field} disabled={loading}/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -157,7 +179,7 @@ export default function AdditionalServicesSection() {
                       <FormItem>
                         <FormLabel>Company Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Your Company's Name" {...field} />
+                          <Input placeholder="Your Company's Name" {...field} disabled={loading}/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -170,7 +192,7 @@ export default function AdditionalServicesSection() {
                       <FormItem>
                         <FormLabel>Email Address</FormLabel>
                         <FormControl>
-                          <Input placeholder="your.email@example.com" {...field} />
+                          <Input placeholder="your.email@example.com" {...field} disabled={loading}/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -183,7 +205,7 @@ export default function AdditionalServicesSection() {
                       <FormItem>
                         <FormLabel>Phone Number</FormLabel>
                         <FormControl>
-                          <Input placeholder="Your Phone Number" {...field} />
+                          <Input placeholder="Your Phone Number" {...field} disabled={loading}/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -195,7 +217,7 @@ export default function AdditionalServicesSection() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Membership Type</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select a membership type" />
@@ -228,6 +250,7 @@ export default function AdditionalServicesSection() {
                                 field.onChange(e.target.files);
                                 setFileName(e.target.files?.[0]?.name ?? null);
                               }}
+                              disabled={loading}
                             />
                             <div className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg bg-background hover:bg-muted transition-colors">
                               {fileName ? (
@@ -241,6 +264,7 @@ export default function AdditionalServicesSection() {
                                       form.setValue('photo', null);
                                       setFileName(null);
                                     }}
+                                    disabled={loading}
                                   >
                                     <X className="h-4 w-4" />
                                   </Button>
@@ -261,7 +285,9 @@ export default function AdditionalServicesSection() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="w-full" size="lg">Register Now</Button>
+                  <Button type="submit" className="w-full" size="lg" disabled={loading}>
+                    {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Register Now'}
+                  </Button>
                 </form>
               </Form>
             </div>

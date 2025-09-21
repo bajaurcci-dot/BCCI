@@ -15,6 +15,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/lib/supabase-client';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -33,6 +36,7 @@ const formSchema = z.object({
 
 export default function ContactForm() {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,13 +48,24 @@ export default function ContactForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-      title: 'Message Sent!',
-      description: 'Thank you for contacting us. We will get back to you shortly.',
-    });
-    form.reset();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
+    const { error } = await supabase.from('messages').insert(values);
+
+    if (error) {
+      toast({
+        title: 'Error Sending Message',
+        description: error.message,
+        variant: 'destructive'
+      });
+    } else {
+      toast({
+        title: 'Message Sent!',
+        description: 'Thank you for contacting us. We will get back to you shortly.',
+      });
+      form.reset();
+    }
+    setLoading(false);
   }
 
   return (
@@ -65,7 +80,7 @@ export default function ContactForm() {
                 <FormItem>
                 <FormLabel>Full Name</FormLabel>
                 <FormControl>
-                    <Input placeholder="Your Name" {...field} />
+                    <Input placeholder="Your Name" {...field} disabled={loading}/>
                 </FormControl>
                 <FormMessage />
                 </FormItem>
@@ -78,7 +93,7 @@ export default function ContactForm() {
                 <FormItem>
                 <FormLabel>Email Address</FormLabel>
                 <FormControl>
-                    <Input placeholder="your.email@example.com" {...field} />
+                    <Input placeholder="your.email@example.com" {...field} disabled={loading}/>
                 </FormControl>
                 <FormMessage />
                 </FormItem>
@@ -91,7 +106,7 @@ export default function ContactForm() {
                 <FormItem>
                 <FormLabel>Subject</FormLabel>
                 <FormControl>
-                    <Input placeholder="How can we help?" {...field} />
+                    <Input placeholder="How can we help?" {...field} disabled={loading}/>
                 </FormControl>
                 <FormMessage />
                 </FormItem>
@@ -104,13 +119,15 @@ export default function ContactForm() {
                 <FormItem>
                 <FormLabel>Message</FormLabel>
                 <FormControl>
-                    <Textarea placeholder="Your message..." className="resize-none" rows={5} {...field} />
+                    <Textarea placeholder="Your message..." className="resize-none" rows={5} {...field} disabled={loading}/>
                 </FormControl>
                 <FormMessage />
                 </FormItem>
             )}
             />
-            <Button type="submit" className="w-full" size="lg">Send Message</Button>
+            <Button type="submit" className="w-full" size="lg" disabled={loading}>
+              {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Send Message'}
+            </Button>
         </form>
         </Form>
     </div>

@@ -21,7 +21,9 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Phone, Mail, MapPin, Search } from 'lucide-react';
+import { Phone, Mail, MapPin, Search, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { supabase } from '@/lib/supabase-client';
 
 const formSchema = z.object({
   fullName: z.string().min(1, 'Full name is required.'),
@@ -52,22 +54,45 @@ const contactInfo = [
 
 export default function MembershipVerificationSection() {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: '',
       ntn: '',
-      membershipType: 'corporate',
+      membershipType: 'Corporate',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('Verification Data:', values);
-    toast({
-      title: 'Verification Submitted!',
-      description: 'We are processing your verification request.',
-    });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('members')
+      .select('status')
+      .eq('ntn', values.ntn)
+      .eq('full_name', values.fullName)
+      .single();
+
+    if (error || !data) {
+      toast({
+        title: 'Verification Failed',
+        description: 'Member not found. Please check your details and try again.',
+        variant: 'destructive',
+      });
+    } else if (data.status === 'Active') {
+      toast({
+        title: 'Verification Successful!',
+        description: 'Your membership is active and verified.',
+      });
+    } else {
+       toast({
+        title: 'Membership Inactive',
+        description: `Your membership status is: ${data.status}. Please contact support.`,
+        variant: 'destructive',
+      });
+    }
+    setLoading(false);
   }
 
   return (
@@ -89,7 +114,7 @@ export default function MembershipVerificationSection() {
                       <FormItem className="mb-4">
                         <FormLabel>Full Name *</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter full name" {...field} />
+                          <Input placeholder="Enter full name" {...field} disabled={loading} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -102,7 +127,7 @@ export default function MembershipVerificationSection() {
                       <FormItem className="mb-4">
                         <FormLabel>NTN *</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter NTN" {...field} />
+                          <Input placeholder="Enter NTN" {...field} disabled={loading} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -114,16 +139,16 @@ export default function MembershipVerificationSection() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Membership Type *</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select a membership type" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="corporate">Corporate</SelectItem>
-                            <SelectItem value="associate">Associate</SelectItem>
-                            <SelectItem value="foreign">Foreign Member Class</SelectItem>
+                            <SelectItem value="Corporate">Corporate</SelectItem>
+                            <SelectItem value="Associate">Associate</SelectItem>
+                            <SelectItem value="Foreign">Foreign Member Class</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -131,9 +156,9 @@ export default function MembershipVerificationSection() {
                     )}
                   />
                 </div>
-                <Button type="submit" className="w-full mt-auto" size="lg">
-                  <Search className="mr-2 h-4 w-4" />
-                  Search Member
+                <Button type="submit" className="w-full mt-auto" size="lg" disabled={loading}>
+                  {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Search className="mr-2 h-4 w-4" />}
+                  {loading ? 'Verifying...' : 'Search Member'}
                 </Button>
               </form>
             </Form>
