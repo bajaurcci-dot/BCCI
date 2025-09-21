@@ -12,35 +12,39 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 export default function AdminPage() {
   return (
     <AdminLayout>
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
-      <Tabs defaultValue="users" className="w-full">
-        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-          <TabsTrigger value="users">User Management</TabsTrigger>
-          <TabsTrigger value="verification">Member Verification</TabsTrigger>
-          <TabsTrigger value="registration">Online Registration</TabsTrigger>
-          <TabsTrigger value="vacancies">Vacancy Management</TabsTrigger>
-          <TabsTrigger value="permissions">Permissions</TabsTrigger>
-          <TabsTrigger value="activity">Activity Log</TabsTrigger>
-        </TabsList>
-        <TabsContent value="users">
-          <UserManagement />
-        </TabsContent>
-        <TabsContent value="verification">
-          <VerificationManagement />
-        </TabsContent>
-        <TabsContent value="registration">
-          <RegistrationManagement />
-        </TabsContent>
-        <TabsContent value="vacancies">
-          <VacancyManagement />
-        </TabsContent>
-        <TabsContent value="permissions">
-          <PermissionsManagement />
-        </TabsContent>
-        <TabsContent value="activity">
-          <ActivityLog />
-        </TabsContent>
-      </Tabs>
+      <div className="flex-1 space-y-4 p-4 sm:p-8 pt-6">
+        <div className="flex items-center justify-between space-y-2">
+          <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+        </div>
+        <Tabs defaultValue="users" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="users">User Management</TabsTrigger>
+            <TabsTrigger value="verification">Member Verification</TabsTrigger>
+            <TabsTrigger value="registration">Online Registration</TabsTrigger>
+            <TabsTrigger value="vacancies">Vacancy Management</TabsTrigger>
+            <TabsTrigger value="permissions">Permissions</TabsTrigger>
+            <TabsTrigger value="activity">Activity Log</TabsTrigger>
+          </TabsList>
+          <TabsContent value="users" className="space-y-4">
+            <UserManagement />
+          </TabsContent>
+          <TabsContent value="verification" className="space-y-4">
+            <VerificationManagement />
+          </TabsContent>
+          <TabsContent value="registration" className="space-y-4">
+            <RegistrationManagement />
+          </TabsContent>
+          <TabsContent value="vacancies" className="space-y-4">
+            <VacancyManagement />
+          </TabsContent>
+          <TabsContent value="permissions" className="space-y-4">
+            <PermissionsManagement />
+          </TabsContent>
+          <TabsContent value="activity" className="space-y-4">
+            <ActivityLog />
+          </TabsContent>
+        </Tabs>
+      </div>
     </AdminLayout>
   );
 }

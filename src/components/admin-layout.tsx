@@ -18,6 +18,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
@@ -35,42 +36,39 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const NavContent = () => (
-    <div className="flex flex-col h-full">
-      <div className="p-4 border-b border-border">
+    <div className="flex h-full flex-col">
+      <div className="flex h-16 items-center border-b px-4 lg:h-[60px] lg:px-6">
         {logoImage && (
-          <Link href="/">
+          <Link href="/" className="flex items-center gap-2 font-semibold">
             <Image
               src={logoImage.imageUrl}
               alt={logoImage.description}
               width={120}
-              height={40}
+              height={30}
+              className="h-6 w-auto"
             />
           </Link>
         )}
       </div>
-      <nav className="flex-grow p-4">
-        <ul>
-          {navItems.map((item) => (
-            <li key={item.label}>
-              <Link
-                href={item.href}
-                className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
-                  pathname === item.href
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                }`}
-                onClick={() => isSheetOpen && setIsSheetOpen(false)}
-              >
-                <item.icon className="h-5 w-5" />
-                <span>{item.label}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      <nav className="flex-1 space-y-2 p-2 lg:p-4">
+        {navItems.map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className={cn(
+              'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
+              pathname === item.href && 'bg-muted text-primary'
+            )}
+            onClick={() => isSheetOpen && setIsSheetOpen(false)}
+          >
+            <item.icon className="h-4 w-4" />
+            <span>{item.label}</span>
+          </Link>
+        ))}
       </nav>
-      <div className="p-4 border-t border-border">
+      <div className="mt-auto p-4 border-t">
         <Button variant="ghost" className="w-full justify-start">
-          <LogOut className="mr-2 h-5 w-5" />
+          <LogOut className="mr-2 h-4 w-4" />
           Logout
         </Button>
       </div>
@@ -78,35 +76,38 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   );
 
   return (
-    <div className="min-h-screen w-full bg-background text-foreground flex">
-      <aside className="hidden lg:block w-64 bg-card border-r border-border">
+    <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
+      <aside className="hidden border-r bg-card text-card-foreground lg:block">
         <NavContent />
       </aside>
-      <div className="flex-1 flex flex-col">
-        <header className="flex items-center justify-between p-4 border-b border-border lg:hidden">
-           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+      <div className="flex flex-col">
+        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 lg:hidden">
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon">
-                <Menu className="h-6 w-6" />
+              <Button variant="outline" size="icon" className="shrink-0">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-0 w-64">
+            <SheetContent side="left" className="flex flex-col p-0">
               <NavContent />
             </SheetContent>
           </Sheet>
-          {logoImage && (
-            <Link href="/">
-              <Image
-                src={logoImage.imageUrl}
-                alt={logoImage.description}
-                width={120}
-                height={40}
-              />
-            </Link>
-          )}
+           <div className="w-full flex-1">
+            {logoImage && (
+              <Link href="/" className="flex items-center justify-center">
+                <Image
+                  src={logoImage.imageUrl}
+                  alt={logoImage.description}
+                  width={120}
+                  height={30}
+                />
+              </Link>
+            )}
+           </div>
            <div className="w-8"></div>
         </header>
-        <main className="flex-1 p-4 sm:p-6 md:p-8">{children}</main>
+        <main className="flex-1 bg-background">{children}</main>
       </div>
     </div>
   );

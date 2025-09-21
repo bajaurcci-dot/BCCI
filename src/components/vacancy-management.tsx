@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import { Badge } from './ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 const vacancies = [
   {
@@ -27,43 +28,50 @@ const vacancies = [
 
 export default function VacancyManagement() {
   return (
-    <div className="bg-card p-6 rounded-lg shadow-md mt-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold">Vacancies</h2>
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" /> Add Vacancy
-        </Button>
-      </div>
-      <div className="border rounded-md">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Job Title</TableHead>
-              <TableHead>Applicants</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {vacancies.map((vacancy) => (
-              <TableRow key={vacancy.title}>
-                <TableCell>{vacancy.title}</TableCell>
-                <TableCell>{vacancy.applicants}</TableCell>
-                <TableCell>
-                  <Badge variant={vacancy.status === 'Open' ? 'default' : 'secondary'}>
-                    {vacancy.status}
-                  </Badge>
-                </TableCell>
-                <TableCell className="space-x-2">
-                  <Button variant="outline" size="sm">View Applicants</Button>
-                  <Button variant="outline" size="sm">Edit</Button>
-                  <Button variant="destructive" size="sm">Delete</Button>
-                </TableCell>
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle>Vacancy Management</CardTitle>
+            <p className="text-sm text-muted-foreground">Manage job openings and applications.</p>
+          </div>
+          <Button>
+            <PlusCircle className="mr-2 h-4 w-4" /> Add Vacancy
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Job Title</TableHead>
+                <TableHead>Applicants</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+            </TableHeader>
+            <TableBody>
+              {vacancies.map((vacancy) => (
+                <TableRow key={vacancy.title}>
+                  <TableCell className="font-medium">{vacancy.title}</TableCell>
+                  <TableCell>{vacancy.applicants}</TableCell>
+                  <TableCell>
+                    <Badge variant={vacancy.status === 'Open' ? 'default' : 'secondary'}>
+                      {vacancy.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right space-x-2">
+                    <Button variant="outline" size="sm">View Applicants</Button>
+                    <Button variant="outline" size="sm">Edit</Button>
+                    <Button variant="destructive" size="sm">Delete</Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
