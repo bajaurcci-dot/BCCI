@@ -44,7 +44,7 @@ const AboutSection = () => {
               About Us
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold font-headline mt-4 mb-6">
-              The Story Of <span className="text-primary">BCCI</span> Journey
+              The Story Of <span className="animate-color-change">BCCI</span> Journey
             </h2>
             <p className="text-muted-foreground text-lg mb-12">
               Starting as a small initiative, the Bajaur Chamber has grown into a crucial business
