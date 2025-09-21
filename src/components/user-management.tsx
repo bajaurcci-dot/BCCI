@@ -13,8 +13,22 @@ import { Input } from '@/components/ui/input';
 import { PlusCircle, Search } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from 'next/link';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
-const users = [
+const initialUsers = [
   {
     name: 'John Doe',
     ntn: '1234567-8',
@@ -32,6 +46,18 @@ const users = [
 ];
 
 export default function UserManagement() {
+  const { toast } = useToast();
+  const [users, setUsers] = useState(initialUsers);
+
+  const handleDelete = (email: string) => {
+    setUsers(users.filter((user) => user.email !== email));
+    toast({
+      title: 'User Deleted',
+      description: `The user ${email} has been successfully deleted.`,
+      variant: 'destructive',
+    });
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -40,16 +66,18 @@ export default function UserManagement() {
             <CardTitle>User Management</CardTitle>
             <p className="text-sm text-muted-foreground">Manage all users in the system.</p>
           </div>
-          <Button>
-            <PlusCircle className="mr-2 h-4 w-4" /> Add User
+          <Button asChild>
+            <Link href="/admin?tab=registration">
+              <PlusCircle className="mr-2 h-4 w-4" /> Add User
+            </Link>
           </Button>
         </div>
       </CardHeader>
       <CardContent>
         <div className="mb-4">
           <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search by name, NTN, email..." className="pl-10"/>
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input placeholder="Search by name, NTN, email..." className="pl-10" />
           </div>
         </div>
         <div className="rounded-md border">
@@ -72,13 +100,36 @@ export default function UserManagement() {
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.role}</TableCell>
                   <TableCell>
-                      <Badge variant={user.status === 'Active' ? 'default' : 'destructive'}>
-                          {user.status}
-                      </Badge>
+                    <Badge
+                      variant={user.status === 'Active' ? 'default' : 'destructive'}
+                      className={user.status === 'Active' ? 'bg-green-500' : ''}
+                    >
+                      {user.status}
+                    </Badge>
                   </TableCell>
                   <TableCell className="text-right space-x-2">
-                    <Button variant="outline" size="sm">Edit</Button>
-                    <Button variant="destructive" size="sm">Delete</Button>
+                    <Button variant="outline" size="sm" asChild>
+                       <Link href={`/admin?tab=registration&user=${user.email}`}>Edit</Link>
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="destructive" size="sm">
+                          Delete
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete the user account.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => handleDelete(user.email)}>Continue</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </TableCell>
                 </TableRow>
               ))}
