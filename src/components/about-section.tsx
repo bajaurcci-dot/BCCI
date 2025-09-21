@@ -23,18 +23,16 @@ const AboutSection = () => {
   return (
     <section className="py-20 md:py-32 bg-background overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid md:grid-cols-2 items-center">
-          <div className="relative flex justify-center items-center">
+        <div className="grid grid-cols-1 md:grid-cols-[350px_1fr] items-center gap-x-12">
+          <div className="relative w-[350px] h-[450px] rounded-2xl overflow-hidden shadow-2xl">
              {founderImage && (
-                <div className="relative w-[350px] h-[450px] rounded-2xl overflow-hidden shadow-2xl">
-                  <Image
-                    src={founderImage.imageUrl}
-                    alt={founderImage.description}
-                    fill
-                    className="object-cover"
-                    data-ai-hint={founderImage.imageHint}
-                  />
-                </div>
+                <Image
+                  src={founderImage.imageUrl}
+                  alt={founderImage.description}
+                  fill
+                  className="object-cover"
+                  data-ai-hint={founderImage.imageHint}
+                />
               )}
           </div>
 
