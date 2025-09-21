@@ -146,16 +146,16 @@ const FeeList = ({ data }: { data: typeof membershipServices | typeof supportSer
     {data.map((item) => (
       <li
         key={item.id}
-        className="flex justify-between items-center py-3 px-2 hover:bg-muted/50 rounded-lg transition-colors"
+        className="flex justify-between items-center py-3 px-1 sm:px-2 hover:bg-muted/50 rounded-lg transition-colors"
       >
-        <div className="flex items-center gap-4">
-          <div className="text-primary font-bold w-6 text-center">{item.id}</div>
+        <div className="flex items-center gap-2 sm:gap-4">
+          <div className="text-primary font-bold w-6 text-center text-sm">{item.id}</div>
           <div className="flex flex-col items-start text-left">
-            <p className="font-semibold text-foreground">{item.name}</p>
-            <p className="text-sm text-muted-foreground">{item.description}</p>
+            <p className="font-semibold text-foreground text-sm leading-snug">{item.name}</p>
+            <p className="text-xs text-muted-foreground">{item.description}</p>
           </div>
         </div>
-        <div className="text-right font-semibold text-foreground whitespace-nowrap">{item.price}</div>
+        <div className="text-right font-semibold text-primary whitespace-nowrap text-sm pl-2">{item.price}</div>
       </li>
     ))}
   </ul>
@@ -163,23 +163,23 @@ const FeeList = ({ data }: { data: typeof membershipServices | typeof supportSer
 
 export default function MembershipFeesSection() {
   return (
-    <section className="py-20 md:py-32 bg-background">
+    <section className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4 md:px-6 max-w-6xl">
-        <div className="text-center mb-16 animate-fade-in">
+        <div className="text-center mb-12 animate-fade-in">
           <Badge
             variant="outline"
             className="py-1 px-4 self-center border-primary/50 text-primary font-semibold mb-4"
           >
             Fee Structure
           </Badge>
-          <h2 className="text-3xl md:text-5xl font-bold font-headline mt-4 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold font-headline mt-4 mb-6">
             BCCI Membership Fee & Service Charges
           </h2>
-          <p className="max-w-3xl mx-auto text-base md:text-lg text-muted-foreground">
+          <p className="max-w-3xl mx-auto text-base text-muted-foreground">
             Find a comprehensive list of all our membership and support service charges below.
           </p>
         </div>
-        <div className="bg-card p-4 sm:p-6 md:p-8 rounded-2xl border border-border/50 shadow-lg animate-fade-in">
+        <div className="bg-card p-4 sm:p-6 rounded-2xl border border-border/50 shadow-lg animate-fade-in">
           <Tabs defaultValue="membership" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="membership">Membership Services</TabsTrigger>
