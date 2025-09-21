@@ -26,51 +26,80 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Users, UserCheck, UserX, Clock } from 'lucide-react';
+import { Users, UserCheck, UserX, Clock, Loader2 } from 'lucide-react';
+import { supabase } from '@/lib/supabase-client';
+import { useToast } from '@/hooks/use-toast';
+import { differenceInDays, parseISO } from 'date-fns';
 
-const expiringUsers = [
-  {
-    name: 'Ahmed Khan',
-    membershipId: 'COR-0123',
-    expiryDate: '2024-08-15',
-    daysLeft: 20,
-    cnic: '12345-1234567-1',
-    ntn: '1234567-8',
-    address: '123, Main Street, City',
-    businessName: 'Khan Trading Co.',
-    mobileNumber: '+92 300 1234567',
-    membershipType: 'Corporate',
-  },
-  {
-    name: 'Fatima Ali',
-    membershipId: 'ASC-0456',
-    expiryDate: '2024-08-25',
-    daysLeft: 30,
-    cnic: '54321-7654321-2',
-    ntn: '8765432-1',
-    address: '456, Park Avenue, Town',
-    businessName: 'Ali Enterprises',
-    mobileNumber: '+92 311 9876543',
-    membershipType: 'Associate',
-  },
-  {
-    name: 'Zainab Corporation',
-    membershipId: 'COR-0789',
-    expiryDate: '2024-08-05',
-    daysLeft: 10,
-    cnic: 'N/A',
-    ntn: '9876543-2',
-    address: '789, Industrial Area, Metropolis',
-    businessName: 'Zainab Corporation',
-    mobileNumber: '+92 333 1122334',
-    membershipType: 'Corporate',
-  },
-];
+type ExpiringUser = {
+    id: string;
+    full_name: string;
+    membership_code: string | null;
+    membership_expiry: string;
+    cnic: string | null;
+    ntn: string | null;
+    address: string | null;
+    business_name: string | null;
+    mobile_number: string | null;
+    membership_type: string | null;
+};
 
-type User = (typeof expiringUsers)[0];
+type Stats = {
+    total_members: number;
+    active_members: number;
+    pending_verifications: number;
+    expired_members: number;
+};
 
 export default function DashboardOverview() {
-  const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
+  const { toast } = useToast();
+  const [stats, setStats] = React.useState<Stats | null>(null);
+  const [expiringUsers, setExpiringUsers] = React.useState<ExpiringUser[]>([]);
+  const [selectedUser, setSelectedUser] = React.useState<ExpiringUser | null>(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const statsPromise = supabase.rpc('get_dashboard_stats');
+        const expiringUsersPromise = supabase.rpc('get_expiring_members');
+
+        const [statsResult, expiringUsersResult] = await Promise.all([statsPromise, expiringUsersPromise]);
+
+        if (statsResult.error) throw statsResult.error;
+        if (expiringUsersResult.error) throw expiringUsersResult.error;
+
+        if (statsResult.data && statsResult.data.length > 0) {
+            setStats(statsResult.data[0]);
+        }
+        setExpiringUsers(expiringUsersResult.data || []);
+        
+      } catch (error: any) {
+        toast({
+          title: 'Error fetching dashboard data',
+          description: error.message,
+          variant: 'destructive',
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [toast]);
+  
+  const getDaysLeft = (expiryDate: string) => {
+    return differenceInDays(parseISO(expiryDate), new Date());
+  }
+
+  if (loading) {
+    return (
+        <div className="flex items-center justify-center p-8">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+    )
+  }
 
   return (
     <>
@@ -81,8 +110,7 @@ export default function DashboardOverview() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1,254</div>
-            <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+            <div className="text-2xl font-bold">{stats?.total_members || 0}</div>
           </CardContent>
         </Card>
         <Card>
@@ -91,8 +119,7 @@ export default function DashboardOverview() {
             <UserCheck className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-500">1,100</div>
-            <p className="text-xs text-muted-foreground">+180 since last month</p>
+            <div className="text-2xl font-bold text-green-500">{stats?.active_members || 0}</div>
           </CardContent>
         </Card>
         <Card>
@@ -101,8 +128,7 @@ export default function DashboardOverview() {
             <Clock className="h-4 w-4 text-orange-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-500">32</div>
-            <p className="text-xs text-muted-foreground">5 new requests today</p>
+            <div className="text-2xl font-bold text-orange-500">{stats?.pending_verifications || 0}</div>
           </CardContent>
         </Card>
         <Card>
@@ -111,8 +137,7 @@ export default function DashboardOverview() {
             <UserX className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-500">122</div>
-            <p className="text-xs text-muted-foreground">Check renewal status</p>
+            <div className="text-2xl font-bold text-red-500">{stats?.expired_members || 0}</div>
           </CardContent>
         </Card>
       </div>
@@ -120,8 +145,8 @@ export default function DashboardOverview() {
         <Dialog>
           <Card>
             <CardHeader>
-              <CardTitle>Membership Expiring Next Month</CardTitle>
-              <CardDescription>A list of members whose membership is expiring soon.</CardDescription>
+              <CardTitle>Membership Expiring Soon</CardTitle>
+              <CardDescription>A list of members whose membership is expiring in the next 30 days.</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="rounded-md border">
@@ -129,20 +154,20 @@ export default function DashboardOverview() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Member Name</TableHead>
-                      <TableHead>Membership ID</TableHead>
+                      <TableHead>Membership Code</TableHead>
                       <TableHead>Expiry Date</TableHead>
                       <TableHead>Days Left</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {expiringUsers.map((user) => (
-                      <TableRow key={user.membershipId}>
-                        <TableCell className="font-medium">{user.name}</TableCell>
-                        <TableCell>{user.membershipId}</TableCell>
-                        <TableCell>{user.expiryDate}</TableCell>
+                    {expiringUsers.length > 0 ? expiringUsers.map((user) => (
+                      <TableRow key={user.id}>
+                        <TableCell className="font-medium">{user.full_name}</TableCell>
+                        <TableCell>{user.membership_code || 'N/A'}</TableCell>
+                        <TableCell>{new Date(user.membership_expiry).toLocaleDateString()}</TableCell>
                         <TableCell>
-                          <Badge variant="destructive">{user.daysLeft} days</Badge>
+                          <Badge variant="destructive">{getDaysLeft(user.membership_expiry)} days</Badge>
                         </TableCell>
                         <TableCell className="text-right">
                           <DialogTrigger asChild>
@@ -152,7 +177,13 @@ export default function DashboardOverview() {
                           </DialogTrigger>
                         </TableCell>
                       </TableRow>
-                    ))}
+                    )) : (
+                        <TableRow>
+                            <TableCell colSpan={5} className="text-center p-8">
+                                No memberships are expiring in the next 30 days.
+                            </TableCell>
+                        </TableRow>
+                    )}
                   </TableBody>
                 </Table>
               </div>
@@ -164,45 +195,45 @@ export default function DashboardOverview() {
               <DialogHeader>
                 <DialogTitle>Member Details</DialogTitle>
                 <DialogDescription>
-                  Full details for {selectedUser.name}.
+                  Full details for {selectedUser.full_name}.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
                   <span className="text-right text-sm text-muted-foreground col-span-1">Full Name</span>
-                  <span className="col-span-3 font-semibold">{selectedUser.name}</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.full_name}</span>
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <span className="text-right text-sm text-muted-foreground">CNIC</span>
-                  <span className="col-span-3 font-semibold">{selectedUser.cnic}</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.cnic || 'N/A'}</span>
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <span className="text-right text-sm text-muted-foreground">NTN</span>
-                  <span className="col-span-3 font-semibold">{selectedUser.ntn}</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.ntn || 'N/A'}</span>
                 </div>
                  <div className="grid grid-cols-4 items-center gap-4">
                   <span className="text-right text-sm text-muted-foreground">Address</span>
-                  <span className="col-span-3 font-semibold">{selectedUser.address}</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.address || 'N/A'}</span>
                 </div>
                  <div className="grid grid-cols-4 items-center gap-4">
                   <span className="text-right text-sm text-muted-foreground">Business Name</span>
-                  <span className="col-span-3 font-semibold">{selectedUser.businessName}</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.business_name || 'N/A'}</span>
                 </div>
                  <div className="grid grid-cols-4 items-center gap-4">
                   <span className="text-right text-sm text-muted-foreground">Mobile</span>
-                  <span className="col-span-3 font-semibold">{selectedUser.mobileNumber}</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.mobile_number || 'N/A'}</span>
                 </div>
                  <div className="grid grid-cols-4 items-center gap-4">
-                  <span className="text-right text-sm text-muted-foreground">Membership ID</span>
-                  <span className="col-span-3 font-semibold">{selectedUser.membershipId}</span>
+                  <span className="text-right text-sm text-muted-foreground">Membership Code</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.membership_code || 'N/A'}</span>
                 </div>
                  <div className="grid grid-cols-4 items-center gap-4">
                   <span className="text-right text-sm text-muted-foreground">Membership Type</span>
-                  <span className="col-span-3 font-semibold">{selectedUser.membershipType}</span>
+                  <span className="col-span-3 font-semibold">{selectedUser.membership_type || 'N/A'}</span>
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <span className="text-right text-sm text-muted-foreground">Expiry Date</span>
-                  <span className="col-span-3 font-semibold">{selectedUser.expiryDate}</span>
+                  <span className="col-span-3 font-semibold">{new Date(selectedUser.membership_expiry).toLocaleDateString()}</span>
                 </div>
               </div>
             </DialogContent>
