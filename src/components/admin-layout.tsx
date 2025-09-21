@@ -17,6 +17,7 @@ import {
   LayoutDashboard,
   Loader2,
   FileDown,
+  Mail,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -31,6 +32,7 @@ const navItems = [
   { href: 'registration', icon: FileText, label: 'Online Registration' },
   { href: 'vacancies', icon: Briefcase, label: 'Vacancy Management' },
   { href: 'downloads', icon: FileDown, label: 'Downloads Management' },
+  { href: 'messages', icon: Mail, label: 'Messages' },
   { href: 'permissions', icon: Settings, label: 'Permissions' },
   { href: 'activity', icon: Activity, label: 'Activity Log' },
 ];
