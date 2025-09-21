@@ -146,9 +146,9 @@ const FeeList = ({ data }: { data: typeof membershipServices | typeof supportSer
     {data.map((item) => (
       <li
         key={item.id}
-        className="flex justify-between items-center py-3 px-1 sm:px-2 hover:bg-muted/50 rounded-lg transition-colors"
+        className="flex justify-between items-center py-3 px-1 hover:bg-muted/50 rounded-lg transition-colors"
       >
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-4">
           <div className="text-primary font-bold w-6 text-center text-sm">{item.id}</div>
           <div className="flex flex-col items-start text-left">
             <p className="font-semibold text-foreground text-sm leading-snug">{item.name}</p>
