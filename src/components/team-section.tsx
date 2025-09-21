@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Mail, Link as LinkIcon, MapPin } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { BorderBeam } from '@/components/ui/border-beam';
 
 const teamMembers = [
   {
@@ -62,8 +63,9 @@ const TeamSection = () => {
               return (
                 <div
                   key={member.id}
-                  className="bg-card rounded-2xl shadow-lg overflow-hidden w-full transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2"
+                  className="relative bg-card rounded-2xl shadow-lg overflow-hidden w-full transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2"
                 >
+                  <BorderBeam />
                   <div className="relative">
                     <div className="h-28 bg-gradient-to-r from-primary to-accent rounded-t-2xl flex items-center justify-start p-4 pl-32">
                       <h3 className="text-primary-foreground text-left font-bold text-lg">

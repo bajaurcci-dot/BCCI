@@ -77,12 +77,18 @@ export default {
           '33%': { color: '#008000' },
           '66%': { color: '#00A300' },
           '88%': { color: '#00D100'},
-        }
+        },
+        'border-beam': {
+          '100%': {
+            'offset-distance': '100%',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'color-change': 'color-change 6s ease-in-out infinite',
+        'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
       },
     },
   },
