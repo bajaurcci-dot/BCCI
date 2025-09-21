@@ -16,7 +16,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const menuItems = [
   { label: 'About', href: '/about', icon: Info },
-  { label: 'Services', href: '#', icon: Briefcase },
+  { label: 'Services', href: '/services', icon: Briefcase },
   { label: 'Membership', href: '#', icon: Award },
   { label: 'Compliances', href: '#', icon: FileCheck },
   { label: 'Download', href: '#', icon: Download },
