@@ -30,7 +30,7 @@ const AboutSection = () => {
   return (
     <section className="py-20 md:py-32 bg-background">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-24 items-center">
+        <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                {aboutImage && (
@@ -46,7 +46,7 @@ const AboutSection = () => {
               <BorderBeam colorFrom="#33d65b" colorTo="#1a9c3b" />
             </div>
           </div>
-          <div>
+          <div className="flex flex-col">
             <span className="text-primary font-bold tracking-wider uppercase font-headline">Who We Are</span>
             <h2 className="text-4xl md:text-5xl font-bold font-headline mt-2 mb-6">
               Your Partner in Business and Economic Growth
@@ -54,7 +54,7 @@ const AboutSection = () => {
             <p className="text-muted-foreground text-lg mb-8">
               The Bajaur Chamber of Commerce & Industry (BCCI) is a premier business organization dedicated to promoting economic growth and prosperity in the Bajaur District. Established to serve the local business community, BCCI provides a platform for advocacy, networking, and development.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10 flex-grow">
               {features.map((feature) => (
                 <div key={feature.title} className="bg-card p-6 rounded-xl border border-border/50 shadow-sm hover:border-primary/50 transition-colors">
                   <feature.icon className="h-8 w-8 text-primary mb-3" />
