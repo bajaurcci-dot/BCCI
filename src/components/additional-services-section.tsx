@@ -21,20 +21,21 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Phone, Mail } from 'lucide-react';
+import { Phone, Mail, UploadCloud, X } from 'lucide-react';
+import { useState } from 'react';
 
 const formSchema = z.object({
-  fullName: z.string().min(2, {
-    message: 'Name must be at least 2 characters.',
+  fullName: z.string().min(1, {
+    message: 'Full name is required.',
   }),
-  companyName: z.string().min(2, {
-    message: 'Company name must be at least 2 characters.',
+  companyName: z.string().min(1, {
+    message: 'Company name is required.',
   }),
   email: z.string().email({
     message: 'Please enter a valid email address.',
   }),
-  phone: z.string().min(10, {
-    message: 'Please enter a valid phone number.',
+  phone: z.string().min(1, {
+    message: 'Phone number is required.',
   }),
   membershipType: z.string({
     required_error: 'Please select a membership type.',
@@ -82,6 +83,7 @@ const supportContacts = [
 
 export default function AdditionalServicesSection() {
   const { toast } = useToast();
+  const [fileName, setFileName] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -103,6 +105,7 @@ export default function AdditionalServicesSection() {
       description: 'Thank you for registering. We will be in touch shortly.',
     });
     form.reset();
+    setFileName(null);
   }
 
   return (
@@ -196,7 +199,44 @@ export default function AdditionalServicesSection() {
                       <FormItem>
                         <FormLabel>Your Photo</FormLabel>
                         <FormControl>
-                          <Input type="file" accept="image/*" {...photoRef} />
+                          <div className="relative">
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                              {...photoRef}
+                              onChange={(e) => {
+                                field.onChange(e.target.files);
+                                setFileName(e.target.files?.[0]?.name ?? null);
+                              }}
+                            />
+                            <div className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg bg-background hover:bg-muted transition-colors">
+                              {fileName ? (
+                                <div className="flex items-center space-x-2">
+                                  <span className="text-sm font-medium">{fileName}</span>
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => {
+                                      form.setValue('photo', null);
+                                      setFileName(null);
+                                    }}
+                                  >
+                                    <X className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              ) : (
+                                <div className="flex flex-col items-center justify-center text-muted-foreground">
+                                  <UploadCloud className="w-8 h-8 mb-2" />
+                                  <p className="text-sm">
+                                    <span className="font-semibold text-primary">Click to upload</span> or drag and drop
+                                  </p>
+                                  <p className="text-xs">PNG, JPG, GIF up to 10MB</p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
