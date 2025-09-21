@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -14,7 +14,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { vacancies } from '@/lib/vacancies';
 
 const menuItems = [
   { label: 'About', href: '/about', icon: Info },
@@ -28,8 +30,52 @@ const menuItems = [
 
 export default function TopNavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [openVacancyCount, setOpenVacancyCount] = useState(0);
+  const [openVacancies, setOpenVacancies] = useState<string[]>([]);
   const logoImage = PlaceHolderImages.find(img => img.id === 'logo');
   const pathname = usePathname();
+
+  useEffect(() => {
+    const updateVacancyInfo = () => {
+      const open = vacancies.filter((v) => v.status === 'Open');
+      setOpenVacancyCount(open.length);
+      setOpenVacancies(open.map(v => v.title));
+    };
+
+    updateVacancyInfo();
+    // In a real app, this might be triggered by a more sophisticated event system
+    const interval = setInterval(updateVacancyInfo, 2000); 
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const VacancyPopoverContent = () => (
+    <PopoverContent className="w-80">
+      <div className="grid gap-4">
+        <div className="space-y-2">
+          <h4 className="font-medium leading-none">Open Vacancies</h4>
+          <p className="text-sm text-muted-foreground">
+            The following positions are currently available.
+          </p>
+        </div>
+        <div className="grid gap-2">
+          {openVacancies.length > 0 ? (
+            openVacancies.map((vacancy, index) => (
+               <div key={index} className="grid grid-cols-3 items-center gap-4">
+                <span className="col-span-2 font-medium">{vacancy}</span>
+                 <Button asChild variant="secondary" size="sm" className="h-7 bg-primary-foreground text-primary hover:bg-primary-foreground/90">
+                    <Link href="/contact">Apply</Link>
+                  </Button>
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-muted-foreground">No open vacancies at the moment.</p>
+          )}
+        </div>
+      </div>
+    </PopoverContent>
+  );
+
 
   return (
     <header className="w-full p-4">
@@ -112,10 +158,21 @@ export default function TopNavBar() {
                   </ul>
                 </nav>
                 <div className="mt-auto border-t border-border pt-4 space-y-2">
-                  <Button variant="outline" className="w-full">
-                    <Bell className="mr-2 h-4 w-4" />
-                    Notifications
-                  </Button>
+                   <Popover>
+                    <PopoverTrigger asChild>
+                       <Button variant="outline" className="w-full relative">
+                        <Bell className="mr-2 h-4 w-4" />
+                        Notifications
+                         {openVacancyCount > 0 && (
+                          <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                            {openVacancyCount}
+                          </span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <VacancyPopoverContent />
+                  </Popover>
+
                   <Button className="w-full relative overflow-hidden transition-all duration-700 ease-in-out hover:scale-105 hover:shadow-lg group">
                     Get Started
                     <span className="absolute inset-0 bg-white/20 transition-all duration-700 ease-in-out -translate-x-full group-hover:translate-x-0 group-hover:skew-x-[-15deg]"></span>
@@ -142,10 +199,20 @@ export default function TopNavBar() {
           </nav>
 
           <div className="hidden md:flex items-center gap-2">
-             <Button variant="ghost" size="icon">
-                <Bell className="h-6 w-6" />
-                <span className="sr-only">Notifications</span>
-              </Button>
+             <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="ghost" size="icon" className="relative">
+                    <Bell className="h-6 w-6" />
+                     {openVacancyCount > 0 && (
+                        <span className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                          {openVacancyCount}
+                        </span>
+                      )}
+                    <span className="sr-only">Notifications</span>
+                  </Button>
+                </PopoverTrigger>
+                <VacancyPopoverContent />
+              </Popover>
             <Button className="relative overflow-hidden transition-all duration-700 ease-in-out hover:scale-110 hover:shadow-lg group">
               Get Started
               <span className="absolute inset-0 bg-white/20 transition-all duration-700 ease-in-out -translate-x-full group-hover:translate-x-0 group-hover:skew-x-[-15deg]"></span>
