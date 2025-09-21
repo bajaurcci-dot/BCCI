@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import AboutSection from '@/components/about-section';
 import Footer from '@/components/footer';
+import BentoSection from '@/components/bento-section';
 
 const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
 
@@ -14,6 +15,7 @@ export default function AboutPage() {
         <TopNavBar />
         <main className="flex-grow">
           <AboutSection />
+          <BentoSection />
         </main>
         <Footer />
       </div>
