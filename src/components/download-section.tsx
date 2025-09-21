@@ -62,13 +62,14 @@ const FileTypeIcon = ({ type }: { type: string }) => {
 };
 
 const GradientButton = ({ href }: { href: string }) => (
-  <Button asChild className="w-full mt-4 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105">
-    <a href={href}>
-      Download
-      <Download className="ml-2 h-4 w-4" />
-    </a>
-  </Button>
-);
+    <Button asChild className="w-full mt-4 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105 relative overflow-hidden group">
+      <a href={href}>
+        <span className="absolute inset-0 bg-white/20 transition-all duration-700 ease-in-out -translate-x-full group-hover:translate-x-0 group-hover:skew-x-[-15deg]"></span>
+        Download
+        <Download className="ml-2 h-4 w-4" />
+      </a>
+    </Button>
+  );
 
 const DownloadSection = () => {
   return (
