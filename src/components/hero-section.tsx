@@ -68,18 +68,18 @@ const HeroSection = () => {
               </div>
             )}
             <div>
-              <h1 className="mb-6 text-3xl font-bold tracking-tight text-pretty sm:text-4xl md:text-5xl lg:text-6xl font-headline">
+              <h1 className="mb-6 text-4xl font-bold tracking-tight text-pretty sm:text-5xl md:text-6xl lg:text-7xl font-headline">
                 <span className="animate-color-change">Bajaur</span> Chamber Of Commerce &amp; Industry
               </h1>
-              <p className="mx-auto max-w-3xl text-muted-foreground text-lg sm:text-xl md:text-2xl font-body">
+              <p className="mx-auto max-w-3xl text-muted-foreground text-base sm:text-lg md:text-xl font-body">
                 The Bajaur Chamber of Commerce &amp; Industry (BCCI) supports economic growth in
                 Bajaur District by advocating for local businesses, enhancing trade, and fostering a
                 thriving business environment.
               </p>
             </div>
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Button className="shadow-sm transition-shadow hover:shadow">Get Started</Button>
-              <Button variant="outline" className="group">
+            <div className="mt-6 flex flex-col sm:flex-row flex-wrap justify-center gap-3">
+              <Button size="lg" className="shadow-sm transition-shadow hover:shadow w-full sm:w-auto">Get Started</Button>
+              <Button size="lg" variant="outline" className="group w-full sm:w-auto">
                 Learn more{' '}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

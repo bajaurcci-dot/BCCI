@@ -57,11 +57,11 @@ const Footer = () => {
 
   return (
     <footer className="bg-background">
-      <div className="container mx-auto px-4 md:px-6 relative z-10 -mb-20">
+      <div className="container mx-auto px-4 md:px-6 relative z-10 -mb-24 md:-mb-20">
         <div className="max-w-5xl mx-auto">
           <div className="bg-primary rounded-2xl p-8 shadow-2xl">
               <div className="grid md:grid-cols-2 gap-8 items-center">
-                  <div className="flex justify-center md:justify-start">
+                  <div className="hidden md:flex justify-center md:justify-start">
                       {newsletterIllustration && (
                           <Image
                           src={newsletterIllustration.imageUrl}
@@ -94,7 +94,7 @@ const Footer = () => {
       <div className="bg-card pt-32 pb-12">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="flex flex-col space-y-4 md:col-span-2 lg:col-span-1">
+              <div className="flex flex-col space-y-4 md:col-span-2 lg:col-span-1 text-center md:text-left items-center md:items-start">
                 {footerLogo && (
                   <Link href="#">
                     <Image
@@ -111,7 +111,7 @@ const Footer = () => {
                  </p>
               </div>
 
-              <div>
+              <div className="text-center md:text-left">
                 <h3 className="text-lg font-bold font-headline mb-4">Legal Pages</h3>
                 <ul className="space-y-2">
                   {legalPages.map((page) => (
@@ -124,7 +124,7 @@ const Footer = () => {
                 </ul>
               </div>
 
-              <div>
+              <div className="text-center md:text-left">
                 <h3 className="text-lg font-bold font-headline mb-4">Quick Links</h3>
                 <ul className="space-y-2">
                   {quickLinks.map((link) => (
@@ -137,23 +137,23 @@ const Footer = () => {
                 </ul>
               </div>
 
-              <div>
+              <div className="text-center md:text-left">
                 <h3 className="text-lg font-bold font-headline mb-4">Contact</h3>
                  <div className="space-y-3">
-                    <a href="tel:+923082275587" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
+                    <a href="tel:+923082275587" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors justify-center md:justify-start">
                       <Phone className="h-5 w-5 text-primary" />
                       <span>+92 308 2275587</span>
                     </a>
-                    <a href="mailto:contact@bajaurcci.com.pk" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
+                    <a href="mailto:contact@bajaurcci.com.pk" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors justify-center md:justify-start">
                       <Mail className="h-5 w-5 text-primary" />
                       <span>contact@bajaurcci.com.pk</span>
                     </a>
-                    <p className="flex items-center gap-3 text-muted-foreground">
+                    <p className="flex items-center gap-3 text-muted-foreground justify-center md:justify-start">
                       <MapPin className="h-5 w-5 text-primary" />
                       <span>Khar, District Bajaur</span>
                     </p>
                 </div>
-                <div className="flex space-x-4 pt-4">
+                <div className="flex space-x-4 pt-4 justify-center md:justify-start">
                   {socialMedia.map((social) => (
                     <Link
                       key={social.name}

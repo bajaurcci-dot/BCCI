@@ -57,7 +57,7 @@ const TeamSection = () => {
           </p>
         </div>
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {teamMembers.map((member) => {
               const memberImage = PlaceHolderImages.find(img => img.id === member.id);
               return (
@@ -67,7 +67,7 @@ const TeamSection = () => {
                 >
                   <BorderBeam colorFrom="#33d65b" colorTo="#1a9c3b" />
                   <div className="relative">
-                    <div className="h-28 bg-gradient-to-r from-primary to-accent rounded-t-2xl flex items-center justify-start p-4 pl-32">
+                    <div className="h-28 bg-gradient-to-r from-primary to-accent rounded-t-2xl flex items-center justify-start p-4 pl-8 sm:pl-32">
                       <h3 className="text-primary-foreground text-left font-bold text-lg">
                         Bajaur Chamber Of <br /> Commerce & Industry
                       </h3>
@@ -89,14 +89,14 @@ const TeamSection = () => {
                   </div>
 
                   <div className="pt-16 px-6 pb-6 text-center">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                       <div>
                         <h4 className="text-xl font-bold text-foreground text-left">{member.name}</h4>
                         <p className="text-sm text-muted-foreground flex items-center">
                           @{member.handle}
                         </p>
                       </div>
-                      <Badge variant="default">
+                      <Badge variant="default" className="w-full sm:w-auto text-center justify-center">
                         {member.title}
                       </Badge>
                     </div>
