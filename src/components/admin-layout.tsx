@@ -37,7 +37,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const NavContent = () => (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center border-b px-4 lg:h-[60px] lg:px-6">
+      <div className="flex h-16 shrink-0 items-center border-b px-4 lg:px-6">
         {logoImage && (
           <Link href="/" className="flex items-center gap-2 font-semibold">
             <Image
@@ -50,14 +50,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Link>
         )}
       </div>
-      <nav className="flex-1 space-y-2 p-2 lg:p-4">
+      <nav className="flex-1 space-y-1 p-2">
         {navItems.map((item) => (
           <Link
             key={item.label}
             href={item.href}
             className={cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
-              pathname === item.href && 'bg-muted text-primary'
+              'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-muted hover:text-primary',
+              pathname === item.href && 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
             )}
             onClick={() => isSheetOpen && setIsSheetOpen(false)}
           >
