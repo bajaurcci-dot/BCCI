@@ -6,6 +6,7 @@ import Footer from '@/components/footer';
 import BentoSection from '@/components/bento-section';
 import IntroSection from '@/components/intro-section';
 import StorySection from '@/components/story-section';
+import GallerySection from '@/components/gallery-section';
 
 const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
 
@@ -19,6 +20,7 @@ export default function AboutPage() {
           <IntroSection />
           <AboutSection />
           <StorySection />
+          <GallerySection />
           <BentoSection />
         </main>
         <Footer />
