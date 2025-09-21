@@ -47,11 +47,11 @@ const DownloadSection = () => {
           {downloadItems.map((item, index) => (
             <div
               key={index}
-              className="relative bg-card rounded-2xl shadow-lg overflow-hidden p-8 flex flex-col text-center items-center transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 animate-slide-in-up"
+              className="relative bg-card rounded-2xl shadow-lg overflow-hidden p-8 flex flex-col text-left items-start transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 animate-slide-in-up"
               style={{ animationDelay: `${index * 150}ms` }}
             >
               <BorderBeam colorFrom="#33d65b" colorTo="#1a9c3b" />
-              <div className="flex-grow flex flex-col items-center">
+              <div className="flex-grow flex flex-col items-start">
                  <Image src="https://i.postimg.cc/1zctM22w/pdf.png" alt="PDF Icon" width={64} height={64} className="mb-4" />
                 <h3 className="text-2xl font-bold font-headline mb-3 text-foreground">{item.title}</h3>
                 <p className="text-muted-foreground text-base mb-6 flex-grow">{item.description}</p>
