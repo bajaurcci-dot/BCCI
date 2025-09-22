@@ -45,6 +45,7 @@ const formSchema = z.object({
   membership_code: z.string().optional(),
   membership_expiry: z.date().optional(),
   photo: z.any().optional(),
+  photo_url: z.string().optional(), // Add this to handle existing photo url
 });
 
 const businessTypes = [
@@ -166,6 +167,12 @@ export default function RegistrationManagement() {
       address: '',
       business_name: '',
       mobile_number: '',
+      business_type: undefined,
+      membership_type: undefined,
+      membership_code: '',
+      membership_expiry: undefined,
+      photo: null,
+      photo_url: undefined,
     },
   });
 
@@ -181,6 +188,14 @@ export default function RegistrationManagement() {
         } else if (data) {
           form.reset({
             ...data,
+            cnic: data.cnic || '',
+            ntn: data.ntn || '',
+            address: data.address || '',
+            business_name: data.business_name || '',
+            mobile_number: data.mobile_number || '',
+            business_type: data.business_type || undefined,
+            membership_type: data.membership_type || undefined,
+            membership_code: data.membership_code || '',
             membership_expiry: data.membership_expiry ? new Date(data.membership_expiry) : undefined,
           });
           if (data.photo_url) {
@@ -526,3 +541,5 @@ export default function RegistrationManagement() {
     </Card>
   );
 }
+
+    
