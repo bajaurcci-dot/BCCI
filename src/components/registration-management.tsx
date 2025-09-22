@@ -213,12 +213,12 @@ export default function RegistrationManagement() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
-      let photoUrl = values.photo_url;
+      let finalPhotoUrl = values.photo_url;
       const photoFile = values.photo?.[0];
 
       if (photoFile) {
           const fileExt = photoFile.name.split('.').pop();
-          const filePath = `${Date.now()}.${fileExt}`;
+          const filePath = `public/${Date.now()}-${photoFile.name}`;
           const { error: uploadError } = await supabase.storage.from('member_photos').upload(filePath, photoFile);
 
           if (uploadError) {
@@ -227,18 +227,32 @@ export default function RegistrationManagement() {
           }
 
           const { data: urlData } = supabase.storage.from('member_photos').getPublicUrl(filePath);
-          photoUrl = urlData.publicUrl;
+          finalPhotoUrl = urlData.publicUrl;
       }
       
-      const { photo, ...dbValues } = {
+      const dbValues = {
         ...values,
-        photo_url: photoUrl,
-        membership_expiry: values.membership_expiry ? values.membership_expiry.toISOString() : null
+        photo_url: finalPhotoUrl,
+        membership_expiry: values.membership_expiry ? values.membership_expiry.toISOString() : null,
       };
 
       if (memberId) {
-        // Update existing member
-        const { error } = await supabase.from('members').update(dbValues).eq('id', memberId);
+        // Update existing member using RPC
+        const { error } = await supabase.rpc('update_member_as_admin', {
+          member_id: memberId,
+          full_name_in: dbValues.full_name,
+          cnic_in: dbValues.cnic,
+          ntn_in: dbValues.ntn,
+          address_in: dbValues.address,
+          business_name_in: dbValues.business_name,
+          mobile_number_in: dbValues.mobile_number,
+          business_type_in: dbValues.business_type,
+          membership_type_in: dbValues.membership_type,
+          membership_code_in: dbValues.membership_code,
+          membership_expiry_in: dbValues.membership_expiry,
+          photo_url_in: dbValues.photo_url,
+        });
+
         if (error) {
           toast({ title: 'Update Failed', description: error.message, variant: 'destructive'});
         } else {
@@ -247,7 +261,8 @@ export default function RegistrationManagement() {
         }
       } else {
         // Create new member
-        const { error } = await supabase.from('members').insert(dbValues);
+        const { photo, ...newMemberData } = dbValues; // Exclude 'photo' which is a file object
+        const { error } = await supabase.from('members').insert({ ...newMemberData, status: 'Active' });
         if (error) {
           toast({ title: 'Creation Failed', description: error.message, variant: 'destructive'});
         } else {
