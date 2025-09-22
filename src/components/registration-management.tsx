@@ -223,7 +223,6 @@ export default function RegistrationManagement() {
 
           if (uploadError) {
               toast({ title: 'Photo Upload Failed', description: uploadError.message, variant: 'destructive'});
-              setLoading(false);
               return;
           }
 
