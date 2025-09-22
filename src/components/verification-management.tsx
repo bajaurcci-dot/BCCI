@@ -21,7 +21,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose
+  DialogClose,
+  DialogFooter,
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase-client';
@@ -36,6 +37,9 @@ type Verification = {
     address: string;
     contact: string;
     phone: string;
+    fullName: string;
+    email: string;
+    membershipType: string;
   } | null;
 };
 
@@ -74,11 +78,11 @@ export default function VerificationManagement() {
     return verifications.filter(
       (item) =>
         item.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (item.ntn && item.ntn.toLowerCase().includes(searchTerm.toLowerCase()))
+        (item.details?.fullName && item.details.fullName.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   }, [verifications, searchTerm]);
 
-  const handleAction = async (id: number, ntn: string | null, newStatus: 'Approved' | 'Rejected') => {
+  const handleAction = async (id: number, company_name: string | null, newStatus: 'Approved' | 'Rejected') => {
     const { error } = await supabase
       .from('verification_requests')
       .update({ status: newStatus })
@@ -98,7 +102,7 @@ export default function VerificationManagement() {
       );
       toast({
         title: `Request ${newStatus}`,
-        description: `The verification request for NTN ${ntn} has been ${newStatus.toLowerCase()}.`,
+        description: `The verification request for ${company_name} has been ${newStatus.toLowerCase()}.`,
       });
     }
   };
@@ -115,7 +119,7 @@ export default function VerificationManagement() {
             <div className="relative flex-grow">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search by company name, NTN..."
+                placeholder="Search by company or applicant name..."
                 className="pl-10"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -129,7 +133,7 @@ export default function VerificationManagement() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Company Name</TableHead>
-                  <TableHead>NTN</TableHead>
+                  <TableHead>Applicant</TableHead>
                   <TableHead>Submission Date</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
@@ -144,7 +148,7 @@ export default function VerificationManagement() {
                   filteredVerifications.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.company_name}</TableCell>
-                    <TableCell>{item.ntn || 'N/A'}</TableCell>
+                    <TableCell>{item.details?.fullName || 'N/A'}</TableCell>
                     <TableCell>{new Date(item.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
                       <Badge
@@ -166,8 +170,8 @@ export default function VerificationManagement() {
                       </DialogTrigger>
                       {item.status === 'Pending' && (
                         <>
-                          <Button variant="default" size="sm" onClick={() => handleAction(item.id, item.ntn, 'Approved')} className="bg-green-600 hover:bg-green-700">Approve</Button>
-                          <Button variant="destructive" size="sm" onClick={() => handleAction(item.id, item.ntn, 'Rejected')}>Reject</Button>
+                          <Button variant="default" size="sm" onClick={() => handleAction(item.id, item.company_name, 'Approved')} className="bg-green-600 hover:bg-green-700">Approve</Button>
+                          <Button variant="destructive" size="sm" onClick={() => handleAction(item.id, item.company_name, 'Rejected')}>Reject</Button>
                         </>
                       )}
                     </TableCell>
@@ -184,7 +188,7 @@ export default function VerificationManagement() {
           {selectedVerification && (
              <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Verification Details</DialogTitle>
+                  <DialogTitle>Registration Details</DialogTitle>
                   <DialogDescription>
                     Review the details for {selectedVerification.company_name}.
                   </DialogDescription>
@@ -195,25 +199,27 @@ export default function VerificationManagement() {
                         <span className="col-span-2 font-medium">{selectedVerification.company_name}</span>
                     </div>
                      <div className="grid grid-cols-3 items-center gap-4">
-                        <span className="text-muted-foreground">NTN</span>
-                        <span className="col-span-2 font-medium">{selectedVerification.ntn}</span>
+                        <span className="text-muted-foreground">Applicant Name</span>
+                        <span className="col-span-2 font-medium">{selectedVerification.details?.fullName}</span>
                     </div>
                      <div className="grid grid-cols-3 items-center gap-4">
-                        <span className="text-muted-foreground">Address</span>
-                        <span className="col-span-2 font-medium">{selectedVerification.details?.address || 'N/A'}</span>
-                    </div>
-                     <div className="grid grid-cols-3 items-center gap-4">
-                        <span className="text-muted-foreground">Contact Person</span>
-                        <span className="col-span-2 font-medium">{selectedVerification.details?.contact || 'N/A'}</span>
+                        <span className="text-muted-foreground">Email</span>
+                        <span className="col-span-2 font-medium">{selectedVerification.details?.email}</span>
                     </div>
                      <div className="grid grid-cols-3 items-center gap-4">
                         <span className="text-muted-foreground">Phone</span>
-                        <span className="col-span-2 font-medium">{selectedVerification.details?.phone || 'N/A'}</span>
+                        <span className="col-span-2 font-medium">{selectedVerification.details?.phone}</span>
+                    </div>
+                     <div className="grid grid-cols-3 items-center gap-4">
+                        <span className="text-muted-foreground">Membership Type</span>
+                        <span className="col-span-2 font-medium">{selectedVerification.details?.membershipType}</span>
                     </div>
                 </div>
+                <DialogFooter>
                  <DialogClose asChild>
                     <Button type="button" variant="secondary">Close</Button>
                  </DialogClose>
+                </DialogFooter>
               </DialogContent>
           )}
         </Dialog>
