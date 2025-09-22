@@ -186,13 +186,15 @@ export default function RegistrationManagement() {
         if (error) {
           toast({ title: 'Error fetching member', description: error.message, variant: 'destructive' });
         } else if (data) {
-          // Use setValue for each field to properly update the form state
           Object.keys(data).forEach((key: any) => {
             const fieldName = key as keyof z.infer<typeof formSchema>;
-            if (fieldName === 'membership_expiry' && data[fieldName]) {
-              form.setValue(fieldName, new Date(data[fieldName]));
-            } else if (formSchema.shape.hasOwnProperty(key)) {
-              form.setValue(fieldName, data[key] || '');
+            const value = data[key];
+            if (formSchema.shape.hasOwnProperty(fieldName)) {
+              if (fieldName === 'membership_expiry' && value) {
+                form.setValue(fieldName, new Date(value));
+              } else {
+                form.setValue(fieldName, value || (typeof form.getValues(fieldName) === 'string' ? '' : undefined));
+              }
             }
           });
 
