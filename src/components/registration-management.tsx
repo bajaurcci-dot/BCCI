@@ -230,8 +230,12 @@ export default function RegistrationManagement() {
         photoUrl = urlData.publicUrl;
     }
     
-    // Clean data for insertion/update, removing file object
-    const { photo, ...dbValues } = { ...values, photo_url: photoUrl };
+    const dbValues = { 
+        ...values, 
+        photo_url: photoUrl,
+        membership_expiry: values.membership_expiry ? values.membership_expiry.toISOString() : null
+    };
+    delete (dbValues as any).photo;
 
     if (memberId) {
       // Update existing member
