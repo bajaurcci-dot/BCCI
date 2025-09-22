@@ -186,18 +186,16 @@ export default function RegistrationManagement() {
         if (error) {
           toast({ title: 'Error fetching member', description: error.message, variant: 'destructive' });
         } else if (data) {
-          form.reset({
-            ...data,
-            cnic: data.cnic || '',
-            ntn: data.ntn || '',
-            address: data.address || '',
-            business_name: data.business_name || '',
-            mobile_number: data.mobile_number || '',
-            business_type: data.business_type || undefined,
-            membership_type: data.membership_type || undefined,
-            membership_code: data.membership_code || '',
-            membership_expiry: data.membership_expiry ? new Date(data.membership_expiry) : undefined,
+          // Use setValue for each field to properly update the form state
+          Object.keys(data).forEach((key: any) => {
+            const fieldName = key as keyof z.infer<typeof formSchema>;
+            if (fieldName === 'membership_expiry' && data[fieldName]) {
+              form.setValue(fieldName, new Date(data[fieldName]));
+            } else if (formSchema.shape.hasOwnProperty(key)) {
+              form.setValue(fieldName, data[key] || '');
+            }
           });
+
           if (data.photo_url) {
             setPhotoPreview(data.photo_url);
             setFileName(data.photo_url.split('/').pop()?.split('?')[0] ?? 'member-photo');
@@ -222,8 +220,7 @@ export default function RegistrationManagement() {
           const { error: uploadError } = await supabase.storage.from('member_photos').upload(filePath, photoFile);
 
           if (uploadError) {
-              toast({ title: 'Photo Upload Failed', description: uploadError.message, variant: 'destructive'});
-              return;
+              throw new Error(uploadError.message);
           }
 
           const { data: urlData } = supabase.storage.from('member_photos').getPublicUrl(filePath);
@@ -241,20 +238,20 @@ export default function RegistrationManagement() {
         const { error } = await supabase.rpc('update_member_as_admin', {
           member_id: memberId,
           full_name_in: dbValues.full_name,
-          cnic_in: dbValues.cnic,
-          ntn_in: dbValues.ntn,
-          address_in: dbValues.address,
-          business_name_in: dbValues.business_name,
-          mobile_number_in: dbValues.mobile_number,
-          business_type_in: dbValues.business_type,
-          membership_type_in: dbValues.membership_type,
-          membership_code_in: dbValues.membership_code,
+          cnic_in: dbValues.cnic || null,
+          ntn_in: dbValues.ntn || null,
+          address_in: dbValues.address || null,
+          business_name_in: dbValues.business_name || null,
+          mobile_number_in: dbValues.mobile_number || null,
+          business_type_in: dbValues.business_type || null,
+          membership_type_in: dbValues.membership_type || null,
+          membership_code_in: dbValues.membership_code || null,
           membership_expiry_in: dbValues.membership_expiry,
-          photo_url_in: dbValues.photo_url,
+          photo_url_in: dbValues.photo_url || null,
         });
 
         if (error) {
-          toast({ title: 'Update Failed', description: error.message, variant: 'destructive'});
+          throw new Error(error.message);
         } else {
           toast({ title: 'Member Updated', description: 'Member details have been successfully updated.'});
           router.push('/admin/dashboard?tab=users');
@@ -264,7 +261,7 @@ export default function RegistrationManagement() {
         const { photo, ...newMemberData } = dbValues; // Exclude 'photo' which is a file object
         const { error } = await supabase.from('members').insert({ ...newMemberData, status: 'Active' });
         if (error) {
-          toast({ title: 'Creation Failed', description: error.message, variant: 'destructive'});
+           throw new Error(error.message);
         } else {
           toast({ title: 'Member Added', description: 'New member has been successfully created.'});
           form.reset();
@@ -274,7 +271,7 @@ export default function RegistrationManagement() {
         }
       }
     } catch (error: any) {
-       toast({ title: 'An Unexpected Error Occurred', description: error.message, variant: 'destructive'});
+       toast({ title: 'Operation Failed', description: error.message, variant: 'destructive'});
     } finally {
       setLoading(false);
     }
