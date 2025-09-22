@@ -35,7 +35,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { Switch } from './ui/switch';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from './ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase-client';
