@@ -21,9 +21,21 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Phone, Mail, MapPin, Search, Loader2 } from 'lucide-react';
+import { Phone, Mail, MapPin, Search, Loader2, User, Verified } from 'lucide-react';
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase-client';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from '@/components/ui/dialog';
+import Image from 'next/image';
+import { Badge } from './ui/badge';
+import { format } from 'date-fns';
 
 const formSchema = z.object({
   fullName: z.string().min(1, 'Full name is required.'),
@@ -52,9 +64,22 @@ const contactInfo = [
   },
 ];
 
+type Member = {
+  id: string;
+  full_name: string;
+  ntn: string | null;
+  membership_type: string | null;
+  status: string | null;
+  photo_url: string | null;
+  membership_code: string | null;
+  membership_expiry: string | null;
+};
+
 export default function MembershipVerificationSection() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [foundMember, setFoundMember] = useState<Member | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,12 +92,16 @@ export default function MembershipVerificationSection() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
+    setFoundMember(null);
+
     const { data, error } = await supabase
       .from('members')
-      .select('status')
+      .select('*')
       .eq('ntn', values.ntn)
       .eq('full_name', values.fullName)
       .single();
+
+    setLoading(false);
 
     if (error || !data) {
       toast({
@@ -81,18 +110,15 @@ export default function MembershipVerificationSection() {
         variant: 'destructive',
       });
     } else if (data.status === 'Active') {
-      toast({
-        title: 'Verification Successful!',
-        description: 'Your membership is active and verified.',
-      });
+      setFoundMember(data as Member);
+      setIsDialogOpen(true);
     } else {
        toast({
-        title: 'Membership Inactive',
+        title: 'Membership Not Active',
         description: `Your membership status is: ${data.status}. Please contact support.`,
         variant: 'destructive',
       });
     }
-    setLoading(false);
   }
 
   return (
@@ -148,7 +174,7 @@ export default function MembershipVerificationSection() {
                           <SelectContent>
                             <SelectItem value="Corporate">Corporate</SelectItem>
                             <SelectItem value="Associate">Associate</SelectItem>
-                            <SelectItem value="Foreign">Foreign Member Class</SelectItem>
+                            <SelectItem value="Foreign">Foreign</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -194,6 +220,67 @@ export default function MembershipVerificationSection() {
           </div>
         </div>
       </div>
+
+       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        {foundMember && (
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Verified className="h-6 w-6 text-green-500" />
+                Membership Verified
+              </DialogTitle>
+              <DialogDescription>
+                The membership for {foundMember.full_name} is active and valid.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="py-4 space-y-4">
+               <div className="flex flex-col items-center gap-4">
+                  <div className="w-24 h-24 rounded-full border-2 border-primary flex items-center justify-center bg-muted/50 relative overflow-hidden">
+                    {foundMember.photo_url ? (
+                      <Image
+                        src={foundMember.photo_url}
+                        alt="Member photo"
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <User className="h-12 w-12 text-muted-foreground" />
+                    )}
+                  </div>
+                  <div className="text-center">
+                    <p className="font-bold text-lg">{foundMember.full_name}</p>
+                    <p className="text-sm text-muted-foreground">{foundMember.ntn}</p>
+                  </div>
+               </div>
+               <div className="text-sm space-y-2 rounded-md border p-4 bg-background">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Membership Code:</span>
+                    <span className="font-medium">{foundMember.membership_code || 'N/A'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Membership Type:</span>
+                    <span className="font-medium">{foundMember.membership_type || 'N/A'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Status:</span>
+                    <Badge variant="default" className="bg-green-500">{foundMember.status}</Badge>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Expiry Date:</span>
+                    <span className="font-medium">
+                      {foundMember.membership_expiry ? format(new Date(foundMember.membership_expiry), 'PPP') : 'N/A'}
+                    </span>
+                  </div>
+               </div>
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button type="button" className="w-full">Close</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        )}
+      </Dialog>
     </section>
   );
 }
