@@ -215,7 +215,7 @@ export default function RegistrationManagement() {
       const photoFile = values.photo?.[0];
 
       if (photoFile) {
-        const filePath = `public/${Date.now()}-${photoFile.name}`;
+        const filePath = `${Date.now()}-${photoFile.name}`;
         const { error: uploadError } = await supabase.storage.from('member_photos').upload(filePath, photoFile);
 
         if (uploadError) {
