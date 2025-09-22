@@ -45,7 +45,7 @@ const formSchema = z.object({
   membership_code: z.string().optional(),
   membership_expiry: z.date().optional(),
   photo: z.any().optional(),
-  photo_url: z.string().optional(), // Add this to handle existing photo url
+  photo_url: z.string().optional(),
 });
 
 const businessTypes = [
@@ -223,6 +223,7 @@ export default function RegistrationManagement() {
 
           if (uploadError) {
               toast({ title: 'Photo Upload Failed', description: uploadError.message, variant: 'destructive'});
+              setLoading(false);
               return;
           }
 
