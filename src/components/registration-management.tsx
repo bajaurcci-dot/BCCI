@@ -230,6 +230,7 @@ export default function RegistrationManagement() {
         photoUrl = urlData.publicUrl;
     }
     
+    // Clean data for insertion/update, removing file object
     const { photo, ...dbValues } = { ...values, photo_url: photoUrl };
 
     if (memberId) {
@@ -541,5 +542,3 @@ export default function RegistrationManagement() {
     </Card>
   );
 }
-
-    
