@@ -230,12 +230,12 @@ export default function RegistrationManagement() {
         photoUrl = urlData.publicUrl;
     }
     
-    const dbValues = { 
-        ...values, 
-        photo_url: photoUrl,
-        membership_expiry: values.membership_expiry ? values.membership_expiry.toISOString() : null
+    const dbValues: Omit<typeof values, 'photo'> & { photo_url?: string } = {
+      ...values,
+      photo_url: photoUrl,
+      membership_expiry: values.membership_expiry ? values.membership_expiry.toISOString() as any : null
     };
-    delete (dbValues as any).photo;
+    delete dbValues.photo;
 
     if (memberId) {
       // Update existing member
