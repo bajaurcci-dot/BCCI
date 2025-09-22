@@ -215,39 +215,32 @@ export default function RegistrationManagement() {
       const photoFile = values.photo?.[0];
 
       if (photoFile) {
-          const fileExt = photoFile.name.split('.').pop();
-          const filePath = `public/${Date.now()}-${photoFile.name}`;
-          const { error: uploadError } = await supabase.storage.from('member_photos').upload(filePath, photoFile);
+        const filePath = `public/${Date.now()}-${photoFile.name}`;
+        const { error: uploadError } = await supabase.storage.from('member_photos').upload(filePath, photoFile);
 
-          if (uploadError) {
-              throw new Error(uploadError.message);
-          }
+        if (uploadError) {
+          throw new Error(`Image upload failed: ${uploadError.message}`);
+        }
 
-          const { data: urlData } = supabase.storage.from('member_photos').getPublicUrl(filePath);
-          finalPhotoUrl = urlData.publicUrl;
+        const { data: urlData } = supabase.storage.from('member_photos').getPublicUrl(filePath);
+        finalPhotoUrl = urlData.publicUrl;
       }
-      
-      const dbValues = {
-        ...values,
-        photo_url: finalPhotoUrl,
-        membership_expiry: values.membership_expiry ? values.membership_expiry.toISOString() : null,
-      };
 
       if (memberId) {
         // Update existing member using RPC
         const { error } = await supabase.rpc('update_member_as_admin', {
           member_id: memberId,
-          full_name_in: dbValues.full_name,
-          cnic_in: dbValues.cnic || null,
-          ntn_in: dbValues.ntn || null,
-          address_in: dbValues.address || null,
-          business_name_in: dbValues.business_name || null,
-          mobile_number_in: dbValues.mobile_number || null,
-          business_type_in: dbValues.business_type || null,
-          membership_type_in: dbValues.membership_type || null,
-          membership_code_in: dbValues.membership_code || null,
-          membership_expiry_in: dbValues.membership_expiry,
-          photo_url_in: dbValues.photo_url || null,
+          full_name_in: values.full_name,
+          cnic_in: values.cnic || null,
+          ntn_in: values.ntn || null,
+          address_in: values.address || null,
+          business_name_in: values.business_name || null,
+          mobile_number_in: values.mobile_number || null,
+          business_type_in: values.business_type || null,
+          membership_type_in: values.membership_type || null,
+          membership_code_in: values.membership_code || null,
+          membership_expiry_in: values.membership_expiry ? values.membership_expiry.toISOString() : null,
+          photo_url_in: finalPhotoUrl || null,
         });
 
         if (error) {
@@ -258,7 +251,11 @@ export default function RegistrationManagement() {
         }
       } else {
         // Create new member
-        const { photo, ...newMemberData } = dbValues; // Exclude 'photo' which is a file object
+        const { photo, ...newMemberData } = {
+          ...values,
+          photo_url: finalPhotoUrl,
+          membership_expiry: values.membership_expiry ? values.membership_expiry.toISOString() : null,
+        };
         const { error } = await supabase.from('members').insert({ ...newMemberData, status: 'Active' });
         if (error) {
            throw new Error(error.message);
