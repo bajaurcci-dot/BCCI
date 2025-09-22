@@ -212,55 +212,57 @@ export default function RegistrationManagement() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
-    let photoUrl = values.photo_url;
-    const photoFile = values.photo?.[0];
+    try {
+      let photoUrl = values.photo_url;
+      const photoFile = values.photo?.[0];
 
-    if (photoFile) {
-        const fileExt = photoFile.name.split('.').pop();
-        const filePath = `${Date.now()}.${fileExt}`;
-        const { error: uploadError } = await supabase.storage.from('member_photos').upload(filePath, photoFile);
+      if (photoFile) {
+          const fileExt = photoFile.name.split('.').pop();
+          const filePath = `${Date.now()}.${fileExt}`;
+          const { error: uploadError } = await supabase.storage.from('member_photos').upload(filePath, photoFile);
 
-        if (uploadError) {
-            toast({ title: 'Photo Upload Failed', description: uploadError.message, variant: 'destructive'});
-            setLoading(false);
-            return;
+          if (uploadError) {
+              toast({ title: 'Photo Upload Failed', description: uploadError.message, variant: 'destructive'});
+              return;
+          }
+
+          const { data: urlData } = supabase.storage.from('member_photos').getPublicUrl(filePath);
+          photoUrl = urlData.publicUrl;
+      }
+      
+      const { photo, ...dbValues } = {
+        ...values,
+        photo_url: photoUrl,
+        membership_expiry: values.membership_expiry ? values.membership_expiry.toISOString() : null
+      };
+
+      if (memberId) {
+        // Update existing member
+        const { error } = await supabase.from('members').update(dbValues).eq('id', memberId);
+        if (error) {
+          toast({ title: 'Update Failed', description: error.message, variant: 'destructive'});
+        } else {
+          toast({ title: 'Member Updated', description: 'Member details have been successfully updated.'});
+          router.push('/admin/dashboard?tab=users');
         }
-
-        const { data: urlData } = supabase.storage.from('member_photos').getPublicUrl(filePath);
-        photoUrl = urlData.publicUrl;
-    }
-    
-    const dbValues: Omit<typeof values, 'photo'> & { photo_url?: string } = {
-      ...values,
-      photo_url: photoUrl,
-      membership_expiry: values.membership_expiry ? values.membership_expiry.toISOString() as any : null
-    };
-    delete dbValues.photo;
-
-    if (memberId) {
-      // Update existing member
-      const { error } = await supabase.from('members').update(dbValues).eq('id', memberId);
-      if (error) {
-        toast({ title: 'Update Failed', description: error.message, variant: 'destructive'});
       } else {
-        toast({ title: 'Member Updated', description: 'Member details have been successfully updated.'});
-        router.push('/admin/dashboard?tab=users');
+        // Create new member
+        const { error } = await supabase.from('members').insert(dbValues);
+        if (error) {
+          toast({ title: 'Creation Failed', description: error.message, variant: 'destructive'});
+        } else {
+          toast({ title: 'Member Added', description: 'New member has been successfully created.'});
+          form.reset();
+          setPhotoPreview(null);
+          setFileName(null);
+          router.push('/admin/dashboard?tab=users');
+        }
       }
-    } else {
-      // Create new member
-      const { error } = await supabase.from('members').insert(dbValues);
-      if (error) {
-        toast({ title: 'Creation Failed', description: error.message, variant: 'destructive'});
-      } else {
-        toast({ title: 'Member Added', description: 'New member has been successfully created.'});
-        form.reset();
-        setPhotoPreview(null);
-        setFileName(null);
-        router.push('/admin/dashboard?tab=users');
-      }
+    } catch (error: any) {
+       toast({ title: 'An Unexpected Error Occurred', description: error.message, variant: 'destructive'});
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   }
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -280,6 +282,7 @@ export default function RegistrationManagement() {
     setPhotoPreview(null);
     setFileName(null);
     form.setValue('photo', null);
+    form.setValue('photo_url', undefined);
   };
   
   if (isFetching) {
