@@ -78,8 +78,8 @@ const HeroSection = () => {
               </p>
             </div>
             <div className="mt-6 flex flex-col sm:flex-row flex-wrap justify-center gap-3">
-              <Button size="lg" className="shadow-sm transition-shadow hover:shadow w-full sm:w-auto">Get Started</Button>
-              <Button size="lg" variant="outline" className="group w-full sm:w-auto">
+              <Button size="lg" className="shadow-sm transition-shadow hover:shadow w-full sm:w-48">Get Started</Button>
+              <Button size="lg" variant="outline" className="group w-full sm:w-48">
                 Learn more{' '}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -241,5 +241,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
-    
