@@ -23,7 +23,6 @@ const menuItems = [
   { label: 'Membership', href: '/membership', icon: Award },
   { label: 'Compliances', href: '/compliances', icon: FileCheck },
   { label: 'Download', href: '#', icon: Download },
-  { label: 'Admin', href: '/admin', icon: UserCog },
   { label: 'Contact Us', href: '/contact', icon: Mail },
 ];
 
@@ -200,7 +199,7 @@ export default function TopNavBar() {
                 </PopoverTrigger>
                 <VacancyPopoverContent />
               </Popover>
-            <Button className="relative overflow-hidden transition-all duration-700 ease-in-out hover:scale-110 hover:shadow-lg group">
+            <Button className="w-full relative overflow-hidden transition-all duration-700 ease-in-out hover:scale-110 hover:shadow-lg group">
               Get Started
               <span className="absolute inset-0 bg-white/20 transition-all duration-700 ease-in-out -translate-x-full group-hover:translate-x-0 group-hover:skew-x-[-15deg]"></span>
             </Button>
