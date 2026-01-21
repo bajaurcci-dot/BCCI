@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import {
@@ -25,7 +25,6 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-client';
 
 type Verification = {
   id: number;
@@ -48,30 +47,18 @@ export default function VerificationManagement() {
   const [verifications, setVerifications] = useState<Verification[]>([]);
   const [selectedVerification, setSelectedVerification] = useState<Verification | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchVerifications = async () => {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('verification_requests')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        toast({
-          title: 'Error fetching requests',
-          description: error.message,
-          variant: 'destructive',
-        });
-      } else {
-        setVerifications(data);
-      }
+      // Supabase logic removed
+      setVerifications([]);
       setLoading(false);
     };
 
     fetchVerifications();
-  }, [toast]);
+  }, []);
 
   const filteredVerifications = useMemo(() => {
     if (!searchTerm) return verifications;
@@ -83,28 +70,16 @@ export default function VerificationManagement() {
   }, [verifications, searchTerm]);
 
   const handleAction = async (id: number, company_name: string | null, newStatus: 'Approved' | 'Rejected') => {
-    const { error } = await supabase
-      .from('verification_requests')
-      .update({ status: newStatus })
-      .eq('id', id);
-
-    if (error) {
-       toast({
-        title: 'Error updating status',
-        description: error.message,
-        variant: 'destructive',
-      });
-    } else {
-       setVerifications(
-        verifications.map((item) =>
-          item.id === id ? { ...item, status: newStatus } : item
-        )
-      );
-      toast({
-        title: `Request ${newStatus}`,
-        description: `The verification request for ${company_name} has been ${newStatus.toLowerCase()}.`,
-      });
-    }
+    // Supabase logic removed
+    setVerifications(
+      verifications.map((item) =>
+        item.id === id ? { ...item, status: newStatus } : item
+      )
+    );
+    toast({
+      title: `Request ${newStatus}`,
+      description: `The verification request for ${company_name} has been ${newStatus.toLowerCase()}.`,
+    });
   };
 
   return (
@@ -142,7 +117,9 @@ export default function VerificationManagement() {
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center">Loading requests...</TableCell>
+                    <TableCell colSpan={5} className="text-center h-24">
+                      <Loader2 className="h-6 w-6 animate-spin mx-auto" />
+                    </TableCell>
                   </TableRow>
                 ) : filteredVerifications.length > 0 ? (
                   filteredVerifications.map((item) => (
@@ -179,7 +156,7 @@ export default function VerificationManagement() {
                 ))
                 ) : (
                    <TableRow>
-                    <TableCell colSpan={5} className="text-center">No verification requests found.</TableCell>
+                    <TableCell colSpan={5} className="text-center h-24">No verification requests found.</TableCell>
                   </TableRow>
                 )}
               </TableBody>

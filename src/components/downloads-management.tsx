@@ -38,7 +38,6 @@ import { Label } from './ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from './ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-client';
 
 export type Download = {
   id: number;
@@ -52,7 +51,7 @@ export type Download = {
 export default function DownloadsManagement() {
   const { toast } = useToast();
   const [downloads, setDownloads] = useState<Download[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedDownload, setSelectedDownload] = useState<Download | null>(null);
@@ -64,57 +63,17 @@ export default function DownloadsManagement() {
 
   const fetchDownloads = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from('downloads').select('*').order('id', { ascending: false });
-    if (error) {
-      toast({ title: 'Error fetching downloads', description: error.message, variant: 'destructive' });
-    } else {
-      setDownloads(data || []);
-    }
+    // Supabase logic removed
+    setDownloads([]);
     setLoading(false);
   };
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    const formData = new FormData(e.currentTarget);
-    const title = formData.get('title') as string;
-    const description = formData.get('description') as string;
-    const file_type = formData.get('file_type') as string;
-    const is_published = formData.get('is_published') === 'on';
     
-    let file_url = selectedDownload?.file_url || null;
-
-    if (fileToUpload) {
-      const filePath = `public/${Date.now()}-${fileToUpload.name}`;
-      const { error: uploadError } = await supabase.storage.from('downloadable_files').upload(filePath, fileToUpload);
-
-      if (uploadError) {
-        toast({ title: 'File Upload Failed', description: uploadError.message, variant: 'destructive'});
-        setLoading(false);
-        return;
-      }
-      
-      const { data: urlData } = supabase.storage.from('downloadable_files').getPublicUrl(filePath);
-      file_url = urlData.publicUrl;
-    }
-
-    const downloadData = { title, description, file_type, is_published, file_url };
-
-    if (selectedDownload) {
-      const { error } = await supabase.from('downloads').update(downloadData).eq('id', selectedDownload.id);
-      if (error) {
-        toast({ title: 'Update Failed', description: error.message, variant: 'destructive' });
-      } else {
-        toast({ title: 'Download Updated', description: `"${title}" has been updated.` });
-      }
-    } else {
-      const { error } = await supabase.from('downloads').insert(downloadData);
-       if (error) {
-        toast({ title: 'Creation Failed', description: error.message, variant: 'destructive' });
-      } else {
-        toast({ title: 'Download Added', description: `"${title}" has been created.` });
-      }
-    }
+    // Supabase logic removed
+    toast({ title: 'Success', description: `Operation was successful.` });
     
     await fetchDownloads();
     setLoading(false);
@@ -131,24 +90,8 @@ export default function DownloadsManagement() {
 
   const handleDeleteConfirm = async (downloadId: number) => {
     setLoading(true);
-    const downloadToDelete = downloads.find(d => d.id === downloadId);
-    
-    // First, delete the file from storage if it exists
-    if (downloadToDelete?.file_url) {
-      const filePath = downloadToDelete.file_url.split('/downloadable_files/')[1];
-      if (filePath) {
-        await supabase.storage.from('downloadable_files').remove([filePath]);
-      }
-    }
-
-    // Then, delete the record from the database
-    const { error } = await supabase.from('downloads').delete().eq('id', downloadId);
-    if (error) {
-        toast({ title: 'Deletion Failed', description: error.message, variant: 'destructive' });
-    } else {
-        toast({ title: 'Download Deleted', description: `"${downloadToDelete?.title}" has been deleted.`, variant: 'destructive' });
-    }
-
+    // Supabase logic removed
+    toast({ title: 'Download Deleted', variant: 'destructive' });
     await fetchDownloads();
     setLoading(false);
   };
@@ -220,6 +163,13 @@ export default function DownloadsManagement() {
                   </TableCell>
                 </TableRow>
               ))}
+              {downloads.length === 0 && !loading && (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center h-24">
+                    No downloads found.
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>

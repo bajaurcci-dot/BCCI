@@ -1,12 +1,1 @@
-
-import { createBrowserClient } from '@supabase/ssr'
-
-export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-}
-
-// Re-export for convenience
-export const supabase = createClient();
+// This file is intentionally left empty as Supabase has been removed from the project.

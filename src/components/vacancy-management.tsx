@@ -36,7 +36,6 @@ import {
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-client';
 
 export type Vacancy = {
   id: number;
@@ -59,7 +58,7 @@ type ApplicantCounts = {
 export default function VacancyManagement() {
   const { toast } = useToast();
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [applicantCounts, setApplicantCounts] = useState<ApplicantCounts>({});
   
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -70,58 +69,18 @@ export default function VacancyManagement() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const vacanciesPromise = supabase.from('vacancies').select('*').order('created_at', { ascending: false });
-      const applicantsPromise = supabase.from('applicants').select('vacancy_id');
-
-      const [vacanciesResult, applicantsResult] = await Promise.all([vacanciesPromise, applicantsPromise]);
-
-      if (vacanciesResult.error) {
-        toast({ title: 'Error fetching vacancies', description: vacanciesResult.error.message, variant: 'destructive' });
-      } else {
-        setVacancies(vacanciesResult.data as Vacancy[]);
-      }
-      
-      if (applicantsResult.error) {
-         toast({ title: 'Error fetching applicants', description: applicantsResult.error.message, variant: 'destructive' });
-      } else {
-        const counts: ApplicantCounts = {};
-        for (const applicant of applicantsResult.data) {
-          counts[applicant.vacancy_id] = (counts[applicant.vacancy_id] || 0) + 1;
-        }
-        setApplicantCounts(counts);
-      }
-
+      // Supabase logic removed
+      setVacancies([]);
+      setApplicantCounts({});
       setLoading(false);
     };
     fetchData();
-  }, [toast]);
+  }, []);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const title = formData.get('title') as string;
-    const status = formData.get('status') as 'Open' | 'Closed';
-
-    if (selectedVacancy) {
-      // Edit existing
-      const { data, error } = await supabase.from('vacancies').update({ title, status }).eq('id', selectedVacancy.id).select().single();
-      if (error) {
-        toast({ title: 'Update Failed', description: error.message, variant: 'destructive' });
-      } else {
-        setVacancies(vacancies.map(v => v.id === selectedVacancy.id ? data as Vacancy : v));
-        toast({ title: 'Vacancy Updated', description: `The vacancy "${title}" has been updated.` });
-      }
-    } else {
-      // Add new
-      const { data, error } = await supabase.from('vacancies').insert({ title, status }).select().single();
-      if (error) {
-        toast({ title: 'Creation Failed', description: error.message, variant: 'destructive' });
-      } else if (data) {
-        setVacancies([data as Vacancy, ...vacancies]);
-        toast({ title: 'Vacancy Added', description: `The vacancy "${title}" has been created.` });
-      }
-    }
-
+    // Supabase logic removed
+    toast({ title: 'Success', description: `Vacancy operation was successful.` });
     setIsFormOpen(false);
     setSelectedVacancy(null);
   };
@@ -132,31 +91,18 @@ export default function VacancyManagement() {
   };
 
   const handleDeleteConfirm = async (vacancyId: number) => {
-    const { error } = await supabase.from('vacancies').delete().eq('id', vacancyId);
-    if (error) {
-        toast({ title: 'Deletion Failed', description: error.message, variant: 'destructive' });
-    } else {
-        const deletedVacancy = vacancies.find(v => v.id === vacancyId);
-        setVacancies(vacancies.filter(v => v.id !== vacancyId));
-        toast({
-          title: 'Vacancy Deleted',
-          description: `The vacancy "${deletedVacancy?.title}" has been deleted.`,
-          variant: 'destructive',
-        });
-    }
+    // Supabase logic removed
+    toast({
+      title: 'Vacancy Deleted',
+      variant: 'destructive',
+    });
   };
 
   const viewApplicants = async (vacancy: Vacancy) => {
     setSelectedVacancy(vacancy);
     setIsApplicantsOpen(true);
     setCurrentApplicants([]); // Clear previous applicants
-
-    const { data, error } = await supabase.from('applicants').select('*').eq('vacancy_id', vacancy.id);
-    if (error) {
-       toast({ title: 'Error fetching applicants', description: error.message, variant: 'destructive' });
-    } else {
-      setCurrentApplicants(data as Applicant[]);
-    }
+    // Supabase logic removed
   };
 
   return (
@@ -190,7 +136,7 @@ export default function VacancyManagement() {
                     <Loader2 className="mx-auto h-6 w-6 animate-spin" />
                   </TableCell>
                 </TableRow>
-              ) : vacancies.map((vacancy) => (
+              ) : vacancies.length > 0 ? vacancies.map((vacancy) => (
                 <TableRow key={vacancy.id}>
                   <TableCell className="font-medium">{vacancy.title}</TableCell>
                   <TableCell>{applicantCounts[vacancy.id] || 0}</TableCell>
@@ -236,7 +182,13 @@ export default function VacancyManagement() {
                     </AlertDialog>
                   </TableCell>
                 </TableRow>
-              ))}
+              )) : (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center h-24">
+                    No vacancies found.
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>

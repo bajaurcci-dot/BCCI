@@ -36,7 +36,6 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-client';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
@@ -55,7 +54,7 @@ export default function MessagesManagement() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchMessages();
@@ -63,12 +62,8 @@ export default function MessagesManagement() {
 
   const fetchMessages = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from('messages').select('*').order('created_at', { ascending: false });
-    if (error) {
-      toast({ title: 'Error fetching messages', description: error.message, variant: 'destructive' });
-    } else {
-      setMessages(data || []);
-    }
+    // Supabase logic removed
+    setMessages([]);
     setLoading(false);
   };
 
@@ -90,22 +85,14 @@ export default function MessagesManagement() {
   };
 
   const handleMarkAsRead = async (id: number, isRead: boolean) => {
-    const { error } = await supabase.from('messages').update({ is_read: isRead }).eq('id', id);
-    if (error) {
-      toast({ title: 'Error updating status', description: error.message, variant: 'destructive' });
-    } else {
-      setMessages(messages.map((m) => (m.id === id ? { ...m, is_read: isRead } : m)));
-    }
+    // Supabase logic removed
+    setMessages(messages.map((m) => (m.id === id ? { ...m, is_read: isRead } : m)));
   };
 
   const handleDelete = async (id: number) => {
-    const { error } = await supabase.from('messages').delete().eq('id', id);
-    if (error) {
-      toast({ title: 'Error deleting message', description: error.message, variant: 'destructive' });
-    } else {
-      setMessages(messages.filter((m) => m.id !== id));
-      toast({ title: 'Message Deleted', description: 'The message has been successfully deleted.', variant: 'destructive' });
-    }
+    // Supabase logic removed
+    setMessages(messages.filter((m) => m.id !== id));
+    toast({ title: 'Message Deleted', description: 'The message has been successfully deleted.', variant: 'destructive' });
   };
 
   return (

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
-import { supabase } from '@/lib/supabase-client';
 import { useToast } from './use-toast';
 
 export type Vacancy = {
@@ -25,32 +24,14 @@ export const VacanciesProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchVacancies = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('vacancies')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      toast({ title: 'Could not fetch vacancies', description: error.message, variant: 'destructive'});
-    } else {
-      setVacancies(data || []);
-    }
+    // Supabase logic removed
+    setVacancies([]);
     setLoading(false);
-  }, [toast]);
+  }, []);
 
   useEffect(() => {
     fetchVacancies();
-
-    const channel = supabase.channel('realtime-vacancies')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'vacancies'}, (payload) => {
-        // Just refetch all vacancies on any change
-        fetchVacancies();
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    // Supabase channel subscription removed
   }, [fetchVacancies]);
 
   return (

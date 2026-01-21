@@ -23,7 +23,6 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Phone, Mail, MapPin, Search, Loader2, User, Verified } from 'lucide-react';
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase-client';
 import {
   Dialog,
   DialogContent,
@@ -94,31 +93,15 @@ export default function MembershipVerificationSection() {
     setLoading(true);
     setFoundMember(null);
 
-    const { data, error } = await supabase
-      .from('members')
-      .select('*')
-      .eq('ntn', values.ntn)
-      .eq('full_name', values.fullName)
-      .single();
+    // Supabase logic removed
+    
+    toast({
+      title: 'Verification Failed',
+      description: 'Member not found. This feature is temporarily disabled.',
+      variant: 'destructive',
+    });
 
     setLoading(false);
-
-    if (error || !data) {
-      toast({
-        title: 'Verification Failed',
-        description: 'Member not found. Please check your details and try again.',
-        variant: 'destructive',
-      });
-    } else if (data.status === 'Active') {
-      setFoundMember(data as Member);
-      setIsDialogOpen(true);
-    } else {
-       toast({
-        title: 'Membership Not Active',
-        description: `Your membership status is: ${data.status}. Please contact support.`,
-        variant: 'destructive',
-      });
-    }
   }
 
   return (

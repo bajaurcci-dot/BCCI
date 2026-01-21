@@ -27,7 +27,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Users, UserCheck, UserX, Clock, Loader2 } from 'lucide-react';
-import { supabase } from '@/lib/supabase-client';
 import { useToast } from '@/hooks/use-toast';
 import { differenceInDays, parseISO } from 'date-fns';
 
@@ -53,41 +52,15 @@ type Stats = {
 
 export default function DashboardOverview() {
   const { toast } = useToast();
-  const [stats, setStats] = React.useState<Stats | null>(null);
+  const [stats, setStats] = React.useState<Stats | null>({ total_members: 0, active_members: 0, pending_verifications: 0, expired_members: 0 });
   const [expiringUsers, setExpiringUsers] = React.useState<ExpiringUser[]>([]);
   const [selectedUser, setSelectedUser] = React.useState<ExpiringUser | null>(null);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const statsPromise = supabase.rpc('get_dashboard_stats');
-        const expiringUsersPromise = supabase.rpc('get_expiring_members');
-
-        const [statsResult, expiringUsersResult] = await Promise.all([statsPromise, expiringUsersPromise]);
-
-        if (statsResult.error) throw statsResult.error;
-        if (expiringUsersResult.error) throw expiringUsersResult.error;
-
-        if (statsResult.data && statsResult.data.length > 0) {
-            setStats(statsResult.data[0]);
-        }
-        setExpiringUsers(expiringUsersResult.data || []);
-        
-      } catch (error: any) {
-        toast({
-          title: 'Error fetching dashboard data',
-          description: error.message,
-          variant: 'destructive',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [toast]);
+    // Supabase logic removed
+    setLoading(false);
+  }, []);
   
   const getDaysLeft = (expiryDate: string) => {
     return differenceInDays(parseISO(expiryDate), new Date());

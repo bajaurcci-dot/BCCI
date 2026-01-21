@@ -23,7 +23,6 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Phone, Mail, UploadCloud, X, MessageSquare, CheckCircle, BrainCircuit, Loader2 } from 'lucide-react';
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase-client';
 
 const formSchema = z.object({
   fullName: z.string().min(1, { message: 'Full name is required.' }),
@@ -109,43 +108,15 @@ export default function AdditionalServicesSection() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
-    let photoUrl = null;
-    const photoFile = values.photo?.[0];
-
-    if (photoFile) {
-        const fileExt = photoFile.name.split('.').pop();
-        const filePath = `verification_photos/${Date.now()}.${fileExt}`;
-        const { error: uploadError } = await supabase.storage.from('member_photos').upload(filePath, photoFile);
-
-        if (uploadError) {
-            toast({ title: 'Photo Upload Failed', description: uploadError.message, variant: 'destructive'});
-            setLoading(false);
-            return;
-        }
-
-        const { data: urlData } = supabase.storage.from('member_photos').getPublicUrl(filePath);
-        photoUrl = urlData.publicUrl;
-    }
     
-    const { photo, companyName, ...details } = { ...values, photo_url: photoUrl };
-
-    const { error } = await supabase.from('verification_requests').insert({
-        company_name: companyName,
-        ntn: null, // NTN is not in this form
-        status: 'Pending',
-        details: details
+    // Supabase logic removed
+    
+    toast({
+        title: 'Registration Submitted!',
+        description: 'Thank you for registering. Your request is pending approval.',
     });
-
-    if (error) {
-        toast({ title: 'Submission Failed', description: error.message, variant: 'destructive'});
-    } else {
-        toast({
-            title: 'Registration Submitted!',
-            description: 'Thank you for registering. Your request is pending approval.',
-        });
-        form.reset();
-        setFileName(null);
-    }
+    form.reset();
+    setFileName(null);
     setLoading(false);
   }
 

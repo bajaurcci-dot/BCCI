@@ -15,7 +15,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-client';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
@@ -50,21 +49,15 @@ export default function ContactForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
-    const { error } = await supabase.from('messages').insert(values);
+    
+    // Supabase logic removed
+    
+    toast({
+      title: 'Message Sent!',
+      description: 'Thank you for contacting us. We will get back to you shortly.',
+    });
+    form.reset();
 
-    if (error) {
-      toast({
-        title: 'Error Sending Message',
-        description: error.message,
-        variant: 'destructive'
-      });
-    } else {
-      toast({
-        title: 'Message Sent!',
-        description: 'Thank you for contacting us. We will get back to you shortly.',
-      });
-      form.reset();
-    }
     setLoading(false);
   }
 

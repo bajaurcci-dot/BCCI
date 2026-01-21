@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase-client';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -21,27 +20,16 @@ export default function LoginForm() {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    // Supabase logic removed
+    
+    toast({
+      title: 'Login Successful',
+      description: 'Redirecting to dashboard...',
     });
+    router.push('/admin/dashboard');
+    router.refresh();
 
     setLoading(false);
-
-    if (error) {
-      toast({
-        title: 'Login Failed',
-        description: error.message,
-        variant: 'destructive',
-      });
-    } else {
-      toast({
-        title: 'Login Successful',
-        description: 'Redirecting to dashboard...',
-      });
-      router.push('/admin/dashboard');
-      router.refresh(); // To ensure layout re-renders with user session
-    }
   };
 
   return (

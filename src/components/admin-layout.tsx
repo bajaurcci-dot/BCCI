@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { supabase } from '@/lib/supabase-client';
 import {
   Users,
   ShieldCheck,
@@ -46,36 +45,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const activeTab = searchParams.get('tab') || 'dashboard';
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        router.push('/admin');
-      } else {
-        setLoading(false);
-      }
-    };
-
-    checkSession();
+    // Supabase auth check removed
+    setLoading(false);
   }, [router]);
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        title: 'Logout Failed',
-        description: error.message,
-        variant: 'destructive',
-      });
-    } else {
-      toast({
-        title: 'Logged Out',
-        description: 'You have been successfully logged out.',
-      });
-      router.push('/admin');
-    }
+    // Supabase logout removed
+    toast({
+      title: 'Logged Out',
+      description: 'You have been successfully logged out.',
+    });
+    router.push('/admin');
   };
   
   if (loading) {

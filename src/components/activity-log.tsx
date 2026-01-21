@@ -12,7 +12,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Loader2, Search } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { supabase } from '@/lib/supabase-client';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
@@ -29,27 +28,13 @@ type Log = {
 export default function ActivityLog() {
   const { toast } = useToast();
   const [logs, setLogs] = useState<Log[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const fetchLogs = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('activity_logs')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(100);
-
-      if (error) {
-        toast({ title: 'Error fetching activity logs', description: error.message, variant: 'destructive'});
-      } else {
-        setLogs(data as Log[]);
-      }
-      setLoading(false);
-    };
-    fetchLogs();
-  }, [toast]);
+    // Supabase logic removed
+    setLoading(false);
+  }, []);
 
   const filteredLogs = useMemo(() => {
     if (!searchTerm) return logs;

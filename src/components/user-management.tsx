@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { PlusCircle, Search } from 'lucide-react';
+import { PlusCircle, Search, Loader2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
@@ -27,7 +27,6 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useMemo, useEffect } from 'react';
-import { supabase } from '@/lib/supabase-client';
 
 type User = {
   id: string;
@@ -41,27 +40,18 @@ export default function UserManagement() {
   const { toast } = useToast();
   const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
-      const { data, error } = await supabase.from('members').select('id, full_name, ntn, membership_type, status');
-
-      if (error) {
-        toast({
-          title: 'Error fetching users',
-          description: error.message,
-          variant: 'destructive',
-        });
-      } else if (data) {
-        setUsers(data);
-      }
+      // Supabase logic removed
+      setUsers([]);
       setLoading(false);
     };
 
     fetchUsers();
-  }, [toast]);
+  }, []);
 
   const filteredUsers = useMemo(() => {
     if (!searchTerm) return users;
@@ -73,21 +63,12 @@ export default function UserManagement() {
   }, [users, searchTerm]);
 
   const handleDelete = async (userId: string) => {
-    const { error } = await supabase.from('members').delete().eq('id', userId);
-
-    if (error) {
-      toast({
-        title: 'Error deleting user',
-        description: error.message,
-        variant: 'destructive',
-      });
-    } else {
-      setUsers(users.filter((user) => user.id !== userId));
-      toast({
-        title: 'User Deleted',
-        description: `The user has been successfully deleted.`,
-      });
-    }
+    // Supabase logic removed
+    setUsers(users.filter((user) => user.id !== userId));
+    toast({
+      title: 'User Deleted',
+      description: `The user has been successfully deleted.`,
+    });
   };
 
   return (
@@ -133,8 +114,8 @@ export default function UserManagement() {
             <TableBody>
               {loading ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center">
-                    Loading members...
+                  <TableCell colSpan={5} className="text-center h-24">
+                    <Loader2 className="mx-auto h-6 w-6 animate-spin" />
                   </TableCell>
                 </TableRow>
               ) : filteredUsers.length > 0 ? (
@@ -179,7 +160,7 @@ export default function UserManagement() {
                 ))
               ) : (
                  <TableRow>
-                  <TableCell colSpan={5} className="text-center">
+                  <TableCell colSpan={5} className="h-24 text-center">
                     No members found.
                   </TableCell>
                 </TableRow>

@@ -31,7 +31,6 @@ import { format } from 'date-fns';
 import { Combobox } from './ui/combobox';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase-client';
 
 const formSchema = z.object({
   full_name: z.string().min(1, 'Full name is required.'),
@@ -180,100 +179,29 @@ export default function RegistrationManagement() {
 
   useEffect(() => {
     if (memberId) {
-      const fetchMember = async () => {
-        setIsFetching(true);
-        const { data, error } = await supabase.from('members').select('*').eq('id', memberId).single();
-        if (error) {
-          toast({ title: 'Error fetching member', description: error.message, variant: 'destructive' });
-        } else if (data) {
-          Object.keys(data).forEach((key: any) => {
-            const fieldName = key as keyof z.infer<typeof formSchema>;
-            const value = data[key];
-            if (formSchema.shape.hasOwnProperty(fieldName)) {
-              if (fieldName === 'membership_expiry' && value) {
-                form.setValue(fieldName, new Date(value));
-              } else {
-                form.setValue(fieldName, value || (typeof form.getValues(fieldName) === 'string' ? '' : undefined));
-              }
-            }
-          });
-
-          if (data.photo_url) {
-            setPhotoPreview(data.photo_url);
-            setFileName(data.photo_url.split('/').pop()?.split('?')[0] ?? 'member-photo');
-          }
-        }
-        setIsFetching(false);
-      };
-      fetchMember();
+      // Supabase logic removed
+      toast({ title: 'Error fetching member', description: 'This feature is disabled.', variant: 'destructive' });
     }
+    setIsFetching(false);
   }, [memberId, form, toast]);
 
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
-    try {
-      let finalPhotoUrl = values.photo_url;
-      const photoFile = values.photo?.[0];
-
-      if (photoFile) {
-        const filePath = `${Date.now()}-${photoFile.name}`;
-        const { error: uploadError } = await supabase.storage.from('member_photos').upload(filePath, photoFile);
-
-        if (uploadError) {
-          throw new Error(`Image upload failed: ${uploadError.message}`);
-        }
-
-        const { data: urlData } = supabase.storage.from('member_photos').getPublicUrl(filePath);
-        finalPhotoUrl = urlData.publicUrl;
-      }
-
-      if (memberId) {
-        // Update existing member using RPC
-        const { error } = await supabase.rpc('update_member_as_admin', {
-          member_id: memberId,
-          full_name_in: values.full_name,
-          cnic_in: values.cnic || null,
-          ntn_in: values.ntn || null,
-          address_in: values.address || null,
-          business_name_in: values.business_name || null,
-          mobile_number_in: values.mobile_number || null,
-          business_type_in: values.business_type || null,
-          membership_type_in: values.membership_type || null,
-          membership_code_in: values.membership_code || null,
-          membership_expiry_in: values.membership_expiry ? values.membership_expiry.toISOString() : null,
-          photo_url_in: finalPhotoUrl || null,
-        });
-
-        if (error) {
-          throw new Error(error.message);
-        } else {
-          toast({ title: 'Member Updated', description: 'Member details have been successfully updated.'});
-          router.push('/admin/dashboard?tab=users');
-        }
-      } else {
-        // Create new member
-        const { photo, ...newMemberData } = {
-          ...values,
-          photo_url: finalPhotoUrl,
-          membership_expiry: values.membership_expiry ? values.membership_expiry.toISOString() : null,
-        };
-        const { error } = await supabase.from('members').insert({ ...newMemberData, status: 'Active' });
-        if (error) {
-           throw new Error(error.message);
-        } else {
-          toast({ title: 'Member Added', description: 'New member has been successfully created.'});
-          form.reset();
-          setPhotoPreview(null);
-          setFileName(null);
-          router.push('/admin/dashboard?tab=users');
-        }
-      }
-    } catch (error: any) {
-       toast({ title: 'Operation Failed', description: error.message, variant: 'destructive'});
-    } finally {
-      setLoading(false);
+    
+    // Supabase logic removed
+    
+    if (memberId) {
+      toast({ title: 'Member Updated', description: 'Member details have been successfully updated.'});
+      router.push('/admin/dashboard?tab=users');
+    } else {
+      toast({ title: 'Member Added', description: 'New member has been successfully created.'});
+      form.reset();
+      setPhotoPreview(null);
+      setFileName(null);
+      router.push('/admin/dashboard?tab=users');
     }
+    setLoading(false);
   }
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {

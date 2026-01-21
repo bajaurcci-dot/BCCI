@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { Download, Loader2 } from 'lucide-react';
 import { Button } from './ui/button';
-import { supabase } from '@/lib/supabase-client';
 
 type DownloadItem = {
   id: number;
@@ -55,26 +54,11 @@ const GradientButton = ({ href }: { href: string | null }) => (
 
 const DownloadSection = () => {
   const [downloadItems, setDownloadItems] = useState<DownloadItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchDownloads = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('downloads')
-        .select('*')
-        .eq('is_published', true)
-        .order('id', { ascending: true });
-
-      if (error) {
-        console.error('Error fetching download items:', error);
-      } else {
-        setDownloadItems(data);
-      }
-      setLoading(false);
-    };
-
-    fetchDownloads();
+    // Supabase logic removed
+    setLoading(false);
   }, []);
 
   return (
@@ -103,6 +87,11 @@ const DownloadSection = () => {
                 <GradientButton href={item.file_url} />
               </div>
             ))}
+          </div>
+        )}
+         {downloadItems.length === 0 && !loading && (
+          <div className="text-center text-muted-foreground py-16">
+            No downloadable files available at the moment.
           </div>
         )}
       </div>
