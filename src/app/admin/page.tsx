@@ -1,11 +1,18 @@
 'use client';
 
-import LoginForm from '@/components/login-form';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function AdminLoginPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push('/admin/login');
+  }, [router]);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
-      <LoginForm />
+      <p>Redirecting to dashboard...</p>
     </div>
   );
 }

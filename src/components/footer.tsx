@@ -1,179 +1,147 @@
-'use client';
+"use client";
+import React from "react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Facebook,
+  Instagram,
+  Twitter,
+  Globe,
+  Youtube
+} from "lucide-react";
+import { FooterBackgroundGradient, TextHoverEffect } from "@/components/ui/hover-footer";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Mail, MapPin, Phone, Facebook, Instagram, AtSign } from 'lucide-react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
+function Footer() {
+  // Footer link data
+  const footerLinks = [
+    {
+      title: "Main Menu",
+      links: [
+        { label: "About Us", href: "/about" },
+        { label: "Vacancies", href: "/vacancies" },
+        { label: "Downloads", href: "/downloads" },
+        { label: "Compliances", href: "/compliances" },
+      ],
+    },
+    {
+      title: "Membership Center",
+      links: [
+        { label: "Membership Fee", href: "/membership" },
+        { label: "Online Registration", href: "/membership/online-registration" },
+        { label: "Member Verification", href: "/membership/member-verification" },
+        { label: "Membership Services", href: "/services" },
+      ],
+    },
+    {
+      title: "Resources & Legal",
+      links: [
+        { label: "Contact Us", href: "/contact" },
+        { label: "Disclaimer", href: "/disclaimer" },
+        { label: "Privacy Policy", href: "/privacy-policy" },
+        { label: "Terms & Conditions", href: "/terms-conditions" },
+      ],
+    },
+  ];
 
-const legalPages = [
-  { name: 'About Us', href: '/about' },
-  { name: 'Contact Us', href: '#' },
-  { name: 'Disclaimer', href: '#' },
-  { name: 'Privacy Policy', href: '#' },
-  { name: 'Terms & Uses', href: '#' },
-  { name: 'Cookies Policy', href: '#' },
-];
-
-const quickLinks = [
-  { name: 'Services', href: '#' },
-  { name: 'Membership', href: '#' },
-  { name: 'Gallery', href: '#' },
-  { name: 'Compliances', href: '#' },
-  { name: 'Download', href: '#' },
-];
-
-const socialMedia = [
-  {
-    name: 'Whatsapp',
-    href: 'http://wa.me/+923082275587',
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="h-6 w-6"
-      >
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-      </svg>
-    ),
-  },
-  { name: 'Facebook', href: 'https://www.facebook.com/bccikhar/', icon: <Facebook className="h-6 w-6" /> },
-  { name: 'Instagram', href: 'https://www.instagram.com/bcci_khar/', icon: <Instagram className="h-6 w-6" /> },
-  { name: 'Location', href: 'https://maps.app.goo.gl/82hQdwoCeyAgj5iu5', icon: <MapPin className="h-6 w-6" /> },
-];
-
-const Footer = () => {
-  const logoImage = PlaceHolderImages.find((img) => img.id === 'logo');
-  const footerLogo = PlaceHolderImages.find((img) => img.id === 'footer-logo');
-  const newsletterIllustration = PlaceHolderImages.find((img) => img.id === 'newsletter-illustration');
+  // Social media icons
+  const socialLinks = [
+    { icon: <Facebook size={20} />, label: "Facebook", href: "https://www.facebook.com/bccikhar/" },
+    { icon: <Instagram size={20} />, label: "Instagram", href: "https://www.instagram.com/bcci_khar/" },
+    { icon: <Youtube size={20} />, label: "Youtube", href: "#" },
+    { icon: <Twitter size={20} />, label: "Twitter", href: "#" },
+    { icon: <Globe size={20} />, label: "Website", href: "/" },
+  ];
 
   return (
-    <footer className="bg-background">
-      <div className="container mx-auto px-4 md:px-6 relative z-10 -mb-24 md:-mb-20">
-        <div className="max-w-5xl mx-auto">
-          <div className="bg-primary rounded-2xl p-8 shadow-2xl">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                  <div className="hidden md:flex justify-center md:justify-start">
-                      {newsletterIllustration && (
-                          <Image
-                          src={newsletterIllustration.imageUrl}
-                          alt={newsletterIllustration.description}
-                          width={200}
-                          height={200}
-                          className="w-48"
-                          data-ai-hint={newsletterIllustration.imageHint}
-                          />
-                      )}
-                  </div>
-                  <div className="text-primary-foreground text-center md:text-left">
-                      <h2 className="text-2xl md:text-3xl font-bold mb-4">Subscribe to our newsletter for the latest updates and insights.</h2>
-                      <p className="mb-6 text-primary-foreground/80">Stay ahead with the latest updates, insights, and events from Bajaur Chamber of Commerce.</p>
-                      <div className="flex flex-col sm:flex-row gap-2">
-                        <div className="relative flex-grow">
-                          <AtSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-foreground/60" />
-                          <Input type="email" placeholder="Enter your email" className="pl-10 w-full bg-primary/80 border-white/50 text-primary-foreground placeholder:text-primary-foreground/70" />
-                        </div>
-                          <Button variant="secondary" className="bg-white text-primary hover:bg-gray-200">
-                            Subscribe
-                          </Button>
-                      </div>
-                  </div>
-              </div>
+    <footer className="bg-white relative h-fit rounded-[24px] sm:rounded-3xl overflow-hidden m-4 sm:m-8 border border-[#AFE1AF] shadow-sm mt-16 sm:mt-20">
+      <div className="max-w-7xl mx-auto p-6 sm:p-8 md:p-14 z-40 relative pointer-events-none">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8 lg:gap-16 pb-12 pointer-events-auto">
+          {/* Brand section */}
+          <div className="flex flex-col space-y-4 col-span-1 md:col-span-2 lg:col-span-1">
+            <div className="flex items-center space-x-2">
+              <span className="text-foreground text-2xl sm:text-3xl font-bold font-headline">BCCI</span>
+            </div>
+            <p className="text-sm leading-relaxed text-muted-foreground max-w-sm">
+              The Bajaur Chamber of Commerce & Industry provides a comprehensive range of services designed to support local businesses, facilitate trade, and foster sustainable economic development in the region.
+            </p>
+          </div>
+
+          {/* Footer link sections */}
+          {footerLinks.map((section) => (
+            <div key={section.title} className="col-span-1">
+              <h4 className="text-foreground text-base sm:text-lg font-bold mb-4 sm:mb-6 font-headline">
+                {section.title}
+              </h4>
+              <ul className="space-y-2.5 sm:space-y-3">
+                {section.links.map((link) => (
+                  <li key={link.label} className="relative">
+                    <a
+                      href={link.href}
+                      className="text-muted-foreground hover:text-[#22c55e] transition-colors text-xs sm:text-sm"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+        </div>
+
+        {/* Contact Info (Horizontal Row) */}
+        <div className="flex flex-col md:flex-row justify-center items-start md:items-center gap-6 sm:gap-8 md:gap-16 py-8 border-t border-border/10 pointer-events-auto">
+          <div className="flex items-center gap-3">
+            <div className="bg-[#AFE1AF]/20 p-1.5 sm:p-2 rounded-full">
+              <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-[#22c55e]" />
+            </div>
+            <span className="text-muted-foreground text-xs sm:text-sm font-medium">Khar, District Bajaur</span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="bg-[#AFE1AF]/20 p-1.5 sm:p-2 rounded-full">
+              <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-[#22c55e]" />
+            </div>
+            <a href="tel:+923082275587" className="text-muted-foreground hover:text-[#22c55e] transition-colors text-xs sm:text-sm font-medium">
+              +92 308 2275587
+            </a>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="bg-[#AFE1AF]/20 p-1.5 sm:p-2 rounded-full">
+              <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-[#22c55e]" />
+            </div>
+            <a href="mailto:contact@bajaurcci.com.pk" className="text-muted-foreground hover:text-[#22c55e] transition-colors text-xs sm:text-sm font-medium">
+              contact@bajaurcci.com.pk
+            </a>
           </div>
         </div>
+
+        <hr className="border-t border-border my-8" />
+
+        {/* Footer bottom */}
+        <div className="flex flex-col md:flex-row justify-between items-center text-sm space-y-4 md:space-y-0 pointer-events-auto">
+          {/* Copyright */}
+          <p className="text-center md:text-left text-muted-foreground">
+            &copy; {new Date().getFullYear()} BCCI. All rights reserved.
+          </p>
+
+          {/* Developer Credits */}
+          <p className="text-center md:text-right text-muted-foreground flex items-center gap-1">
+            Developed by <a href="https://umarhashmi.dev" target="_blank" rel="noopener noreferrer" className="hover:text-[#22c55e] transition-colors font-medium">Umar Hashmi</a>
+          </p>
+        </div>
       </div>
-      
-      <div className="bg-card pt-32 pb-12">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="flex flex-col space-y-4 md:col-span-2 lg:col-span-1 text-center md:text-left items-center md:items-start">
-                {footerLogo && (
-                  <Link href="#">
-                    <Image
-                      src={footerLogo.imageUrl}
-                      alt={footerLogo.description}
-                      width={144}
-                      height={144}
-                      data-ai-hint={footerLogo.imageHint}
-                    />
-                  </Link>
-                )}
-                 <p className="text-muted-foreground">
-                  The Bajaur Chamber of Commerce & Industry supports economic growth in Bajaur District by advocating for local businesses, enhancing trade, and fostering a thriving business environment.
-                 </p>
-              </div>
 
-              <div className="text-center md:text-left">
-                <h3 className="text-lg font-bold font-headline mb-4">Legal Pages</h3>
-                <ul className="space-y-2">
-                  {legalPages.map((page) => (
-                    <li key={page.name}>
-                      <Link href={page.href} className="text-muted-foreground hover:text-primary transition-colors">
-                        {page.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="text-center md:text-left">
-                <h3 className="text-lg font-bold font-headline mb-4">Quick Links</h3>
-                <ul className="space-y-2">
-                  {quickLinks.map((link) => (
-                    <li key={link.name}>
-                      <Link href={link.href} className="text-muted-foreground hover:text-primary transition-colors">
-                        {link.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="text-center md:text-left">
-                <h3 className="text-lg font-bold font-headline mb-4">Contact</h3>
-                 <div className="space-y-3">
-                    <a href="tel:+923082275587" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors justify-center md:justify-start">
-                      <Phone className="h-5 w-5 text-primary" />
-                      <span>+92 308 2275587</span>
-                    </a>
-                    <a href="mailto:contact@bajaurcci.com.pk" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors justify-center md:justify-start">
-                      <Mail className="h-5 w-5 text-primary" />
-                      <span>contact@bajaurcci.com.pk</span>
-                    </a>
-                    <p className="flex items-center gap-3 text-muted-foreground justify-center md:justify-start">
-                      <MapPin className="h-5 w-5 text-primary" />
-                      <span>Khar, District Bajaur</span>
-                    </p>
-                </div>
-                <div className="flex space-x-4 pt-4 justify-center md:justify-start">
-                  {socialMedia.map((social) => (
-                    <Link
-                      key={social.name}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-transform duration-300 hover:scale-110"
-                      aria-label={social.name}
-                    >
-                      {social.icon}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-          </div>
+      {/* Text hover effect */}
+      <div className="lg:flex hidden h-[20rem] md:h-[30rem] -mt-32 md:-mt-32 -mb-24 md:-mb-36 select-none opacity-50 relative z-10 pointer-events-auto">
+        <TextHoverEffect text="BCCI" className="z-50" />
       </div>
+
+      <FooterBackgroundGradient />
     </footer>
   );
-};
+}
 
 export default Footer;

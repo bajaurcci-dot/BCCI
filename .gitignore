@@ -29,16 +29,25 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
+curl_output.txt
+.vscode/
+
+# next.js
+/.next/
+/out/
+/build
 
 # vercel
 .vercel
 
+# env
+.env*
+.genkit/*
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-.genkit/*
-.env*
 
 # firebase
 firebase-debug.log

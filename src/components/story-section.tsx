@@ -26,7 +26,7 @@ const storyPoints = [
 
 const StorySection = () => {
   return (
-    <section className="py-20 md:py-32 bg-background">
+    <section className="py-20 md:py-32 bg-gray-50">
       <div className="container mx-auto px-4 md:px-6 max-w-4xl">
         <div className="text-center mb-16 animate-fade-in">
           <Badge
@@ -52,20 +52,17 @@ const StorySection = () => {
           {storyPoints.map((point, index) => (
             <div
               key={point.title}
-              className={`relative mb-12 flex items-center animate-slide-in-up ${
-                index % 2 === 0 ? 'justify-start' : 'justify-end'
-              }`}
+              className={`relative mb-12 flex items-center animate-slide-in-up ${index % 2 === 0 ? 'justify-start' : 'justify-end'
+                }`}
               style={{ animationDelay: `${index * 200}ms` }}
             >
               <div
-                className={`w-full md:w-1/2 ${
-                  index % 2 === 0 ? 'md:pr-8 text-left' : 'md:pl-8 text-left'
-                }`}
+                className={`w-full md:w-1/2 ${index % 2 === 0 ? 'md:pr-8 text-left' : 'md:pl-8 text-left'
+                  }`}
               >
                 <div
-                  className={`bg-card p-6 rounded-2xl border border-border/50 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all ${
-                    index % 2 === 0 ? 'md:text-left' : 'md:text-left'
-                  }`}
+                  className={`bg-card p-6 rounded-2xl border border-border/50 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all ${index % 2 === 0 ? 'md:text-left' : 'md:text-left'
+                    }`}
                 >
                   <div className="flex items-center gap-4 mb-4">
                     <div className="bg-primary/10 p-3 rounded-full">

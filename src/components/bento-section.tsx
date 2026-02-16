@@ -41,26 +41,26 @@ const services = [
 
 const BentoSection = () => {
   return (
-    <section className="py-20 md:py-32 bg-background">
+    <section className="py-16 sm:py-20 md:py-32 bg-gray-50">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold font-headline mb-4">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline mb-4">
             Our Professional Services
           </h2>
-          <p className="max-w-3xl mx-auto text-muted-foreground text-lg">
+          <p className="max-w-3xl mx-auto text-muted-foreground text-base sm:text-lg">
             The Bajaur Chamber of Commerce & Industry provides visa facilitation, annual reports,
             visa recommendation letters, and document attestation services to support local
             businesses and individuals.
           </p>
         </div>
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {services.map((service) => {
               const serviceImage = PlaceHolderImages.find((img) => img.id === service.imageId);
               return (
                 <div
                   key={service.id}
-                  className={`relative bg-card rounded-2xl shadow-lg overflow-hidden p-8 transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 ${service.className}`}
+                  className={`relative bg-card rounded-2xl shadow-md sm:shadow-lg overflow-hidden p-6 sm:p-8 transition-all duration-300 ease-in-out hover:shadow-xl sm:hover:-translate-y-2 ${service.className}`}
                 >
                   <BorderBeam colorFrom="#33d65b" colorTo="#1a9c3b" />
                   <div className="flex flex-col h-full">
@@ -76,10 +76,10 @@ const BentoSection = () => {
                         />
                       </div>
                     )}
-                    <h3 className="text-2xl font-bold font-headline mb-3 text-foreground">
+                    <h3 className="text-xl sm:text-2xl font-bold font-headline mb-3 text-foreground leading-tight">
                       {service.title}
                     </h3>
-                    <p className="text-muted-foreground text-base flex-grow">
+                    <p className="text-muted-foreground text-sm sm:text-base flex-grow">
                       {service.description}
                     </p>
                   </div>

@@ -11,7 +11,7 @@ export default function VacancyBanner() {
   const [currentVacancyIndex, setCurrentVacancyIndex] = useState(0);
   const { vacancies, loading } = useVacancies();
 
-  const openVacancies = vacancies.filter((v) => v.status === 'Open');
+  const openVacancies = vacancies.filter((v) => v.status === 'Open' || v.status === 'Active');
 
   useEffect(() => {
     if (loading) return; // Don't show banner while loading

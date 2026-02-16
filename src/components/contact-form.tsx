@@ -49,80 +49,106 @@ export default function ContactForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
-    
-    // Supabase logic removed
-    
-    toast({
-      title: 'Message Sent!',
-      description: 'Thank you for contacting us. We will get back to you shortly.',
-    });
-    form.reset();
 
-    setLoading(false);
+    try {
+      // Import Supabase client
+      const { supabase } = await import('@/lib/supabase');
+
+      // Insert message into contact_messages table
+      const { error } = await supabase
+        .from('contact_messages')
+        .insert({
+          name: values.name,
+          email: values.email,
+          subject: values.subject,
+          message: values.message,
+          status: 'unread',
+        });
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw new Error('Failed to send message');
+      }
+
+      toast({
+        title: 'Message Sent!',
+        description: 'Thank you for contacting us. We will get back to you shortly.',
+      });
+      form.reset();
+    } catch (error: any) {
+      console.error('Contact form error:', error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to send message. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <div className="bg-background/80 p-8 rounded-lg">
-        <h3 className="text-2xl font-bold font-headline mb-6">Send us a Message</h3>
-        <Form {...form}>
+      <h3 className="text-2xl font-bold font-headline mb-6">Send us a Message</h3>
+      <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
+          <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
-                <FormItem>
+              <FormItem>
                 <FormLabel>Full Name</FormLabel>
                 <FormControl>
-                    <Input placeholder="Your Name" {...field} disabled={loading}/>
+                  <Input placeholder="Your Name" {...field} disabled={loading} />
                 </FormControl>
                 <FormMessage />
-                </FormItem>
+              </FormItem>
             )}
-            />
-            <FormField
+          />
+          <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
-                <FormItem>
+              <FormItem>
                 <FormLabel>Email Address</FormLabel>
                 <FormControl>
-                    <Input placeholder="your.email@example.com" {...field} disabled={loading}/>
+                  <Input placeholder="your.email@example.com" {...field} disabled={loading} />
                 </FormControl>
                 <FormMessage />
-                </FormItem>
+              </FormItem>
             )}
-            />
-            <FormField
+          />
+          <FormField
             control={form.control}
             name="subject"
             render={({ field }) => (
-                <FormItem>
+              <FormItem>
                 <FormLabel>Subject</FormLabel>
                 <FormControl>
-                    <Input placeholder="How can we help?" {...field} disabled={loading}/>
+                  <Input placeholder="How can we help?" {...field} disabled={loading} />
                 </FormControl>
                 <FormMessage />
-                </FormItem>
+              </FormItem>
             )}
-            />
-            <FormField
+          />
+          <FormField
             control={form.control}
             name="message"
             render={({ field }) => (
-                <FormItem>
+              <FormItem>
                 <FormLabel>Message</FormLabel>
                 <FormControl>
-                    <Textarea placeholder="Your message..." className="resize-none" rows={5} {...field} disabled={loading}/>
+                  <Textarea placeholder="Your message..." className="resize-none" rows={5} {...field} disabled={loading} />
                 </FormControl>
                 <FormMessage />
-                </FormItem>
+              </FormItem>
             )}
-            />
-            <Button type="submit" className="w-full" size="lg" disabled={loading}>
-              {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Send Message'}
-            </Button>
+          />
+          <Button type="submit" className="w-full" size="lg" disabled={loading}>
+            {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Send Message'}
+          </Button>
         </form>
-        </Form>
+      </Form>
     </div>
   );
 }

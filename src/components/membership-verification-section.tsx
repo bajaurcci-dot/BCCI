@@ -93,19 +93,55 @@ export default function MembershipVerificationSection() {
     setLoading(true);
     setFoundMember(null);
 
-    // Supabase logic removed
-    
-    toast({
-      title: 'Verification Failed',
-      description: 'Member not found. This feature is temporarily disabled.',
-      variant: 'destructive',
-    });
+    try {
+      // Import Supabase client
+      const { supabase } = await import('@/lib/supabase');
 
-    setLoading(false);
+      // Search for member in Supabase
+      const { data, error } = await supabase
+        .from('members')
+        .select('*')
+        .eq('full_name', values.fullName)
+        .eq('ntn', values.ntn)
+        .eq('membership_type', values.membershipType)
+        .eq('status', 'Active')
+        .maybeSingle();
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw new Error('Database error occurred');
+      }
+
+      if (data) {
+        // Member found!
+        setFoundMember(data);
+        setIsDialogOpen(true);
+        toast({
+          title: 'Member Verified!',
+          description: `${data.full_name} is a verified BCCI member.`,
+        });
+      } else {
+        // Member not found
+        toast({
+          title: 'Verification Failed',
+          description: 'Member not found. Please check your details and try again.',
+          variant: 'destructive',
+        });
+      }
+    } catch (err: any) {
+      console.error('Verification error:', err);
+      toast({
+        title: 'Error',
+        description: err.message || 'An error occurred during verification.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <section className="pb-20 md:pb-32 bg-background">
+    <section className="pb-20 md:pb-32 bg-gray-50 pt-10">
       <div className="container mx-auto px-4 md:px-6 max-w-6xl">
         <div className="grid md:grid-cols-2 gap-8 items-stretch">
           <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-lg animate-slide-in-left flex flex-col">
@@ -204,7 +240,7 @@ export default function MembershipVerificationSection() {
         </div>
       </div>
 
-       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         {foundMember && (
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
@@ -217,44 +253,44 @@ export default function MembershipVerificationSection() {
               </DialogDescription>
             </DialogHeader>
             <div className="py-4 space-y-4">
-               <div className="flex flex-col items-center gap-4">
-                  <div className="w-24 h-24 rounded-full border-2 border-primary flex items-center justify-center bg-muted/50 relative overflow-hidden">
-                    {foundMember.photo_url ? (
-                      <Image
-                        src={foundMember.photo_url}
-                        alt="Member photo"
-                        fill
-                        className="object-cover"
-                      />
-                    ) : (
-                      <User className="h-12 w-12 text-muted-foreground" />
-                    )}
-                  </div>
-                  <div className="text-center">
-                    <p className="font-bold text-lg">{foundMember.full_name}</p>
-                    <p className="text-sm text-muted-foreground">{foundMember.ntn}</p>
-                  </div>
-               </div>
-               <div className="text-sm space-y-2 rounded-md border p-4 bg-background">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Membership Code:</span>
-                    <span className="font-medium">{foundMember.membership_code || 'N/A'}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Membership Type:</span>
-                    <span className="font-medium">{foundMember.membership_type || 'N/A'}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Status:</span>
-                    <Badge variant="default" className="bg-green-500">{foundMember.status}</Badge>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Expiry Date:</span>
-                    <span className="font-medium">
-                      {foundMember.membership_expiry ? format(new Date(foundMember.membership_expiry), 'PPP') : 'N/A'}
-                    </span>
-                  </div>
-               </div>
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-24 h-24 rounded-full border-2 border-primary flex items-center justify-center bg-muted/50 relative overflow-hidden">
+                  {foundMember.photo_url ? (
+                    <Image
+                      src={foundMember.photo_url}
+                      alt="Member photo"
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <User className="h-12 w-12 text-muted-foreground" />
+                  )}
+                </div>
+                <div className="text-center">
+                  <p className="font-bold text-lg">{foundMember.full_name}</p>
+                  <p className="text-sm text-muted-foreground">{foundMember.ntn}</p>
+                </div>
+              </div>
+              <div className="text-sm space-y-2 rounded-md border p-4 bg-background">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Membership Code:</span>
+                  <span className="font-medium">{foundMember.membership_code || 'N/A'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Membership Type:</span>
+                  <span className="font-medium">{foundMember.membership_type || 'N/A'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Status:</span>
+                  <Badge variant="default" className="bg-green-500">{foundMember.status}</Badge>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Expiry Date:</span>
+                  <span className="font-medium">
+                    {foundMember.membership_expiry ? format(new Date(foundMember.membership_expiry), 'PPP') : 'N/A'}
+                  </span>
+                </div>
+              </div>
             </div>
             <DialogFooter>
               <DialogClose asChild>

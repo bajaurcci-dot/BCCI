@@ -4,10 +4,14 @@ import React, { createContext, useContext, useState, ReactNode, useEffect, useCa
 import { useToast } from './use-toast';
 
 export type Vacancy = {
-  id: number;
-  title: string;
-  status: 'Open' | 'Closed';
-  created_at: string;
+  id: string;
+  title: string | null;
+  status: string | null;
+  posted_date: string | null;
+  department?: string | null;
+  location?: string | null;
+  applicants_count?: number | null;
+  description?: string | null;
 };
 
 interface VacanciesContextType {
@@ -24,9 +28,26 @@ export const VacanciesProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchVacancies = useCallback(async () => {
     setLoading(true);
-    // Supabase logic removed
-    setVacancies([]);
-    setLoading(false);
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { data, error } = await supabase
+        .from('vacancies')
+        .select('*')
+        .or('status.eq.Open,status.eq.Active');
+
+      if (error) throw error;
+      setVacancies(data || []);
+    } catch (error: any) {
+      console.error("Failed to fetch active vacancies", {
+        message: error?.message || 'Unknown error',
+        details: error?.details,
+        hint: error?.hint,
+        code: error?.code,
+        error
+      });
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {

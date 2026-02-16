@@ -33,7 +33,7 @@ const socialMedia = [
 
 const ContactSection = () => {
   return (
-    <section className="py-20 md:py-32 bg-background">
+    <section className="py-20 md:py-32 bg-gray-50">
       <div className="container mx-auto px-4 md:px-6 max-w-6xl">
         <div className="text-center mb-16 animate-fade-in">
           <Badge
@@ -49,7 +49,7 @@ const ContactSection = () => {
             We'd love to hear from you. Whether you have a question about our services, membership, or anything else, our team is ready to answer all your questions.
           </p>
         </div>
-        
+
         <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-lg">
           <div className="grid md:grid-cols-2 gap-12">
             <div className="flex flex-col justify-between animate-slide-in-left">

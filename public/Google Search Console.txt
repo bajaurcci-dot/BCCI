@@ -1,0 +1,207 @@
+✅ TECHNICAL SEO CONFIGURATION DIRECTIVE
+
+Primary Canonical Domain:
+https://www.bajaurchamber.org.pk/
+
+This website must be configured with a clean, stable, and Google-compliant SEO foundation.
+
+No experimentation. No assumptions. No partial fixes.
+
+1️⃣ DOMAIN ENFORCEMENT (CRITICAL)
+
+Enforce strictly:
+
+http → https (single 301)
+
+non-www → www (single 301)
+
+Final canonical version must always resolve to:
+
+https://www.bajaurchamber.org.pk/
+
+
+Rules:
+
+Homepage must use trailing slash:
+
+https://www.bajaurchamber.org.pk/
+
+
+Internal pages must not force unnecessary trailing slash duplication.
+
+No mixed domain versions indexable.
+
+No redirect chains.
+
+2️⃣ CANONICAL TAG STRATEGY
+
+Every public page must include:
+
+<link rel="canonical" href="https://www.bajaurchamber.org.pk/EXACT_PATH" />
+
+
+Requirements:
+
+Canonical must match final resolved URL.
+
+No canonical pointing to non-www
+.
+
+No canonical conflicts.
+
+No self-referencing errors.
+
+3️⃣ GOOGLE SEARCH CONSOLE STRUCTURE
+
+Verify Domain Property.
+
+Verify URL-prefix property:
+
+https://www.bajaurchamber.org.pk/
+
+
+Submit only:
+
+https://www.bajaurchamber.org.pk/sitemap.xml
+
+
+Ensure no duplicate properties sending mixed signals.
+
+Provide indexing health confirmation.
+
+4️⃣ ROBOTS.TXT (PRODUCTION SAFE)
+
+Robots file must:
+
+Allow public crawling.
+
+Block only system/private paths if applicable.
+
+Contain exactly:
+
+Sitemap: https://www.bajaurchamber.org.pk/sitemap.xml
+
+
+No accidental Disallow: /
+
+No blocking CSS/JS.
+
+No experimental directives.
+
+5️⃣ SITEMAP.XML REQUIREMENTS
+
+Include only 200-status public URLs.
+
+Exclude:
+
+login
+
+admin
+
+dashboard
+
+private routes
+
+No redirected URLs.
+
+No 404 URLs.
+
+No duplicate entries.
+
+Accurate <lastmod> values.
+
+Single sitemap file only.
+
+6️⃣ NOINDEX & HEADER VERIFICATION
+
+Confirm:
+
+No <meta name="robots" content="noindex"> on public pages.
+
+No x-robots-tag: noindex headers.
+
+No middleware injecting noindex.
+
+No environment-based indexing flags.
+
+Only private pages may be noindex.
+
+7️⃣ REDIRECT INTEGRITY
+
+Ensure:
+
+No redirect chains.
+
+No 301 → 301 → 200 sequences.
+
+No 301 → 410 conflicts.
+
+No www/non-www loops.
+
+All redirects must be single-hop 301.
+
+8️⃣ SCHEMA MARKUP (VALID & CLEAN)
+
+Implement structured data:
+
+Organization
+
+WebSite
+
+WebPage
+
+Article (if applicable)
+
+Rules:
+
+Domain must match exactly:
+
+https://www.bajaurchamber.org.pk/
+
+
+No fake or placeholder data.
+
+JSON-LD only.
+
+No over-optimization.
+
+9️⃣ ADS.TXT
+
+If monetization exists:
+
+https://www.bajaurchamber.org.pk/ads.txt
+
+
+If not required, confirm explicitly.
+
+🔟 FINAL TECHNICAL CONFIRMATION REQUIRED
+
+Provide verification that:
+
+Canonical domain enforcement is active.
+
+Robots validated.
+
+Sitemap validated and submitted.
+
+No indexing conflicts exist.
+
+No redirect anomalies exist.
+
+All primary pages return HTTP 200.
+
+No soft 404 detected.
+
+🔒 STRICT CONDITIONS
+
+No UI changes.
+
+No layout changes.
+
+No content rewriting.
+
+No SEO experimentation.
+
+No unnecessary re-validation loops.
+
+Configuration must be stable from day one and fully Google-safe.

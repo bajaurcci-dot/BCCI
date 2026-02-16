@@ -1,24 +1,14 @@
-'use client';
+import type { Metadata } from 'next';
+import CompliancesClient from './compliances-client';
 
-import dynamic from 'next/dynamic';
-import Footer from '@/components/footer';
-import CompliancesIntroSection from '@/components/compliances-intro-section';
-import DownloadSection from '@/components/download-section';
-
-const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
+export const metadata: Metadata = {
+  title: 'Compliances & Certificates | Bajaur Chamber of Commerce & Industry',
+  description: 'View and download official compliance documents, certificates, and regulatory filings of the Bajaur Chamber of Commerce & Industry (BCCI).',
+  alternates: {
+    canonical: 'https://www.bajaurchamber.org.pk/compliances',
+  },
+};
 
 export default function CompliancesPage() {
-  return (
-    <div className="relative w-full min-h-screen bg-background">
-      <div className="absolute inset-0 bg-grid-pattern"></div>
-      <div className="relative z-10 flex flex-col min-h-screen">
-        <TopNavBar />
-        <main className="flex-grow">
-          <CompliancesIntroSection />
-          <DownloadSection />
-        </main>
-        <Footer />
-      </div>
-    </div>
-  );
+  return <CompliancesClient />;
 }

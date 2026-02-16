@@ -1,26 +1,14 @@
-'use client';
+import type { Metadata } from 'next';
+import MembershipClient from './membership-client';
 
-import dynamic from 'next/dynamic';
-import Footer from '@/components/footer';
-import MembershipIntroSection from '@/components/membership-intro-section';
-import MembershipVerificationSection from '@/components/membership-verification-section';
-import MembershipFeesSection from '@/components/membership-fees-section';
-
-const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
+export const metadata: Metadata = {
+  title: 'Membership | Bajaur Chamber of Commerce & Industry',
+  description: 'Join the Bajaur Chamber of Commerce & Industry. Explore membership classes, benefits, fees, and the annual renewal process for businesses in Bajaur.',
+  alternates: {
+    canonical: 'https://www.bajaurchamber.org.pk/membership',
+  },
+};
 
 export default function MembershipPage() {
-  return (
-    <div className="relative w-full min-h-screen bg-background">
-      <div className="absolute inset-0 bg-grid-pattern"></div>
-      <div className="relative z-10 flex flex-col min-h-screen">
-        <TopNavBar />
-        <main className="flex-grow">
-          <MembershipIntroSection />
-          <MembershipVerificationSection />
-          <MembershipFeesSection />
-        </main>
-        <Footer />
-      </div>
-    </div>
-  );
+  return <MembershipClient />;
 }

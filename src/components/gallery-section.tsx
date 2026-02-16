@@ -1,24 +1,46 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Badge } from './ui/badge';
+import { supabase } from '@/lib/supabase';
+import { Loader2 } from 'lucide-react';
 
-const images = [
-  'https://i.postimg.cc/RZG82PRr/1.jpg',
-  'https://i.postimg.cc/NjQSJhR7/2.jpg',
-  'https://i.postimg.cc/15GbrRV3/3.jpg',
-  'https://i.postimg.cc/YqKJFL9P/4.jpg',
-  'https://i.postimg.cc/k54ZCx12/5.jpg',
-  'https://i.postimg.cc/xd4Z1cht/6.jpg',
-  'https://i.postimg.cc/xCN4J9SY/7.jpg',
-  'https://i.postimg.cc/kGrhWLnS/8.jpg',
-  'https://i.postimg.cc/L4fWm4T3/10.jpg',
-  'https://i.postimg.cc/k54ZCx12/5.jpg',
-];
+type GalleryItem = {
+  id: string;
+  image_url: string;
+  title: string | null;
+  sort_order: number | null;
+};
 
 const GallerySection = () => {
+  const [images, setImages] = useState<GalleryItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchGallery();
+  }, []);
+
+  const fetchGallery = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('about_gallery')
+        .select('*')
+        .eq('is_active', true)
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setImages(data || []);
+    } catch (error) {
+      console.error('Error fetching gallery:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <section className="py-20 md:py-32 bg-background">
+    <section className="py-20 md:py-32 bg-gray-50">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-16 animate-fade-in">
           <Badge
@@ -34,23 +56,39 @@ const GallerySection = () => {
             A glimpse into our journey, events, and the community we serve.
           </p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {images.map((src, index) => (
-            <div
-              key={index}
-              className="relative aspect-square rounded-lg overflow-hidden group transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105 animate-fade-in"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <Image
-                src={src}
-                alt={`Gallery image ${index + 1}`}
-                fill
-                className="object-cover"
-              />
-               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all duration-300"></div>
-            </div>
-          ))}
-        </div>
+
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <Loader2 className="h-10 w-10 animate-spin text-primary" />
+          </div>
+        ) : images.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {images.map((item, index) => (
+              <div
+                key={item.id}
+                className="relative aspect-square rounded-lg overflow-hidden group transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105 animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <Image
+                  src={item.image_url}
+                  alt={item.title || `Gallery image ${index + 1}`}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all duration-300"></div>
+                {item.title && (
+                  <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/60 text-white text-[10px] transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    {item.title}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 text-muted-foreground">
+            No moments captured yet. Stay tuned!
+          </div>
+        )}
       </div>
     </section>
   );

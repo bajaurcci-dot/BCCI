@@ -1,6 +1,7 @@
 'use client';
 
 import { ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 import Image from 'next/image';
 import { Button, buttonVariants } from '@/components/ui/button';
 import {
@@ -12,6 +13,7 @@ import {
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
 import { BorderBeam } from '@/components/ui/border-beam';
+import { Awards } from '@/components/ui/awards';
 
 const HeroSection = () => {
   const heroBg = PlaceHolderImages.find((img) => img.id === 'hero-bg-alt');
@@ -41,14 +43,16 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden flex-grow flex items-center justify-center py-12 sm:py-24 md:py-32">
+    <section className="relative overflow-hidden flex-grow flex items-center justify-center pt-6 pb-12 sm:pt-16 sm:pb-32 md:pt-20 md:pb-44">
       {heroBg && (
         <div className="absolute inset-0 flex h-full w-full items-center justify-center -z-10">
           <Image
             alt={heroBg.description}
             src={heroBg.imageUrl}
             fill
-            className="[mask-image:radial-gradient(75%_75%_at_center,white,transparent)] opacity-90 object-cover"
+            priority={true}
+            sizes="100vw"
+            className="[mask-image:radial-gradient(100%_100%_at_center,white,transparent)] sm:[mask-image:radial-gradient(75%_75%_at_center,white,transparent)] opacity-80 sm:opacity-90 object-cover"
             data-ai-hint={heroBg.imageHint}
           />
         </div>
@@ -56,29 +60,32 @@ const HeroSection = () => {
       <div className="container px-4 md:px-6">
         <div className="mx-auto flex max-w-5xl flex-col items-center">
           <div className="flex flex-col items-center gap-6 text-center">
-            {heroLogo && (
-              <div className="rounded-xl bg-background/30 p-4 shadow-sm backdrop-blur-sm">
-                <Image
-                  src={heroLogo.imageUrl}
-                  alt={heroLogo.description}
-                  width={64}
-                  height={64}
-                  data-ai-hint={heroLogo.imageHint}
-                />
-              </div>
-            )}
+            <div className="mb-6">
+              <Awards
+                variant="award"
+                title="BCCI"
+                subtitle="Ministry of Commerce"
+                recipient="Govt of Pakistan"
+                date="License # 207"
+                level="official"
+                badgeText="REGISTERED"
+                className="scale-[0.65] sm:scale-90"
+              />
+            </div>
             <div>
-              <h1 className="mb-6 text-4xl font-bold tracking-tight text-pretty sm:text-5xl md:text-6xl lg:text-7xl font-headline">
+              <h1 className="mb-4 sm:mb-6 text-3xl font-bold tracking-tight text-pretty sm:text-5xl md:text-6xl lg:text-7xl font-headline leading-[1.15] sm:leading-tight">
                 <span className="animate-color-change">Bajaur</span> Chamber Of Commerce &amp; Industry
               </h1>
               <p className="mx-auto max-w-3xl text-muted-foreground text-base sm:text-lg md:text-xl font-body">
                 The Bajaur Chamber of Commerce &amp; Industry (BCCI) supports economic growth in
-                Bajaur District by advocating for local businesses, enhancing trade, and fostering a
+                Bajaur District by advocating for local businesses, improving trade facilitation, and fostering a
                 thriving business environment.
               </p>
             </div>
             <div className="mt-6 flex flex-col sm:flex-row flex-wrap justify-center gap-3">
-              <Button size="lg" className="shadow-sm transition-shadow hover:shadow w-full sm:w-48">Get Started</Button>
+              <Link href="/services" passHref>
+                <Button size="lg" className="shadow-sm transition-shadow hover:shadow w-full sm:w-48">Get Started</Button>
+              </Link>
               <Button size="lg" variant="outline" className="group w-full sm:w-48">
                 Learn more{' '}
                 <svg

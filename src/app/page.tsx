@@ -1,31 +1,14 @@
-'use client';
+import type { Metadata } from 'next';
+import HomeClient from './home-client';
 
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
-import HeroSection from '@/components/hero-section';
-import TeamSection from '@/components/team-section';
-import BentoSection from '@/components/bento-section';
-import Footer from '@/components/footer';
-import FaqSection from '@/components/faq-section';
-import VacancyBanner from '@/components/vacancy-banner';
-
-const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
+export const metadata: Metadata = {
+  title: 'Bajaur Chamber of Commerce & Industry (BCCI) | Empowering Business',
+  description: 'Official portal of Bajaur Chamber of Commerce & Industry. Driving economic growth, supporting local entrepreneurs, and facilitating trade in Bajaur District.',
+  alternates: {
+    canonical: 'https://www.bajaurchamber.org.pk/',
+  },
+};
 
 export default function Home() {
-  return (
-    <div className="relative w-full min-h-screen bg-background">
-      <div className="absolute inset-0 bg-grid-pattern"></div>
-      <div className="relative z-10 flex flex-col min-h-screen">
-        <VacancyBanner />
-        <TopNavBar />
-        <main className="flex-grow">
-          <HeroSection />
-          <TeamSection />
-          <BentoSection />
-          <FaqSection />
-        </main>
-        <Footer />
-      </div>
-    </div>
-  );
+  return <HomeClient />;
 }

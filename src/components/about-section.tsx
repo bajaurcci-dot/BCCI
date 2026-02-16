@@ -21,19 +21,19 @@ const AboutSection = () => {
   ];
 
   return (
-    <section className="py-20 md:py-32 bg-background overflow-hidden">
+    <section className="py-16 sm:py-20 md:py-32 bg-gray-50 overflow-hidden">
       <div className="container mx-auto px-4 md:px-6 max-w-6xl">
-        <div className="grid grid-cols-1 md:grid-cols-[350px_1fr] items-center gap-x-12 gap-y-12 md:gap-y-0">
-          <div className="relative w-full max-w-[350px] h-[450px] rounded-2xl overflow-hidden shadow-2xl mx-auto animate-slide-in-left">
-             {founderImage && (
-                <Image
-                  src={founderImage.imageUrl}
-                  alt={founderImage.description}
-                  fill
-                  className="object-cover"
-                  data-ai-hint={founderImage.imageHint}
-                />
-              )}
+        <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] lg:grid-cols-[350px_1fr] items-center gap-x-12 gap-y-10 md:gap-y-0">
+          <div className="relative w-full max-w-[280px] sm:max-w-[350px] h-[350px] sm:h-[450px] rounded-2xl overflow-hidden shadow-xl mx-auto md:mx-0 animate-slide-in-left">
+            {founderImage && (
+              <Image
+                src={founderImage.imageUrl}
+                alt={founderImage.description}
+                fill
+                className="object-cover"
+                data-ai-hint={founderImage.imageHint}
+              />
+            )}
           </div>
 
           <div className="flex flex-col text-center md:text-left animate-slide-in-right">
@@ -43,10 +43,10 @@ const AboutSection = () => {
             >
               About Us
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold font-headline mt-4 mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-headline mt-4 mb-4 sm:mb-6">
               The Story Of <span className="animate-color-change">BCCI</span> Journey
             </h2>
-            <p className="text-muted-foreground text-lg mb-12">
+            <p className="text-muted-foreground text-base sm:text-lg mb-8 sm:mb-12">
               Starting as a small initiative, the Bajaur Chamber has grown into a crucial business
               resource, driving economic progress and supporting local entrepreneurs.
             </p>

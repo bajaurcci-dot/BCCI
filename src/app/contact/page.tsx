@@ -1,24 +1,14 @@
-'use client';
+import type { Metadata } from 'next';
+import ContactClient from './contact-client';
 
-import dynamic from 'next/dynamic';
-import Footer from '@/components/footer';
-import ContactSection from '@/components/contact-section';
-import FaqSection from '@/components/faq-section';
-
-const TopNavBar = dynamic(() => import('@/components/top-nav-bar'), { ssr: false });
+export const metadata: Metadata = {
+  title: 'Contact Us | Bajaur Chamber of Commerce & Industry',
+  description: 'Get in touch with the Bajaur Chamber of Commerce & Industry (BCCI). We are here to help you with business registration, membership inquiries, and trade support.',
+  alternates: {
+    canonical: 'https://www.bajaurchamber.org.pk/contact',
+  },
+};
 
 export default function ContactPage() {
-  return (
-    <div className="relative w-full min-h-screen bg-background">
-      <div className="absolute inset-0 bg-grid-pattern"></div>
-      <div className="relative z-10 flex flex-col min-h-screen">
-        <TopNavBar />
-        <main className="flex-grow">
-          <ContactSection />
-          <FaqSection />
-        </main>
-        <Footer />
-      </div>
-    </div>
-  );
+  return <ContactClient />;
 }
