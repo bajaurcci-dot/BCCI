@@ -52,3 +52,8 @@ next-env.d.ts
 # firebase
 firebase-debug.log
 firestore-debug.log
+
+# Migration data exclusions (contains PII and DB queries)
+public/MEMBERS+IMAGES/members_export.csv
+docs/migration_queries.sql
+migration_script.js

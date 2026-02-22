@@ -1,0 +1,23 @@
+old_url,new_url,status_code,action
+https://www.bajaurchamber.org.pk/contact-us/,https://www.bajaurchamber.org.pk/contact,301,REDIRECT
+https://www.bajaurchamber.org.pk/about-us/,https://www.bajaurchamber.org.pk/about,301,REDIRECT
+https://www.bajaurchamber.org.pk/terms-uses/,https://www.bajaurchamber.org.pk/terms-conditions,301,REDIRECT
+https://www.bajaurchamber.org.pk/membership-registration/,https://www.bajaurchamber.org.pk/membership/online-registration,301,REDIRECT
+https://www.bajaurchamber.org.pk/member-registration/,https://www.bajaurchamber.org.pk/membership/online-registration,301,REDIRECT
+https://www.bajaurchamber.org.pk/member-verification/,https://www.bajaurchamber.org.pk/membership/member-verification,301,REDIRECT
+https://www.bajaurchamber.org.pk/our-services/,https://www.bajaurchamber.org.pk/services,301,REDIRECT
+https://www.bajaurchamber.org.pk/downloads-forms/,https://www.bajaurchamber.org.pk/downloads,301,REDIRECT
+https://www.bajaurchamber.org.pk/forms/,https://www.bajaurchamber.org.pk/downloads,301,REDIRECT
+https://www.bajaurchamber.org.pk/vacancies-jobs/,https://www.bajaurchamber.org.pk/vacancies,301,REDIRECT
+https://www.bajaurchamber.org.pk/jobs/,https://www.bajaurchamber.org.pk/vacancies,301,REDIRECT
+https://www.bajaurchamber.org.pk/compliance/,https://www.bajaurchamber.org.pk/compliances,301,REDIRECT
+https://www.bajaurchamber.org.pk/privacy/,https://www.bajaurchamber.org.pk/privacy-policy,301,REDIRECT
+https://www.bajaurchamber.org.pk/sample-page/,,410,GONE - no replacement
+https://www.bajaurchamber.org.pk/wp-login.php,,410,GONE - WordPress admin
+https://www.bajaurchamber.org.pk/wp-admin/,,410,GONE - WordPress admin
+https://www.bajaurchamber.org.pk/feed/,,410,GONE - WordPress RSS feed
+https://www.bajaurchamber.org.pk/xmlrpc.php,,410,GONE - WordPress XML-RPC
+https://www.bajaurchamber.org.pk/wp-content/,,410,GONE - WordPress uploads
+http://www.bajaurchamber.org.pk/,https://www.bajaurchamber.org.pk/,301,HTTP->HTTPS enforcement
+http://bajaurchamber.org.pk/,https://www.bajaurchamber.org.pk/,301,HTTP+non-www->HTTPS+www enforcement
+https://bajaurchamber.org.pk/,https://www.bajaurchamber.org.pk/,301,non-www->www enforcement
