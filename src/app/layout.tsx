@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Providers } from '@/components/providers';
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.bajaurchamber.org.pk'),
@@ -11,6 +13,9 @@ export const metadata: Metadata = {
   description: 'The official website of Bajaur Chamber of Commerce & Industry (BCCI). Supporting local businesses and trade in Bajaur District, Pakistan.',
   alternates: {
     canonical: '/',
+  },
+  verification: {
+    google: '1DFXLC7fnjvpv0Dy8TWRvE2mJiCFrVxd0wfX-2WIPxE',
   },
 };
 
@@ -56,6 +61,8 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <Providers>
           {children}
+          <Analytics />
+          <SpeedInsights />
         </Providers>
       </body>
     </html>
