@@ -34,7 +34,7 @@ export default function RootLayout({
       '@type': 'ContactPoint',
       telephone: '+92 308 2275587',
       contactType: 'customer service',
-      email: 'contact@bajaurcci.com.pk',
+      email: 'info@bajaurchamber.org.pk',
       areaServed: 'PK',
       availableLanguage: 'English'
     },

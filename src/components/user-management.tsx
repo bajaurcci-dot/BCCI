@@ -48,7 +48,6 @@ import { Label } from '@/components/ui/label';
 type Member = {
   id: string;
   full_name: string;
-  email: string | null;
   cnic: string | null;
   ntn: string | null;
   address: string | null;
@@ -178,12 +177,11 @@ export default function UserManagement() {
         .from('members')
         .update({
           full_name: formData.full_name,
-          email: formData.email,
+          mobile_number: formData.mobile_number,
           cnic: formData.cnic,
           ntn: formData.ntn,
           address: formData.address,
           business_name: formData.business_name,
-          mobile_number: formData.mobile_number,
           business_type: formData.business_type,
           status: formData.status,
           membership_type: formData.membership_type,
@@ -307,7 +305,7 @@ export default function UserManagement() {
                           </div>
                           <div>
                             <div className="font-semibold text-gray-900">{user.full_name}</div>
-                            <div className="text-xs text-gray-500">{user.email}</div>
+                            <div className="text-xs text-gray-400">NTN: {user.ntn || 'N/A'}</div>
                           </div>
                         </div>
                       </TableCell>
@@ -385,7 +383,7 @@ export default function UserManagement() {
                     )}
                   </div>
                   <h3 className="text-xl font-bold text-gray-900">{selectedUser.full_name}</h3>
-                  <p className="text-sm text-gray-500">{selectedUser.email}</p>
+                  <p className="text-sm text-gray-500">{selectedUser.mobile_number}</p>
                   <Badge className="mt-3 bg-emerald-500 hover:bg-emerald-600 text-white border-none px-4 py-1 rounded-full">
                     {selectedUser.membership_code || 'No ID'}
                   </Badge>
@@ -472,9 +470,9 @@ export default function UserManagement() {
                   <Label>Full Name</Label>
                   <Input value={formData.full_name || ''} onChange={e => setFormData({ ...formData, full_name: e.target.value })} className="rounded-xl border-gray-200" required />
                 </div>
-                <div className="space-y-2">
-                  <Label>Email</Label>
-                  <Input value={formData.email || ''} onChange={e => setFormData({ ...formData, email: e.target.value })} className="rounded-xl border-gray-200" type="email" required />
+                <div className="space-y-3">
+                  <Label>Mobile Number</Label>
+                  <Input value={formData.mobile_number || ''} onChange={e => setFormData({ ...formData, mobile_number: e.target.value })} className="rounded-xl border-gray-200" type="tel" required />
                 </div>
                 <div className="space-y-2">
                   <Label>CNIC</Label>

@@ -45,7 +45,7 @@ export default function LoginForm() {
             <Input
               id="email"
               type="email"
-              placeholder="admin@example.com"
+              placeholder="info@bajaurchamber.org.pk"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}

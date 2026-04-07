@@ -112,7 +112,7 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Email Address</FormLabel>
                 <FormControl>
-                  <Input placeholder="your.email@example.com" {...field} disabled={loading} />
+                  <Input placeholder="info@bajaurchamber.org.pk" {...field} disabled={loading} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

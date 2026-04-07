@@ -176,7 +176,7 @@ const ServiceRequestSection = () => {
                                         <FormItem>
                                             <FormLabel>Email Address</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="john@example.com" {...field} />
+                                                <Input placeholder="info@bajaurchamber.org.pk" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

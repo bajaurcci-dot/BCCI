@@ -42,7 +42,7 @@ const formSchema = z.object({
   mobile_number: z.string().optional(),
   business_type: z.string().optional(),
   membership_type: z.string().optional(),
-  membership_code: z.string().optional(),
+  membership_code: z.string().min(1, 'Membership code is required.').regex(/^[^\/]+\/[^\-]+\-\d{3}$/, 'Format must be */-*** (e.g. 5/E-005)'),
   membership_expiry: z.date().optional(),
   photo: z.any().optional(),
   photo_url: z.string().optional(),
@@ -194,7 +194,7 @@ export default function RegistrationManagement() {
       if (effectiveId) {
         // UPDATE Existing Member
         console.log('Mode: UPDATE. updating member with ID:', effectiveId);
-        const { error } = await supabase
+        const { error: updateError } = await supabase
           .from('members')
           .update({
             full_name: values.full_name,
@@ -205,19 +205,18 @@ export default function RegistrationManagement() {
             mobile_number: values.mobile_number,
             business_type: values.business_type,
             membership_type: values.membership_type,
+            membership_code: values.membership_code,
             membership_expiry: values.membership_expiry?.toISOString(),
             photo_url: photoUrl
           })
           .eq('id', effectiveId);
 
-        if (error) throw error;
+        if (updateError) throw updateError;
         toast({ title: 'Member Updated', description: 'Member details have been successfully updated.' });
       } else {
         // CREATE New Member
-        // Generate code if not provided
-        const code = values.membership_code || `BCCI-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
-
-        const { error } = await supabase
+        console.log('Mode: CREATE. creating new member');
+        const { error: insertError } = await supabase
           .from('members')
           .insert({
             full_name: values.full_name,
@@ -229,12 +228,12 @@ export default function RegistrationManagement() {
             business_type: values.business_type,
             membership_type: values.membership_type,
             membership_expiry: values.membership_expiry?.toISOString(),
-            membership_code: code,
+            membership_code: values.membership_code,
             photo_url: photoUrl,
             status: 'Active'
           });
 
-        if (error) throw error;
+        if (insertError) throw insertError;
         toast({ title: 'Member Added', description: 'New member has been successfully created.' });
       }
       router.push('/admin/dashboard?tab=users');
@@ -445,6 +444,19 @@ export default function RegistrationManagement() {
                     />
                     <FormField
                       control={form.control}
+                      name="membership_code"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-600 font-semibold">Membership Code</FormLabel>
+                          <FormControl>
+                            <Input placeholder="e.g. 5/E-005" {...field} className="rounded-xl border-gray-200" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
                       name="membership_expiry"
                       render={({ field }) => (
                         <FormItem className="flex flex-col">
@@ -530,7 +542,7 @@ export default function RegistrationManagement() {
 
                 <div className="p-6 bg-gray-900 rounded-[32px] text-white space-y-4">
                   <h3 className="font-bold">Form Actions</h3>
-                  <p className="text-sm text-gray-400">Review all details before saving. This action sends a welcome email to the user.</p>
+                  <p className="text-sm text-gray-400">Review all details before saving. This action will add the member to the database.</p>
 
                   <Button type="submit" size="lg" disabled={loading} className="w-full rounded-full bg-emerald-600 hover:bg-emerald-500 text-white border-none h-12">
                     {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : memberId ? 'Save Changes' : 'Create Member'}

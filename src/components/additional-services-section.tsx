@@ -63,8 +63,8 @@ const supportContacts = [
     },
     {
         name: 'Email',
-        value: 'contact@bajaurcci.com.pk',
-        href: 'mailto:contact@bajaurcci.com.pk',
+        value: 'info@bajaurchamber.org.pk',
+        href: 'mailto:info@bajaurchamber.org.pk',
         icon: Mail,
     },
 ];
@@ -163,7 +163,7 @@ export default function AdditionalServicesSection() {
                       <FormItem>
                         <FormLabel>Email Address</FormLabel>
                         <FormControl>
-                          <Input placeholder="your.email@example.com" {...field} disabled={loading}/>
+                          <Input placeholder="info@bajaurchamber.org.pk" {...field} disabled={loading}/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>

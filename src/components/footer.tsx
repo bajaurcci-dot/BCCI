@@ -112,8 +112,8 @@ function Footer() {
             <div className="bg-[#AFE1AF]/20 p-1.5 sm:p-2 rounded-full">
               <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-[#22c55e]" />
             </div>
-            <a href="mailto:contact@bajaurcci.com.pk" className="text-muted-foreground hover:text-[#22c55e] transition-colors text-xs sm:text-sm font-medium">
-              contact@bajaurcci.com.pk
+            <a href="mailto:info@bajaurchamber.org.pk" className="text-muted-foreground hover:text-[#22c55e] transition-colors text-xs sm:text-sm font-medium">
+              info@bajaurchamber.org.pk
             </a>
           </div>
         </div>

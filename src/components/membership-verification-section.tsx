@@ -38,7 +38,7 @@ import { format } from 'date-fns';
 
 const formSchema = z.object({
   fullName: z.string().min(1, 'Full name is required.'),
-  ntn: z.string().min(1, 'NTN is required.'),
+  ntn: z.string().min(1, 'NTN, CNIC, or Membership Code is required.'),
   membershipType: z.string({ required_error: 'Please select a membership type.' }),
 });
 
@@ -52,8 +52,8 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Email',
-    value: 'contact@bajaurcci.com.pk',
-    href: 'mailto:contact@bajaurcci.com.pk',
+    value: 'info@bajaurchamber.org.pk',
+    href: 'mailto:info@bajaurchamber.org.pk',
   },
   {
     icon: Phone,
@@ -102,23 +102,37 @@ export default function MembershipVerificationSection() {
         .from('members')
         .select('*')
         .eq('full_name', values.fullName)
-        .eq('ntn', values.ntn)
         .eq('membership_type', values.membershipType)
-        .eq('status', 'Active')
-        .maybeSingle();
+        .eq('status', 'Active');
 
       if (error) {
         console.error('Supabase error:', error);
         throw new Error('Database error occurred');
       }
 
-      if (data) {
+      const normalizedInput = values.ntn.trim().replace(/-/g, '').toLowerCase();
+      const rawInput = values.ntn.trim().toLowerCase();
+
+      // Find member with flexible matching
+      const member = (data || []).find(m => {
+        const mNtn = (m.ntn || '').replace(/-/g, '').toLowerCase();
+        const mCnic = (m.cnic || '').replace(/-/g, '').toLowerCase();
+        const mCodeRaw = (m.membership_code || '').toLowerCase();
+        const mCodeNorm = (m.membership_code || '').replace(/-/g, '').toLowerCase();
+
+        return mNtn === normalizedInput || 
+               mCnic === normalizedInput || 
+               mCodeRaw === rawInput || 
+               mCodeNorm === normalizedInput;
+      });
+
+      if (member) {
         // Member found!
-        setFoundMember(data);
+        setFoundMember(member);
         setIsDialogOpen(true);
         toast({
           title: 'Member Verified!',
-          description: `${data.full_name} is a verified BCCI member.`,
+          description: `${member.full_name} is a verified BCCI member.`,
         });
       } else {
         // Member not found
@@ -147,7 +161,7 @@ export default function MembershipVerificationSection() {
           <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-lg animate-slide-in-left flex flex-col">
             <h3 className="text-2xl font-bold font-headline mb-2">Member Verification</h3>
             <p className="text-muted-foreground mb-6">
-              Enter Full Name, NTN and Membership Type to verify.
+              Enter details to verify membership (NTN, CNIC, or Code).
             </p>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 flex-grow flex flex-col">
@@ -170,9 +184,9 @@ export default function MembershipVerificationSection() {
                     name="ntn"
                     render={({ field }) => (
                       <FormItem className="mb-4">
-                        <FormLabel>NTN *</FormLabel>
+                        <FormLabel>Membership Code / NTN / CNIC *</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter NTN" {...field} disabled={loading} />
+                          <Input placeholder="e.g. 5/E-005, 1234567-8, or CNIC" {...field} disabled={loading} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

@@ -540,7 +540,7 @@ export default function DownloadsManagement({ category = 'DOWNLOAD', title = 'Do
             <DialogFooter>
               <Button type="button" variant="ghost" onClick={() => setIsFormOpen(false)} className="rounded-full">Cancel</Button>
               <Button type="submit" className="rounded-full bg-emerald-600 hover:bg-emerald-700 px-8" disabled={uploading}>
-                {uploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Save Resource'}
+                {uploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Submit Resource'}
               </Button>
             </DialogFooter>
           </form>

@@ -29,13 +29,13 @@ type Log = {
 };
 
 const DUMMY_LOGS: Log[] = [
-  { id: 1, created_at: '2026-01-25T01:14:00Z', action: 'User Login', category: 'Security', details: { user_email: 'admin@bcci.pk', description: 'Successful login from new device', ip_address: '192.168.1.10' } },
-  { id: 2, created_at: '2026-01-25T00:30:00Z', action: 'Member Approved', category: 'User', details: { user_email: 'admin@bcci.pk', description: 'Approved membership for Bajaur Travels' } },
-  { id: 3, created_at: '2026-01-24T18:45:00Z', action: 'Download Uploaded', category: 'Content', details: { user_email: 'moderator@bcci.pk', description: 'Uploaded new Export Guide 2026' } },
-  { id: 4, created_at: '2026-01-24T15:20:00Z', action: 'Settings Changed', category: 'System', details: { user_email: 'admin@bcci.pk', description: 'Updated global site notification banner' } },
+  { id: 1, created_at: '2026-01-25T01:14:00Z', action: 'User Login', category: 'Security', details: { user_email: 'info@bajaurchamber.org.pk', description: 'Successful login from new device', ip_address: '192.168.1.10' } },
+  { id: 2, created_at: '2026-01-25T00:30:00Z', action: 'Member Approved', category: 'User', details: { user_email: 'info@bajaurchamber.org.pk', description: 'Approved membership for Bajaur Travels' } },
+  { id: 3, created_at: '2026-01-24T18:45:00Z', action: 'Download Uploaded', category: 'Content', details: { user_email: 'info@bajaurchamber.org.pk', description: 'Uploaded new Export Guide 2026' } },
+  { id: 4, created_at: '2026-01-24T15:20:00Z', action: 'Settings Changed', category: 'System', details: { user_email: 'info@bajaurchamber.org.pk', description: 'Updated global site notification banner' } },
   { id: 5, created_at: '2026-01-24T12:10:00Z', action: 'Failed Login Attempt', category: 'Security', details: { user_email: 'unknown', description: 'Multiple failed attempts prevented', ip_address: '10.0.0.55' } },
-  { id: 6, created_at: '2026-01-23T09:00:00Z', action: 'Vacancy Posted', category: 'Content', details: { user_email: 'hr@bcci.pk', description: 'Posted new job: Office Assistant' } },
-  { id: 7, created_at: '2026-01-22T16:00:00Z', action: 'User Deleted', category: 'User', details: { user_email: 'admin@bcci.pk', description: 'Removed inactive user ID #45' } },
+  { id: 6, created_at: '2026-01-23T09:00:00Z', action: 'Vacancy Posted', category: 'Content', details: { user_email: 'info@bajaurchamber.org.pk', description: 'Posted new job: Office Assistant' } },
+  { id: 7, created_at: '2026-01-22T16:00:00Z', action: 'User Deleted', category: 'User', details: { user_email: 'info@bajaurchamber.org.pk', description: 'Removed inactive user ID #45' } },
 ];
 
 export default function ActivityLog() {

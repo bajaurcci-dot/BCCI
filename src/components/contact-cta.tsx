@@ -45,7 +45,7 @@ const ContactCTA = ({
                         size="lg"
                         className="w-full sm:w-auto bg-white/20 hover:bg-white/30 text-white border-2 border-white/50 hover:border-white font-bold backdrop-blur-sm hover:scale-105 transition-transform"
                     >
-                        <Link href="mailto:info@bcci.org.pk">
+                        <Link href="mailto:info@bajaurchamber.org.pk">
                             <Mail className="mr-2 h-5 w-5" />
                             Email Us
                         </Link>

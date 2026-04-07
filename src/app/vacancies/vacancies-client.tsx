@@ -296,7 +296,7 @@ export default function VacanciesClient() {
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="name@example.com"
+                                placeholder="info@bajaurchamber.org.pk"
                                 className="rounded-xl border-gray-200 focus:ring-2 focus:ring-emerald-100 transition-all font-medium py-6"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}

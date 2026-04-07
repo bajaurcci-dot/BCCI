@@ -34,7 +34,6 @@ type Verification = {
   company_name: string | null;
   full_name: string;
   ntn: string | null;
-  email: string;
   phone: string | null;
   membership_type: string | null;
   photo_url: string | null;
@@ -50,6 +49,11 @@ export default function VerificationManagement() {
   const [selectedVerification, setSelectedVerification] = useState<Verification | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [membershipCodeInput, setMembershipCodeInput] = useState('');
+
+  const isValidCode = useMemo(() => {
+    return /^[^\/]+\/[^\-]+\-\d{3}$/.test(membershipCodeInput);
+  }, [membershipCodeInput]);
 
   useEffect(() => {
     fetchVerifications();
@@ -125,18 +129,22 @@ export default function VerificationManagement() {
     }
   };
 
-  const handleAction = async (id: string, displayName: string | null, newStatus: 'Approved' | 'Rejected') => {
+  const handleAction = async (id: string, displayName: string | null, newStatus: 'Approved' | 'Rejected', code?: string) => {
     try {
       const { supabase } = await import('@/lib/supabase');
+      const verification = verifications.find(v => v.id === id);
+      if (!verification) return;
 
       if (newStatus === 'Approved') {
-        const verification = verifications.find(v => v.id === id);
-        if (!verification) return;
-
-        // Generate membership code
-        const year = new Date().getFullYear();
-        const randomNum = Math.floor(1000 + Math.random() * 9000);
-        const membershipCode = `BCCI-${year}-${randomNum}`;
+        const membershipCode = code;
+        if (!membershipCode) {
+          toast({
+            title: 'Error',
+            description: 'Membership code is required for approval.',
+            variant: 'destructive',
+          });
+          return;
+        }
 
         // Calculate expiry (1 year from now)
         const expiryDate = new Date();
@@ -148,7 +156,6 @@ export default function VerificationManagement() {
           .insert({
             full_name: verification.full_name,
             ntn: verification.ntn,
-            email: verification.email,
             mobile_number: verification.phone,
             business_name: verification.company_name,
             membership_type: verification.membership_type,
@@ -177,7 +184,7 @@ export default function VerificationManagement() {
 
       toast({
         title: newStatus === 'Approved' ? 'Member Approved!' : 'Application Rejected',
-        description: `${displayName} has been ${newStatus.toLowerCase()}.`,
+        description: `${displayName || 'Member'} has been ${newStatus.toLowerCase()}.`,
       });
       setSelectedVerification(null);
     } catch (error: any) {
@@ -268,7 +275,10 @@ export default function VerificationManagement() {
                         </Button>
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button variant="ghost" size="sm" onClick={() => setSelectedVerification(item)} className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-full px-4">
+                            <Button variant="ghost" size="sm" onClick={() => {
+                              setSelectedVerification(item);
+                              setMembershipCodeInput('');
+                            }} className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-full px-4">
                               View Details
                             </Button>
                           </DialogTrigger>
@@ -331,6 +341,27 @@ export default function VerificationManagement() {
                                   <span className="col-span-2 text-gray-900 leading-relaxed">{item.company_name || 'Not provided'}</span>
                                 </div>
                               </div>
+
+                              {item.status !== 'Approved' && (
+                                <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 space-y-3">
+                                  <h4 className="text-sm font-bold text-emerald-900">Assign Membership Code</h4>
+                                  <p className="text-xs text-emerald-700">Enter a valid code (format: */-***) to approve this member.</p>
+                                  <div className="space-y-1">
+                                    <Input
+                                      placeholder="e.g. 5/E-005"
+                                      value={membershipCodeInput}
+                                      onChange={(e) => setMembershipCodeInput(e.target.value)}
+                                      className={cn(
+                                        "bg-white border-emerald-200 focus:ring-emerald-500",
+                                        membershipCodeInput && !isValidCode && "border-red-300 focus:ring-red-500"
+                                      )}
+                                    />
+                                    {membershipCodeInput && !isValidCode && (
+                                      <p className="text-[10px] text-red-500 font-medium">Invalid format. Must be like 5/E-005</p>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
                             </div>
 
                             <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
@@ -354,8 +385,9 @@ export default function VerificationManagement() {
                                       <XCircle className="w-4 h-4 mr-2" /> Reject
                                     </Button>
                                     <Button
-                                      onClick={() => handleAction(item.id, item.company_name, 'Approved')}
-                                      className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full"
+                                      onClick={() => handleAction(item.id, item.company_name, 'Approved', membershipCodeInput)}
+                                      disabled={!isValidCode}
+                                      className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                       <CheckCircle2 className="w-4 h-4 mr-2" /> Approve
                                     </Button>
@@ -378,8 +410,9 @@ export default function VerificationManagement() {
                                 {item.status === 'Rejected' && (
                                   <div className="flex gap-2">
                                     <Button
-                                      onClick={() => handleAction(item.id, item.company_name, 'Approved')}
-                                      className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full"
+                                      onClick={() => handleAction(item.id, item.company_name, 'Approved', membershipCodeInput)}
+                                      disabled={!isValidCode}
+                                      className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                       <CheckCircle2 className="w-4 h-4 mr-2" /> Reconsider & Approve
                                     </Button>

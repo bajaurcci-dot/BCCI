@@ -65,13 +65,13 @@ const ContactSection = () => {
                       <p>+92 308 2275587</p>
                     </div>
                   </a>
-                  <a href="mailto:contact@bajaurcci.com.pk" className="flex items-start gap-4 text-muted-foreground hover:text-primary transition-colors group">
+                  <a href="mailto:info@bajaurchamber.org.pk" className="flex items-start gap-4 text-muted-foreground hover:text-primary transition-colors group">
                     <div className="bg-primary/10 p-3 rounded-full mt-1 group-hover:bg-primary/20 transition-colors">
                       <Mail className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-foreground">Email</h4>
-                      <p>contact@bajaurcci.com.pk</p>
+                      <h4 className="font-bold text-foreground">Email Address</h4>
+                      <p>info@bajaurchamber.org.pk</p>
                     </div>
                   </a>
                   <div className="flex items-start gap-4 text-muted-foreground">
