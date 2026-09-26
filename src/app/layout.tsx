@@ -17,6 +17,19 @@ export const metadata: Metadata = {
   verification: {
     google: '1DFXLC7fnjvpv0Dy8TWRvE2mJiCFrVxd0wfX-2WIPxE',
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/icon.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -29,7 +42,7 @@ export default function RootLayout({
     '@type': 'Organization',
     name: 'Bajaur Chamber of Commerce & Industry',
     url: 'https://www.bajaurchamber.org.pk',
-    logo: 'https://www.bajaurchamber.org.pk/icon.jpeg',
+    logo: 'https://www.bajaurchamber.org.pk/icon.png',
     contactPoint: {
       '@type': 'ContactPoint',
       telephone: '+92 308 2275587',
@@ -47,6 +60,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
